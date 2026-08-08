@@ -1,0 +1,46 @@
+{
+  "personaId": "sales",
+  "question": "Brief me for the 10:00 Nordvik redline call",
+  "beats": {
+    "intro": {
+      "title": "Meet Jonas's workspace",
+      "text": "Jonas Lindqvist, Enterprise Sales Manager, Stockholm. Eight tools, six reps, a $6.8M Q3 quota — one screen runs all of it."
+    },
+    "hero": {
+      "title": "The day's one job",
+      "text": "The brief cuts straight to it: turn Nordvik's round-2 redlines today. OPP-4821, $1.2M, must sign by Aug 21 to keep Q3 on pace."
+    },
+    "kpis": {
+      "title": "The numbers, live",
+      "text": "Q3 attainment: 48.2%, up 6.4 points on Q2. Nine deals worth $3.4M closing in August — pulled from Salesforce, no spreadsheet in sight."
+    },
+    "chart": {
+      "title": "Twelve months, one story",
+      "text": "June hit 127% of target on the Nordvik pilot; July dipped to 83% post-quarter. August already has $1.42M booked."
+    },
+    "ask": {
+      "title": "Drag it, ask it",
+      "text": "Jonas drags a KPI into chat and asks for the 10:00 Nordvik brief. Watch it pull Salesforce, Gmail, and Drive in seconds."
+    },
+    "delegate": {
+      "title": "Hand off the chasing",
+      "text": "One click chases the Aventra security questionnaire. Laura Simmons commits to Aug 12 — the $840K September signature stays alive."
+    },
+    "autopilot": {
+      "title": "Approvals on autopilot",
+      "text": "Flip the switch: routine PTO and expenses clear themselves. The 18% Trellis discount and Nordvik cap language still wait for Jonas."
+    },
+    "mcp": {
+      "title": "Under the hood",
+      "text": "The MCP console shows the wiring: Salesforce, DocuSign, Gmail and more, connected live. Every answer traces back to a real system."
+    },
+    "recap": {
+      "title": "Friday, in one click",
+      "text": "One click writes the week: Caldera signed at $290K, commit up $310K, slip risks flagged. Claire's report, done before coffee."
+    },
+    "outro": {
+      "title": "More selling, less admin",
+      "text": "The pipeline runs itself; Jonas runs the deals. That's a $1.2M signature closer by Friday — and this is just one seat."
+    }
+  }
+}

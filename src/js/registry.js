@@ -35,6 +35,47 @@ const PERSONAS = [
   { id: "sales",       name: "Jonas Lindqvist", role: "Enterprise Sales Mgr",  dept: "Sales",            tag: "Pipeline, quota & accounts",     accent: "#2563eb", initials: "JL", loc: "Stockholm" },
 ];
 
+/* Mediacorp mark — folded-ribbon M, approximated inline (POC) */
+const LOGO_M =
+  '<svg viewBox="0 0 100 64" aria-label="Mediacorp">' +
+  '<defs>' +
+  '<linearGradient id="mcg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ec008c"/><stop offset="1" stop-color="#5f2d91"/></linearGradient>' +
+  '<linearGradient id="mcg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a11b"/><stop offset="1" stop-color="#e63b23"/></linearGradient>' +
+  '<linearGradient id="mcg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8dc63f"/><stop offset="1" stop-color="#00854a"/></linearGradient>' +
+  '<linearGradient id="mcg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fc0c4"/><stop offset="1" stop-color="#1b75bc"/></linearGradient>' +
+  '</defs>' +
+  '<polygon points="10,58 24,10 36,10 22,58" fill="url(#mcg1)"/>' +
+  '<polygon points="24,10 36,10 56,42 44,42" fill="url(#mcg2)"/>' +
+  '<polygon points="44,42 64,10 76,10 56,42" fill="url(#mcg3)"/>' +
+  '<polygon points="64,10 76,10 90,58 78,58" fill="url(#mcg4)"/>' +
+  '</svg>';
+
+/* askMElah mark — gradient ME chat tile, enhanced from the supplied logo */
+const LOGO_ASKME =
+  '<svg viewBox="0 0 48 48" aria-label="askMElah">' +
+  '<defs>' +
+  '<linearGradient id="amg" x1="0.15" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#8b30c9"/><stop offset="0.55" stop-color="#c9247f"/><stop offset="1" stop-color="#ee2278"/></linearGradient>' +
+  '<linearGradient id="amh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/></linearGradient>' +
+  '</defs>' +
+  '<path d="M9 42.5 5.2 47l10-2.6Z" fill="#ee2278"/>' +
+  '<rect x="3.5" y="3.5" width="41" height="41" rx="12.5" fill="url(#amg)"/>' +
+  '<rect x="3.5" y="3.5" width="41" height="20.5" rx="12.5" fill="url(#amh)"/>' +
+  '<text x="24" y="31" text-anchor="middle" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-weight="800" font-size="17.5" fill="#ffffff" letter-spacing="-0.5">ME</text>' +
+  '</svg>';
+function askmeAv(sz) {
+  const s = el("span", "askme-av");
+  s.innerHTML = LOGO_ASKME;
+  if (sz) { s.style.width = sz + "px"; s.style.height = sz + "px"; }
+  return s;
+}
+
+/* live MCP call log — seeded per persona, appended by real tool runs */
+const MCPLOG = [];
+function mcpLog(server, tool, ms) {
+  MCPLOG.unshift({ server, tool, ms: ms || 400, t: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) });
+  if (MCPLOG.length > 30) MCPLOG.pop();
+}
+
 /* theme + chart tokens — both palettes CVD-validated on their surfaces */
 const THEME = { dark: false };
 const VIZ_LIGHT = {

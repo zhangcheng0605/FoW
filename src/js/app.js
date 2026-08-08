@@ -99,7 +99,7 @@ function wireDropzone() {
     e.preventDefault(); depth = 0; dock.classList.remove("droptarget");
     try {
       const chip = JSON.parse(e.dataTransfer.getData("text/fow-chip"));
-      if (chip && chip.label) { attachChip(chip); toast("Added to chat — ask Flow about it", "info"); }
+      if (chip && chip.label) { attachChip(chip); toast("Added to chat — askMElah will take a look", "info"); }
     } catch (_) { /* not ours */ }
   });
   function hasChip(e) { return Array.from(e.dataTransfer.types || []).includes("text/fow-chip"); }
@@ -136,7 +136,7 @@ function card(span, o) {
       acts.appendChild(tbtn);
     }
     if (o.chip) {
-      const ask = el("button", "ch-act"); ask.title = "Ask Flow about this"; ask.appendChild(ico("ask"));
+      const ask = el("button", "ch-act"); ask.title = "Ask askMElah about this"; ask.appendChild(ico("ask"));
       ask.addEventListener("click", () => { attachChip(o.chip); toast("Added to chat — ask away", "info"); });
       acts.appendChild(ask);
       const grip = el("span", "ch-act"); grip.style.cursor = "grab"; grip.title = "Drag into chat"; grip.appendChild(ico("grip"));
@@ -335,11 +335,12 @@ function renderCanvas() {
         b.appendChild(it);
       });
     },
-    foot: "double-click a thread to have Flow draft the reply",
+    foot: "double-click a thread to have askMElah draft the reply",
   }));
 
   /* approvals */
   const apCard = card(4, {
+    cls: "ap-card",
     icon: "check", title: "Approvals", sub: FOW.pendingApprovals().length + " pending",
     body: b => {
       p.approvals.forEach(a => {
@@ -356,7 +357,7 @@ function renderCanvas() {
           const acts = el("span", "ap-acts");
           const ok = el("button", "ap-ok"); ok.title = "Approve"; ok.appendChild(ico("check"));
           ok.addEventListener("click", e => { e.stopPropagation(); FOW.approve(a.id, true); toast("Approved — " + a.requester + " notified", "ok"); });
-          const no = el("button", "ap-no"); no.title = "Ask Flow first"; no.appendChild(ico("x"));
+          const no = el("button", "ap-no"); no.title = "Ask askMElah first"; no.appendChild(ico("x"));
           no.addEventListener("click", e => { e.stopPropagation(); attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
           acts.append(ok, no);
           it.appendChild(acts);
@@ -365,7 +366,7 @@ function renderCanvas() {
         b.appendChild(it);
       });
     },
-    foot: "✕ sends it to Flow for a recommendation first",
+    foot: "✕ sends it to askMElah for a recommendation first",
   });
   /* autopilot: Flow clears low-risk approvals on its own */
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
@@ -391,15 +392,16 @@ function renderCanvas() {
   apHead.insertBefore(auto, $(".ch-acts", apHead));
   cv.appendChild(apCard);
 
-  /* delegations — hand work to Flow, watch it run */
+  /* delegations — hand work to askMElah, watch it run */
   if (p.delegations && p.delegations.length) {
     cv.appendChild(card(6, {
-      icon: "robot", title: "Delegated to Flow", sub: "agent work queue · runs in the background",
+      cls: "dg-card",
+      icon: "robot", title: "Delegated to askMElah", sub: "agent work queue · runs in the background",
       body: b => {
         p.delegations.forEach(d => {
           const doneAlready = (state.delegated[state.personaId] || {})[d.id];
           const it = el("div", "dg-item");
-          const orb = el("span", "orb mini dg-orb"); orb.appendChild(el("i"));
+          const orb = askmeAv(26); orb.classList.add("dg-orb");
           it.appendChild(orb);
           const bd = el("div", "dg-body");
           bd.appendChild(el("div", "dg-label", d.label));
@@ -425,7 +427,7 @@ function renderCanvas() {
           b.appendChild(it);
         });
       },
-      foot: "Flow works these while you do something better with your time",
+      foot: "askMElah works these while you do something better with your time",
     }));
   }
 
@@ -433,6 +435,7 @@ function renderCanvas() {
   if (p.week) {
     const wk = p.week;
     cv.appendChild(card(6, {
+      cls: "wk-card",
       icon: "clockIco", title: "Your week in numbers", sub: "meetings vs focus · w/e Aug 8", badge: srvFor(p, ["outlook", "gcal"]),
       chip: { type: "week", label: "My week in numbers", data: wk },
       body: b => {
@@ -473,7 +476,7 @@ function renderCanvas() {
 
   /* skills + automations + connections */
   cv.appendChild(card(6, {
-    icon: "spark", title: "Agent skills", sub: "what Flow can run for you",
+    icon: "spark", title: "Agent skills", sub: "what askMElah can run for you",
     body: b => {
       p.skills.forEach(s => {
         const it = el("div", "rail-item");
@@ -530,6 +533,9 @@ function renderCanvas() {
         makeDraggable(it, { type: "server", label: s.name + " (MCP)", data: { id: cid } });
         b.appendChild(it);
       });
+      const more = el("button", "rail-more", "Open the MCP console →");
+      more.addEventListener("click", () => mcpOpen());
+      b.appendChild(more);
     },
     foot: "drag a server into chat to see its tools",
   }));
@@ -558,6 +564,7 @@ async function runDelegation(d, ui) {
     await wait(Math.min(s.ms || 800, 1600) * 0.8);
     ui.fill.style.width = Math.round(((i + 1) / d.steps.length) * 100) + "%";
     ui.sub.textContent = s.result;
+    mcpLog(s.server, s.tool, s.ms);
     await wait(260);
   }
   pill.className = "dg-pill done"; pill.textContent = "done";
@@ -570,7 +577,7 @@ async function runDelegation(d, ui) {
     ui.bd.appendChild(a);
   }
   set[d.id] = "done";
-  toast("Flow finished: " + d.label);
+  toast("askMElah finished: " + d.label);
   agentReply({
     thinkMs: 250,
     text: "**" + d.label + "** — done. " + d.result + (d.artifact ? "\n> Saved as **" + d.artifact + "**" : ""),
@@ -582,6 +589,71 @@ async function runDelegation(d, ui) {
       },
     }],
   });
+}
+
+/* ---------------- MCP console ---------------- */
+function hashN(s, lo, hi) {
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 9973;
+  return lo + (h % (hi - lo));
+}
+function mcpOpen() {
+  renderMcp();
+  $("#mcp").hidden = false;
+}
+function mcpClose() { $("#mcp").hidden = true; }
+function renderMcp() {
+  const p = FOW.data() || { connections: [] };
+  const conns = p.connections || [];
+  const grid = $("#mcpGrid");
+  grid.textContent = "";
+  const ids = Object.keys(SERVERS).sort((a, b) => (conns.includes(b) ? 1 : 0) - (conns.includes(a) ? 1 : 0));
+  ids.forEach(cid => {
+    const s = SERVERS[cid];
+    const on = conns.includes(cid);
+    const syncing = on && conns.indexOf(cid) === 2;
+    const cardEl = el("div", "mcp-card" + (on ? "" : " avail"));
+    const top = el("div", "mcp-top");
+    top.appendChild(srvGlyph(cid));
+    top.appendChild(el("span", "mcp-name", s.name));
+    const st = el("span", "mcp-st");
+    st.appendChild(el("span", "cn-dot" + (syncing ? " sync" : "")));
+    if (!on) $(".cn-dot", st) && ($(".cn-dot", st).style.background = "var(--ink-3)", $(".cn-dot", st).style.boxShadow = "none");
+    st.appendChild(el("span", "", on ? (syncing ? "syncing" : "connected") : "available"));
+    top.appendChild(st);
+    cardEl.appendChild(top);
+    const tools = el("div", "mcp-tools");
+    s.tools.forEach(t => tools.appendChild(el("span", "mcp-tool", t)));
+    cardEl.appendChild(tools);
+    const meta = el("div", "mcp-meta");
+    if (on) {
+      meta.appendChild(el("span", "", hashN(cid, 34, 140) + "ms"));
+      meta.appendChild(el("span", "", hashN(cid + "c", 18, 160) + " calls today"));
+      meta.appendChild(el("span", "", "OAuth · scoped"));
+    } else {
+      meta.appendChild(el("span", "", "not linked for this role"));
+    }
+    cardEl.appendChild(meta);
+    cardEl.title = on ? "Click to ask askMElah about this server" : s.name + " — available in the org catalog";
+    cardEl.addEventListener("click", () => {
+      mcpClose();
+      attachChip({ type: "server", label: s.name + " (MCP)", data: { id: cid } });
+      sendMessage("What can you do with this?");
+    });
+    grid.appendChild(cardEl);
+  });
+  $("#mcpCount").textContent = conns.length + " connected · " + (ids.length - conns.length) + " in catalog";
+  const feed = $("#mcpFeed");
+  feed.textContent = "";
+  MCPLOG.forEach(e => {
+    const it = el("div", "mf-item");
+    it.appendChild(srvGlyph(e.server, 16));
+    const cmd = el("span", "mf-cmd", (SERVERS[e.server] ? SERVERS[e.server].name.toLowerCase().replace(/[^a-z0-9]+/g, "_") : e.server) + "." + e.tool);
+    it.appendChild(cmd);
+    it.appendChild(el("span", "mf-ms", (e.ms / 1000).toFixed(1) + "s"));
+    it.appendChild(el("span", "mf-ok", "✓"));
+    feed.appendChild(it);
+  });
+  if (!MCPLOG.length) feed.appendChild(el("div", "mf-item", "No calls yet this session — ask askMElah something."));
 }
 
 /* ---------------- theme ---------------- */
@@ -609,6 +681,10 @@ function selectPersona(id, first) {
   state.personaId = id;
   const meta = PERSONAS.find(x => x.id === id);
   document.body.dataset.persona = id;
+  /* seed the MCP call feed with this persona's recent history */
+  MCPLOG.length = 0;
+  const pk = FOW.data();
+  if (pk) (pk.chatFlows || []).flatMap(f => f.toolCalls || []).slice(0, 6).reverse().forEach(c => mcpLog(c.server, c.tool, c.ms));
   $("#ppAvatar").textContent = meta.initials;
   $("#ppName").textContent = meta.name;
   $("#ppRole").textContent = meta.role + " · " + meta.dept;
@@ -635,6 +711,12 @@ function renderOnboarding() {
     b.appendChild(el("div", "ob-role", p.role + " · " + p.dept));
     b.appendChild(el("div", "ob-tag", p.tag));
     b.appendChild(el("span", "ob-enter", "enter ↵"));
+    const play = el("span", "ob-play");
+    play.setAttribute("role", "button");
+    play.tabIndex = 0;
+    play.textContent = "▶ play " + p.name.split(" ")[0] + "'s story";
+    play.addEventListener("click", e => { e.stopPropagation(); startPresent(p.id); });
+    b.appendChild(play);
     b.addEventListener("click", () => {
       $("#onboard").classList.add("gone");
       setTimeout(() => { $("#onboard").style.display = "none"; }, 520);
@@ -715,8 +797,10 @@ function ckBuild(query) {
   const q = (query || "").toLowerCase();
   const p = FOW.data();
   const items = [];
-  items.push({ sect: "Workspace", label: "Start present mode — the demo drives itself", icon: "▶", sub: "tour", run: () => startPresent() });
-  if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask Flow", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
+  const curName = state.personaId ? PERSONAS.find(x => x.id === state.personaId).name.split(" ")[0] : "this workspace";
+  items.push({ sect: "Workspace", label: "Play highlights — " + curName + "'s story", icon: "▶", sub: "tour", run: () => startPresent(state.personaId) });
+  items.push({ sect: "Workspace", label: "Open the MCP console", icon: "⌁", sub: "servers", run: () => mcpOpen() });
+  if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askMElah", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });
   if (p) {
     [["trend", p.trend.title], ["donut", p.donut.title], ["bars", p.bars.title], ["heatmap", p.heatmap.title]].forEach(([k, t]) =>
@@ -737,7 +821,7 @@ function ckBuild(query) {
       hits.push({ sect: "Files", label: f.name, icon: "▤", sub: f.by + " · " + f.modified, run: () => { attachChip({ type: "file", label: f.name, data: f }); sendMessage("Summarize this document for me"); } }));
     filtered = filtered.concat(hits);
   }
-  if (q && !filtered.some(i => i.sect === "Ask Flow")) filtered.unshift({ sect: "Ask Flow", label: "Ask: “" + query + "”", icon: "✦", sub: "send to chat", run: () => sendMessage(query) });
+  if (q && !filtered.some(i => i.sect === "Ask askMElah")) filtered.unshift({ sect: "Ask askMElah", label: "Ask: “" + query + "”", icon: "✦", sub: "send to chat", run: () => sendMessage(query) });
   return filtered.slice(0, 16);
 }
 function ckRender() {
@@ -781,8 +865,15 @@ function init() {
     applyTheme(!THEME.dark);
     toast(THEME.dark ? "Dark mode — for the late shift" : "Light mode — bright and crisp", "info");
   });
-  $("#presentBtn").addEventListener("click", () => startPresent());
-  $("#obTour").addEventListener("click", () => startPresent());
+  $("#brandLogo").innerHTML = LOGO_M;
+  $("#obLogo").innerHTML = LOGO_M;
+  $("#orb").innerHTML = LOGO_ASKME;
+  const fabAv = $("#fabAv"); if (fabAv) fabAv.innerHTML = LOGO_ASKME;
+  $("#presentBtn").addEventListener("click", () => { if (PRESENT.on) prStop(); else startPresent(state.personaId); });
+  $("#mcpBtn").addEventListener("click", mcpOpen);
+  $("#mcpClose").addEventListener("click", mcpClose);
+  $("#mcpBack").addEventListener("click", mcpClose);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#mcp").hidden) mcpClose(); });
 
   $("#personaPill").addEventListener("click", e => {
     e.stopPropagation();

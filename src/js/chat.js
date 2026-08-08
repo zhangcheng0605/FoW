@@ -176,7 +176,7 @@ function addUserMsg(text, chips) {
 }
 function addAgentShell() {
   const m = el("div", "msg agent");
-  const orb = el("div", "orb"); orb.appendChild(el("i"));
+  const orb = askmeAv(26);
   const body = el("div", "m-body");
   m.append(orb, body);
   msgsEl().appendChild(m);
@@ -281,6 +281,12 @@ function scoreFlow(flow, msg) {
 function wireFlowActions(actions) {
   return (actions || []).map(a => ({ label: a.label, toast: a.toast }));
 }
+const FALLBACK_OPENERS = [
+  "That one I can't reach in this demo…",
+  "Outside my demo data, lah —",
+  "I don't have live data for that one —",
+];
+let fallbackCount = 0;
 function routeMessage(text, chips) {
   const p = FOW.data();
   const m = (text || "").toLowerCase();
@@ -311,13 +317,45 @@ function routeMessage(text, chips) {
   };
   if (/\b(thank|great|nice|awesome|perfect)\b/.test(m)) return { thinkMs: 320, text: "Anytime. I'll keep watching your queues — ping me when something needs a second brain. ✦" };
 
+  /* 2.5 — easter-egg intents */
+  if (/\b(time now|what.*time|current time)\b/.test(m)) {
+    const now = new Date();
+    const hhmm = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    const curMin = now.getHours() * 60 + now.getMinutes();
+    const upcoming = (p.meetings || []).find(mt => {
+      const parts = String(mt.time).split(":");
+      return (Number(parts[0]) * 60 + Number(parts[1])) > curMin;
+    });
+    const mt = upcoming || (p.meetings || [])[0];
+    return {
+      thinkMs: 350,
+      text: "It's **" + hhmm + "** in " + p.user.location + ", lah. Your next meeting — **" + (mt ? mt.title : "nothing on the books") + "** — starts at " + (mt ? (upcoming ? mt.time : mt.time + ", first thing Monday") : "…never, actually") + ".",
+    };
+  }
+  if (/\b(llm|language model|which model|what model|gpt|claude|real ai|are you ai|hooked.*model)\b/.test(m)) {
+    return {
+      thinkMs: 500,
+      text: "Honest answer? There's **no LLM** behind this seat — I'm a scripted demo brain: keyword routing over curated flows, running entirely in this page with **zero network calls**.\n" +
+        "> In a production build, this seat gets wired to a real model through the MCP layer — same choreography, real reasoning.\n" +
+        "For today, everything you see is choreography, lah. ✦",
+    };
+  }
+  if (/\b(who are you|your name|what are you)\b/.test(m)) {
+    const conns = (p.connections || []).slice(0, 2).map(c => "**" + (SERVERS[c] ? SERVERS[c].name : c) + "**");
+    return {
+      thinkMs: 400,
+      text: "I'm **askMElah** — Mediacorp's FoW copilot for " + p.user.dept + ". I'm wired into " + conns.join(" and ") + ", among others.\nDrag any card from your canvas into this chat and I'll show you what I can do with it.",
+    };
+  }
+
   /* 3 — chip-context responders */
   if (chips.length) return chipFlow(chips, text);
 
   /* 4 — graceful fallback */
+  const opener = FALLBACK_OPENERS[fallbackCount++ % FALLBACK_OPENERS.length];
   return {
     thinkMs: 520,
-    text: "I don't have live data for that one in this demo — but here's what I *can* dig into for you right now:\n" +
+    text: opener + " But here's what I *can* dig into for you right now:\n" +
       (p.suggestions || []).slice(0, 3).map(s => "- " + s).join("\n") +
       "\n\nOr drag any card on your canvas into the chat and I'll take it from there.",
   };
@@ -443,7 +481,7 @@ function recapFlow() {
     "## Week recap — w/e Friday, Aug 8\n" +
     p.focus.headline + "\n" +
     "## Wins\n" + (wins.join("\n") || "- Steady week — no fires") + "\n" +
-    (delDone || cleared ? "- Cleared **" + cleared + " approval" + (cleared === 1 ? "" : "s") + "**" + (delDone ? " and delegated **" + delDone + " task" + (delDone > 1 ? "s" : "") + "** to Flow" : "") + "\n" : "") +
+    (delDone || cleared ? "- Cleared **" + cleared + " approval" + (cleared === 1 ? "" : "s") + "**" + (delDone ? " and delegated **" + delDone + " task" + (delDone > 1 ? "s" : "") + "** to askMElah" : "") + "\n" : "") +
     "## Watch-outs\n" + (risks.join("\n") || "- Nothing red this week") + "\n" +
     (blocked.length ? "- **" + blocked[0].id + "** still blocked — escalation is out\n" : "") +
     "## Next week\n" +

@@ -5,18 +5,17 @@
 
 <div id="onboard" role="dialog" aria-label="Choose your role">
   <div class="ob-inner">
-    <div class="ob-brand"><span class="ob-mark">✦</span> FoW <em>· Meridian Labs</em></div>
+    <div class="ob-brand"><span class="ob-logo" id="obLogo"></span><span class="mc-word ob-word">mediacorp</span><em>FoW · Future of Work workspace</em></div>
     <h1 class="ob-title">Who's signing in today?</h1>
-    <p class="ob-sub">One workspace, shaped around your work. Pick a seat to see it come alive.</p>
+    <p class="ob-sub">One workspace, shaped around your work. Pick a seat — or press ▶ on anyone to watch their story play itself.</p>
     <div class="ob-grid" id="obGrid"></div>
-    <button class="ob-tour" id="obTour">▶&nbsp; Watch the tour — it drives itself</button>
     <p class="ob-foot">Proof of concept · demo data · every card on the canvas can be dragged into the chat</p>
   </div>
 </div>
 
 <header id="topbar">
   <div class="tb-left">
-    <button class="brand" id="brandBtn" title="FoW — Future of Work"><span class="brand-mark">✦</span><span class="brand-name">FoW</span><span class="brand-co">Meridian Labs</span></button>
+    <button class="brand" id="brandBtn" title="FoW — Future of Work at Mediacorp"><span class="brand-logo" id="brandLogo"></span><span class="brand-name">FoW</span><span class="brand-co mc-word">mediacorp</span></button>
     <button class="persona-pill" id="personaPill" aria-haspopup="true" title="Switch persona">
       <span class="pp-avatar" id="ppAvatar">–</span>
       <span class="pp-meta"><span class="pp-name" id="ppName">…</span><span class="pp-role" id="ppRole">…</span></span>
@@ -30,7 +29,10 @@
       <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>Ask or jump to…</span><kbd>⌘K</kbd>
     </button>
-    <button class="tb-btn tb-ico" id="presentBtn" title="Present mode — the demo drives itself">
+    <button class="tb-btn tb-ico" id="mcpBtn" title="MCP Console — connected servers &amp; tools">
+      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M5.5 2v3.4M10.5 2v3.4M4 5.4h8v2.2a4 4 0 0 1-8 0Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11.6V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <button class="tb-btn tb-ico" id="presentBtn" title="Play this workspace's highlights">
       <svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.4 2.9v10.2L13 8Z" fill="currentColor"/></svg>
     </button>
     <button class="tb-btn tb-ico" id="themeBtn" title="Switch light / dark theme"><span id="themeIco"></span></button>
@@ -45,11 +47,11 @@
 <main id="frame">
   <section id="canvas" aria-label="Workspace canvas"></section>
 
-  <aside id="chatdock" aria-label="Flow — your work copilot">
+  <aside id="chatdock" aria-label="askMElah — your work copilot">
     <div class="cd-head">
-      <div class="orb" id="orb"><i></i></div>
+      <span class="askme-av" id="orb"></span>
       <div class="cd-title">
-        <span class="cd-name">Flow</span>
+        <span class="cd-name">askMElah</span>
         <span class="cd-status" id="cdStatus">connecting…</span>
       </div>
       <button class="cd-tools" id="cdToolsBtn" title="Connected tools &amp; skills">
@@ -61,20 +63,20 @@
     </div>
     <div class="cd-drawer" id="cdDrawer" hidden></div>
     <div class="cd-msgs" id="cdMsgs" aria-live="polite"></div>
-    <div class="cd-drop" id="cdDrop"><span>✦ Drop it here — ask Flow about it</span></div>
+    <div class="cd-drop" id="cdDrop"><span>✦ Drop it here — askMElah will take a look</span></div>
     <div class="cd-foot">
       <div class="cd-sugg" id="cdSugg"></div>
       <div class="cd-chips" id="cdChips"></div>
       <div class="cd-composer">
-        <textarea id="cdInput" rows="1" placeholder="Ask Flow anything… or drag a card in" aria-label="Message Flow"></textarea>
+        <textarea id="cdInput" rows="1" placeholder="Ask me anything, lah… or drag a card in" aria-label="Message askMElah"></textarea>
         <button class="cd-send" id="cdSend" title="Send">
           <svg viewBox="0 0 16 16" width="15" height="15"><path d="M2.2 8 13.8 2.6 10.9 8l2.9 5.4L2.2 8Z" fill="currentColor"/></svg>
         </button>
       </div>
-      <div class="cd-hint">Flow is a demo agent · responses are simulated · <span class="mono">fable-5</span></div>
+      <div class="cd-hint">askMElah is a demo agent · responses are simulated · <span class="mono">fable-5</span></div>
     </div>
   </aside>
-  <button id="chatFab" title="Open chat" hidden><span class="orb mini"><i></i></span></button>
+  <button id="chatFab" title="Open chat" hidden><span class="askme-av mini" id="fabAv"></span></button>
 </main>
 
 <footer id="ticker" aria-hidden="true">
@@ -92,6 +94,25 @@
       <kbd>esc</kbd>
     </div>
     <div class="ck-list" id="ckList"></div>
+  </div>
+</div>
+
+<div id="mcp" hidden>
+  <div class="mcp-back" id="mcpBack"></div>
+  <div class="mcp-panel">
+    <div class="mcp-head">
+      <span class="ch-ico"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M5.5 2v3.4M10.5 2v3.4M4 5.4h8v2.2a4 4 0 0 1-8 0Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11.6V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <div class="ch-title"><div class="t">MCP Console</div><div class="s">Model Context Protocol · the servers this workspace is wired into</div></div>
+      <span class="mcp-count" id="mcpCount"></span>
+      <button class="ch-act mcp-x" id="mcpClose" title="Close">✕</button>
+    </div>
+    <div class="mcp-body">
+      <div class="mcp-grid" id="mcpGrid"></div>
+      <aside class="mcp-feed">
+        <div class="dw-sect">Live tool calls · this session</div>
+        <div id="mcpFeed"></div>
+      </aside>
+    </div>
   </div>
 </div>
 

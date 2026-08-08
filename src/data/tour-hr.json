@@ -1,0 +1,46 @@
+{
+  "personaId": "hr",
+  "question": "Should I approve the $284K Staff SWE band exception?",
+  "beats": {
+    "intro": {
+      "title": "Meet Maya Chen",
+      "text": "HR Business Partner, People & Culture, Singapore. 2,412 employees, 18 pending PTO requests, one $284K offer decision — all before 15:00."
+    },
+    "hero": {
+      "title": "The day, already triaged",
+      "text": "Her brief leads with what matters: the $284K Staff SWE band exception and an 18-deep PTO queue, cleared before Priya's 13:00 attrition deep-dive."
+    },
+    "kpis": {
+      "title": "People metrics, live",
+      "text": "Attrition at 11.4%, down 0.8 points. Offer acceptance up to 87.5%. Pulled straight from Workday and Greenhouse — no dashboard hunting."
+    },
+    "chart": {
+      "title": "Twelve months, one story",
+      "text": "Engineering attrition fell from a 15.6% February peak to 11.9%. Stay interviews and the May comp-band refresh did that — the chart shows it."
+    },
+    "ask": {
+      "title": "Drag data, ask hard questions",
+      "text": "Maya drags the offer card into chat and asks the day's toughest call: approve the $284K band exception, or hold the line?"
+    },
+    "delegate": {
+      "title": "Delegate the chasing",
+      "text": "One click chases the $48,500 Deloitte engagement letter through DocuSign. Priya signed within 2 hours; only James's counter-signature remains."
+    },
+    "autopilot": {
+      "title": "Autopilot clears the queue",
+      "text": "Flip the switch and low-risk approvals clear themselves — 13 conflict-free PTO requests and a Greenhouse access grant, gone. Only the offer needs Maya."
+    },
+    "mcp": {
+      "title": "Every system, one console",
+      "text": "Workday, Greenhouse, DocuSign — eight live connections under the hood. This is why the answers arrive with real numbers attached."
+    },
+    "recap": {
+      "title": "Friday report, one click",
+      "text": "The week writes itself: 16.5 meeting hours, 6 Support reqs opened, HR-468 closed two days early. Ready to send before Friday lunch."
+    },
+    "outro": {
+      "title": "Maya, at full speed",
+      "text": "Same Maya, same day — minus the chasing, the queues, and the tab-hopping. FoW handles the busywork; she makes the calls."
+    }
+  }
+}

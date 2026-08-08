@@ -31,6 +31,11 @@ def load_data() -> str:
                 extra = json.loads(read(extras))
                 extra.pop("personaId", None)
                 packs[pid].update(extra)
+            tour = SRC / "data" / f"tour-{pid}.json"
+            if tour.exists():
+                t = json.loads(read(tour))
+                t.pop("personaId", None)
+                packs[pid]["tour"] = t
     blob = json.dumps(packs, ensure_ascii=False, separators=(",", ":"))
     # a literal "</script>" inside JSON strings would end the inline script tag early
     blob = blob.replace("</", "<\\/")

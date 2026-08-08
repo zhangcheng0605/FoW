@@ -1,34 +1,51 @@
 /* ============================================================
-   FoW · Present mode — the demo drives itself
-   A scripted, self-narrating walkthrough: spotlight, ghost
-   cursor, director's captions, and a player bar. Every action
-   it performs is the real interaction, not a mockup.
+   FoW · Present mode — per-persona highlight reels
+   Click ▶ on any person: their use case plays itself with a
+   spotlight, ghost cursor and captions authored per persona
+   (src/data/tour-<id>.json). Pausable, skippable, stoppable.
    ============================================================ */
 "use strict";
 
-const PRESENT = { on: false, abort: false, paused: false, speed: 1, step: 0, steps: [] };
+const PRESENT = { on: false, abort: false, paused: false, speed: 1, step: 0, steps: [], pid: null, skip: false };
+
+const KICKERS = {
+  intro: "FoW · guided highlights", hero: "The morning brief", kpis: "Business intelligence",
+  chart: "Live charts", ask: "The signature move", answer: "Agentic answers",
+  delegate: "Delegate real work", autopilot: "Trust, with a leash", mcp: "The MCP layer",
+  recap: "Friday, 4:55pm", outro: "FoW · Mediacorp",
+};
+const FALLBACK_BEATS = {
+  intro: { title: "One workspace per person", text: "The canvas shapes itself around this role — KPIs, queues, charts and tools all follow the job." },
+  hero: { title: "The day opens with what matters", text: "No dashboard archaeology — the headline is written from live data, not a template." },
+  kpis: { title: "KPIs straight from the source systems", text: "Each metric carries 12 months of history, its delta, and the reason behind the move." },
+  chart: { title: "Hover any month, flip to a table", text: "Hand-built SVG, colorblind-safe palettes, crosshair tooltips. Watch the crosshair walk the year." },
+  ask: { title: "Drag anything to askMElah", text: "A KPI, an email, an approval. The copilot reads the same systems you do — and answers about that thing." },
+  answer: { title: "It shows its work", text: "Real tool calls — visible and timed — then an answer with a chart in it, not a wall of text." },
+  delegate: { title: "An agent work queue", text: "askMElah runs the steps in the background, files the artifact, and reports back in chat." },
+  autopilot: { title: "Approvals on autopilot", text: "Within policy and clean history, it clears the queue itself. Anything unusual still waits for a human." },
+  mcp: { title: "Every tool, one console", text: "The MCP console shows what this seat is wired into — servers, tools, and the live call log." },
+  recap: { title: "One click writes the status report", text: "Wins, watch-outs, next week — compiled from everything on this canvas, including this session." },
+  outro: { title: "The future of work, per person", text: "Every integration simulated, every interaction real. Replay to run it again — or Esc and take the wheel." },
+};
 
 function prEl() { return $("#present"); }
 
 function prBuild() {
   const root = el("div");
   root.id = "present";
-  root.innerHTML = "";
   const spot = el("div", "pr-spot"); spot.id = "prSpot";
   const cursor = el("div", "pr-cursor"); cursor.id = "prCursor";
   cursor.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M5.5 3.2 19 11.4l-6.2 1.3-3.1 5.6z" fill="#1b2540" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
   const cap = el("div", "pr-caption"); cap.id = "prCap";
-  const capKicker = el("div", "pr-kicker"); capKicker.id = "prKicker";
-  const capTitle = el("div", "pr-title"); capTitle.id = "prTitle";
-  const capText = el("div", "pr-text"); capText.id = "prText";
-  cap.append(capKicker, capTitle, capText);
+  cap.append(el("div", "pr-kicker"), el("div", "pr-title"), el("div", "pr-text"));
+  $(".pr-kicker", cap).id = "prKicker"; $(".pr-title", cap).id = "prTitle"; $(".pr-text", cap).id = "prText";
   const bar = el("div", "pr-bar");
   const dots = el("div", "pr-dots"); dots.id = "prDots";
   const mkBtn = (id, label, title) => { const b = el("button", "pr-btn", label); b.id = id; b.title = title; return b; };
   const play = mkBtn("prPlay", "⏸", "Pause / resume (space)");
   const next = mkBtn("prNext", "⏭", "Next step (→)");
   const speed = mkBtn("prSpeed", "1×", "Playback speed");
-  const exit = mkBtn("prExit", "✕ Exit", "Exit present mode (esc)");
+  const exit = mkBtn("prExit", "✕ Stop", "Stop the tour (esc)");
   exit.classList.add("pr-exit");
   bar.append(play, next, speed, dots, exit);
   root.append(spot, cursor, cap, bar);
@@ -52,12 +69,11 @@ function prDots() {
   const d = $("#prDots"); if (!d) return;
   d.textContent = "";
   PRESENT.steps.forEach((s, i) => {
-    const dot = el("span", "pr-dot" + (i === PRESENT.step ? " cur" : i < PRESENT.step ? " done" : ""));
-    d.appendChild(dot);
+    d.appendChild(el("span", "pr-dot" + (i === PRESENT.step ? " cur" : i < PRESENT.step ? " done" : "")));
   });
 }
 
-/* sleep in small slices so pause / skip / speed / abort all bite quickly */
+/* sleep in slices so pause / skip / speed / abort all bite quickly */
 async function psleep(ms) {
   let left = ms / PRESENT.speed;
   while (left > 0) {
@@ -84,8 +100,14 @@ function prCaption(kicker, title, text) {
   $("#prText").textContent = text;
   const cap = $("#prCap");
   cap.classList.remove("pop");
-  void cap.offsetWidth; /* restart the entrance animation */
+  void cap.offsetWidth;
   cap.classList.add("pop");
+}
+function showBeat(key) {
+  const p = FOW.data();
+  const authored = p && p.tour && p.tour.beats && p.tour.beats[key];
+  const f = FALLBACK_BEATS[key] || {};
+  prCaption(KICKERS[key] || "FoW", (authored && authored.title) || f.title || "", (authored && authored.text) || f.text || "");
 }
 
 function prSpotlight(target, pad) {
@@ -129,7 +151,6 @@ async function prClick(target, dx, dy) {
 }
 function prCursorHide() { const c = $("#prCursor"); if (c) c.classList.remove("show"); }
 
-/* fly a ghost of a card into the chat dock (the drag, cinematically) */
 async function prFlyToChat(card) {
   const ghost = card.cloneNode(true);
   const r = card.getBoundingClientRect();
@@ -150,46 +171,40 @@ async function prFlyToChat(card) {
   $("#chatdock").classList.remove("droptarget");
 }
 
-function findCard(titleText) {
-  return $$(".card").find(c => { const t = $(".ch-title .t", c); return t && t.textContent === titleText; });
-}
-
-/* ---------------- the script ---------------- */
+/* ---------------- the per-persona script ---------------- */
 function prScript() {
   const S = [];
-  const add = (fn) => S.push(fn);
+  const add = fn => S.push(fn);
 
-  /* 0 · intro */
+  /* 0 · land in the persona's seat */
   add(async () => {
     prSpotlight(null);
-    prCaption("FoW · guided tour", "The future of work, driving itself", "One workspace that knows your job — with an AI copilot wired into every tool. Sit back: everything you're about to see is the real product interacting with itself.");
-    await psleep(5200);
-  });
-
-  /* 1 · pick / set persona */
-  add(async () => {
-    const onboardOpen = $("#onboard") && getComputedStyle($("#onboard")).display !== "none" && !$("#onboard").classList.contains("gone");
-    prCaption("Step 1", "One workspace per person", "Pick a seat and the whole canvas re-shapes: KPIs, queues, charts, tools — everything follows the role.");
+    const meta = PERSONAS.find(x => x.id === PRESENT.pid) || PERSONAS[0];
+    const onboardEl = $("#onboard");
+    const onboardOpen = onboardEl && getComputedStyle(onboardEl).display !== "none" && !onboardEl.classList.contains("gone");
     if (onboardOpen) {
-      const target = $$(".ob-card").find(c => c.textContent.includes("Daniel")) || $(".ob-card");
-      await prClick(target);
-    } else if (state.personaId !== "finance") {
-      selectPersona("finance");
+      const target = $$(".ob-card").find(c => c.textContent.includes(meta.name.split(" ")[0]));
+      if (target) await prClick(target);
+      else { onboardEl.classList.add("gone"); setTimeout(() => { onboardEl.style.display = "none"; }, 400); selectPersona(PRESENT.pid, true); }
+    } else if (state.personaId !== PRESENT.pid) {
+      selectPersona(PRESENT.pid);
     }
     prCursorHide();
-    await psleep(3400);
+    await psleep(1200);
+    showBeat("intro");
+    await psleep(4600);
   });
 
-  /* 2 · hero */
+  /* 1 · hero */
   add(async () => {
     const hero = $(".hero");
     await prScrollTo(hero);
     prSpotlight(hero);
-    prCaption("The morning brief", "The day opens with what matters", "No dashboard archaeology. The headline is written from live data — the one thing to fix before 10am, and why.");
-    await psleep(6000);
+    showBeat("hero");
+    await psleep(5800);
   });
 
-  /* 3 · KPIs */
+  /* 2 · KPI row */
   add(async () => {
     const kpis = $$(".card.kpi");
     if (kpis.length) {
@@ -202,17 +217,17 @@ function prScript() {
       spot.style.width = (last.right - first.left + 20) + "px";
       spot.style.height = (Math.max(first.height, last.height) + 20) + "px";
     }
-    prCaption("Business intelligence", "KPIs straight from the source systems", "SAP, NetSuite, Workday, Salesforce — each metric carries its 12-month history, its delta, and the reason behind the move.");
-    await psleep(6000);
+    showBeat("kpis");
+    await psleep(5800);
   });
 
-  /* 4 · trend chart with live crosshair sweep */
+  /* 3 · trend chart + crosshair sweep */
   add(async () => {
     const card = $$(".card").find(c => c.dataset.span === "8");
     if (!card) return;
     await prScrollTo(card);
     prSpotlight(card);
-    prCaption("Live charts", "Hover any month — flip any chart to a table", "Hand-built SVG, colorblind-safe palettes, crosshair tooltips. Watch the crosshair walk the year.");
+    showBeat("chart");
     const hit = $('rect[fill="transparent"]', card);
     if (hit) {
       const hr = hit.getBoundingClientRect();
@@ -229,129 +244,93 @@ function prScript() {
       hit.dispatchEvent(new PointerEvent("pointerleave", { bubbles: true }));
     }
     prCursorHide();
-    await psleep(2200);
+    await psleep(2000);
   });
 
-  /* 5 · drag a KPI into chat */
+  /* 4 · drag a KPI to askMElah + ask the signature question */
   add(async () => {
     const kpi = $(".card.kpi");
     if (!kpi) return;
     await prScrollTo(kpi);
     prSpotlight(null);
-    prCaption("The signature move", "Drag anything to Flow, the copilot", "A KPI, an email, an approval, a whole chart. Flow reads the same systems you do — and answers about that thing.");
+    showBeat("ask");
     await prCursorTo(kpi);
     await prFlyToChat(kpi);
     prCursorHide();
-    const k = FOW.data().kpis[0];
+    const p = FOW.data();
+    const k = p.kpis[0];
     attachChip({ type: "kpi", label: k.label + " · " + k.value, data: k });
-    sendMessage("Why is this moving?");
+    const q = (p.tour && p.tour.question) || (p.suggestions && p.suggestions[0]) || "Why is this moving?";
+    sendMessage(q);
     await psleep(400);
   });
 
-  /* 6 · watch the answer */
+  /* 5 · watch the answer stream */
   add(async () => {
     prSpotlight($("#chatdock"), 6);
-    prCaption("Agentic answers", "It shows its work", "Real tool calls — SAP, Outlook, Jira — each one visible and timed. Then an answer with a chart in it, not a wall of text.");
-    await pwaitChatIdle(14000);
-    await psleep(2500);
+    const f = FALLBACK_BEATS.answer;
+    prCaption(KICKERS.answer, f.title, f.text);
+    await pwaitChatIdle(15000);
+    await psleep(2200);
+  });
+
+  /* 6 · delegation */
+  add(async () => {
+    const dgCard = $(".dg-card");
+    if (!dgCard) return;
+    const btn = $(".dg-btn", dgCard);
+    await prScrollTo(dgCard);
+    prSpotlight(dgCard);
+    showBeat("delegate");
+    if (btn) { await prClick(btn); prCursorHide(); await psleep(6300); await pwaitChatIdle(8000); }
+    else await psleep(3000);
   });
 
   /* 7 · approvals autopilot */
   add(async () => {
-    const apCard = findCard("Approvals");
+    const apCard = $(".ap-card");
     if (!apCard) return;
     await prScrollTo(apCard);
     prSpotlight(apCard);
-    prCaption("Trust, with a leash", "Approvals on autopilot", "Within policy, clean requester history, under the delegation limit — Flow clears it and notifies people. Anything unusual still waits for a human.");
+    showBeat("autopilot");
     const sw = $(".autopilot", apCard);
-    if (sw && !sw.classList.contains("on")) await prClick(sw);
-    prCursorHide();
+    if (sw && !sw.classList.contains("on")) { await prClick(sw); prCursorHide(); }
     await psleep(5200);
   });
 
-  /* 8 · delegation */
+  /* 8 · MCP console */
   add(async () => {
-    const dgCard = findCard("Delegated to Flow");
-    if (!dgCard) return;
-    await prScrollTo(dgCard);
-    prSpotlight(dgCard);
-    prCaption("Delegate real work", "An agent work queue", "Chase the vendor. Compile the bridge. Screen the queue. Flow runs the steps in the background, files the artifact, and reports back.");
-    const btn = $(".dg-btn", dgCard);
-    if (btn) await prClick(btn);
-    prCursorHide();
-    await psleep(6500);
-    await pwaitChatIdle(8000);
+    prSpotlight(null);
+    showBeat("mcp");
+    await psleep(1000);
+    mcpOpen();
+    await psleep(300);
+    prSpotlight($(".mcp-panel"), 6);
+    await psleep(6200);
+    mcpClose();
+    prSpotlight(null);
   });
 
-  /* 9 · week in numbers */
-  add(async () => {
-    const wkCard = findCard("Your week in numbers");
-    if (!wkCard) return;
-    await prScrollTo(wkCard);
-    prSpotlight(wkCard);
-    prCaption("Calendar health", "What the week actually cost", "Meeting load vs focus time — priced in people-hours. Flow will defend deep-work blocks if you let it.");
-    await psleep(5600);
-  });
-
-  /* 10 · week recap */
+  /* 9 · week recap */
   add(async () => {
     const btn = $(".hstat.primary");
     if (!btn) return;
     await prScrollTo($(".hero"));
     prSpotlight(null);
-    prCaption("Friday, 4:55pm", "One click writes the status report", "Wins, watch-outs, next week — compiled from everything on the canvas, including what just got approved and delegated in this session.");
+    showBeat("recap");
     await prClick(btn);
     prCursorHide();
     prSpotlight($("#chatdock"), 6);
     await pwaitChatIdle(16000);
-    await psleep(2500);
+    await psleep(2200);
   });
 
-  /* 11 · federated search */
+  /* 10 · outro (loops until stopped) */
   add(async () => {
     prSpotlight(null);
-    prCaption("No more app-hopping", "One search across every tool", "Emails, tickets, meetings, files — one box. Type three letters, land anywhere.");
-    ckOpen();
-    await psleep(600);
-    const inp = $("#ckInput");
-    for (const ch of "aws") {
-      if (PRESENT.abort) throw { aborted: true };
-      inp.value += ch;
-      inp.dispatchEvent(new Event("input", { bubbles: true }));
-      await new Promise(r => setTimeout(r, 260 / PRESENT.speed));
-    }
-    prSpotlight($(".ck-panel"), 8);
-    await psleep(3600);
-    ckClose();
-  });
-
-  /* 12 · persona switch */
-  add(async () => {
-    prSpotlight(null);
-    const nextP = PERSONAS.find(pp => pp.id !== state.personaId) || PERSONAS[0];
-    prCaption("Not just one team", "Every function gets its own cockpit", "HR, IT, Legal, Procurement, Sales — same workspace, different world. Watch it re-shape for " + nextP.name.split(" ")[0] + " in " + nextP.dept + ".");
-    await psleep(2600);
-    selectPersona(nextP.id);
-    await psleep(4800);
-  });
-
-  /* 13 · dark, for effect */
-  add(async () => {
-    const btn = $("#themeBtn");
-    prCaption("For the late shift", "Light by day, dark by night", "The whole system — charts included — re-tunes its palette. Accessibility-checked in both.");
-    await prClick(btn);
-    prCursorHide();
-    await psleep(3400);
-    applyTheme(false);
-    await psleep(900);
-  });
-
-  /* 14 · finale */
-  add(async () => {
-    prSpotlight(null);
-    prCaption("FoW · proof of concept", "The future of work, one canvas per person", "Every integration here is simulated; every interaction is real. Press Replay to run it again — or Esc and take the wheel yourself.");
-    const bar = $("#prPlay");
-    if (bar) bar.textContent = "↺";
+    showBeat("outro");
+    const b = $("#prPlay");
+    if (b) b.textContent = "↺";
     await psleep(60000);
   });
 
@@ -359,9 +338,10 @@ function prScript() {
 }
 
 /* ---------------- runner ---------------- */
-async function startPresent() {
+async function startPresent(personaId) {
   if (PRESENT.on) return;
   PRESENT.on = true; PRESENT.abort = false; PRESENT.paused = false; PRESENT.step = 0; PRESENT.skip = false;
+  PRESENT.pid = personaId || state.personaId || "finance";
   prBuild();
   PRESENT.steps = prScript();
   prDots();
@@ -372,7 +352,7 @@ async function startPresent() {
       prDots();
       const isFinale = i === PRESENT.steps.length - 1;
       await PRESENT.steps[i]();
-      /* finale timed out untouched -> loop the tour (kiosk mode) */
+      /* finale timed out untouched -> loop this persona's reel (kiosk mode) */
       if (isFinale && !PRESENT.abort) { i = -1; const b = $("#prPlay"); if (b) b.textContent = "⏸"; }
     }
   } catch (e) {
@@ -388,11 +368,11 @@ function prStop() {
   document.body.classList.remove("presenting");
 }
 
-/* replay from finale: clicking play restarts */
 document.addEventListener("click", e => {
   if (PRESENT.on && e.target && e.target.id === "prPlay" && e.target.textContent === "↺") {
+    const pid = PRESENT.pid;
     prStop();
-    setTimeout(startPresent, 420);
+    setTimeout(() => startPresent(pid), 420);
   }
 });
 document.addEventListener("keydown", e => {

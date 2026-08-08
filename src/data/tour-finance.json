@@ -1,0 +1,46 @@
+{
+  "personaId": "finance",
+  "question": "Why did opex run over budget in July?",
+  "beats": {
+    "intro": {
+      "title": "Meet Daniel Okafor",
+      "text": "FP&A Manager, London. Close week, a QBR at 14:00, and every system he owns — SAP, NetSuite, Excel — already awake in one workspace."
+    },
+    "hero": {
+      "title": "The day, pre-briefed",
+      "text": "Before coffee: July variance needs locking before Priya's 14:00 QBR prep — Engineering is $862K over on AWS. The workspace leads with what matters."
+    },
+    "kpis": {
+      "title": "Four numbers, live",
+      "text": "YTD opex $211.2M against plan. DSO down 3 days to 38. Forecast accuracy 95.1%. Pulled straight from SAP and NetSuite, not last week's deck."
+    },
+    "chart": {
+      "title": "The July spike, explained",
+      "text": "Actual vs budget, month by month. July jumps $1.44M over — the AWS true-up and an early Salesforce renewal. August already tracking back to +1.4%."
+    },
+    "ask": {
+      "title": "Drag the number, ask why",
+      "text": "Daniel drops the opex card into chat and asks the question Priya will ask him. Watch it interrogate three systems at once."
+    },
+    "delegate": {
+      "title": "Delegate the chasing",
+      "text": "One click: chase the open accruals. It nudges three cost-center owners in Teams — two of three post within 90 minutes, $228K cleared."
+    },
+    "autopilot": {
+      "title": "Approvals on autopilot",
+      "text": "Flip the switch. In-policy items like Aisha's $3,214 close-support flights clear themselves; the $86K Adobe renewal still waits for Daniel."
+    },
+    "mcp": {
+      "title": "Plugged into everything",
+      "text": "Under the hood: live connections to SAP, NetSuite, Workday, Ariba and more. Every answer traces back to a real system call."
+    },
+    "recap": {
+      "title": "Friday, in one click",
+      "text": "The week recap writes itself — bridge delivered, accruals posted, six aged approvals cleared. The Friday report stops being an evening job."
+    },
+    "outro": {
+      "title": "More analysis, less chasing",
+      "text": "Daniel walked into the 14:00 with the bridge done by 11:40. That's the point: the copilot chases, he decides."
+    }
+  }
+}

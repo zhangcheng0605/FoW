@@ -1,0 +1,46 @@
+{
+  "personaId": "procurement",
+  "question": "Draft the AWS EA counter-proposal brief for Marcus",
+  "beats": {
+    "intro": {
+      "title": "Meet Priya Nair",
+      "text": "Procurement Lead, running $92.2M of managed spend across Ariba, SAP, and DocuSign — and this is her workspace at 8 AM."
+    },
+    "hero": {
+      "title": "Today's number one job",
+      "text": "The brief already knows: get the AWS counter-proposal to Marcus Webb before Monday. The $12.0M commit renews September 30."
+    },
+    "kpis": {
+      "title": "The scoreboard, live",
+      "text": "$6.6M realized savings, $410K ahead of plan. PO cycle time down to 6.4 days. 23 renewals inside the 90-day window."
+    },
+    "chart": {
+      "title": "July, explained instantly",
+      "text": "That $9.42M July spike? An $862K AWS true-up plus Salesforce posting early. August is already back at run-rate."
+    },
+    "ask": {
+      "title": "Drag it. Ask it.",
+      "text": "Priya drops the renewals card into chat and asks for the AWS counter-proposal brief — the day's hardest deliverable."
+    },
+    "delegate": {
+      "title": "Delegate the invoice fight",
+      "text": "One click chases the Dell invoice block: Amendment 3 pricing reconciled, $8,790 overcharge reversed, corrected invoice due August 15."
+    },
+    "autopilot": {
+      "title": "Approvals on autopilot",
+      "text": "Flip the switch — budgeted POs and vetted vendor onboardings clear themselves. Only the Databricks and Adobe calls still need Priya."
+    },
+    "mcp": {
+      "title": "Wired into everything",
+      "text": "Under the hood: live connections to Ariba, SAP, and DocuSign — eight systems answering in one place, no tab-hopping."
+    },
+    "recap": {
+      "title": "Friday report, one click",
+      "text": "The week writes itself: Dell signed, Adobe in redline, queue cut from 18 to 2. Ready before the boss even asks."
+    },
+    "outro": {
+      "title": "Priya negotiates. FoW hustles.",
+      "text": "The busywork ran itself today. Priya spent her hours on the $12M deal — that's the whole point."
+    }
+  }
+}

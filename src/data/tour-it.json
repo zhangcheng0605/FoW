@@ -1,0 +1,46 @@
+{
+  "personaId": "it",
+  "question": "Why is the incident backlog finally dropping?",
+  "beats": {
+    "intro": {
+      "title": "Meet Marcus Webb",
+      "text": "IT Operations, Singapore. 3,120 endpoints, five sites, one workspace that already knows what today demands."
+    },
+    "hero": {
+      "title": "The morning brief lands",
+      "text": "Backlog down to 47 incidents — 27 off the July peak. One catch: 214 endpoints still exposed to CVE-2026-31842 before Tuesday."
+    },
+    "kpis": {
+      "title": "Four numbers, zero digging",
+      "text": "Uptime 99.96%. Patch compliance 96.8%, up 2.1 points. MTTR down to 3.4 hours. Live from ServiceNow and Jira — no spreadsheet safari."
+    },
+    "chart": {
+      "title": "The backlog story, drawn",
+      "text": "July spiked to 521 tickets on the gateway failover. August flipped it: 474 resolved against 447 opened. The queue is finally shrinking."
+    },
+    "ask": {
+      "title": "Drag the number, ask why",
+      "text": "Marcus drops the incident card into chat and asks the question every boss asks: why is the backlog finally dropping?"
+    },
+    "delegate": {
+      "title": "One click, PO chased",
+      "text": "Chase the Dell PO: Ariba checked, two approvers nudged, ship-split confirmed. $142,800 released four days before the quote expires."
+    },
+    "autopilot": {
+      "title": "Approvals on autopilot",
+      "text": "Flip the switch. Low-risk expenses and routine access grants clear themselves — Marcus keeps the $142K PO and prod-access calls."
+    },
+    "mcp": {
+      "title": "Plugged into everything",
+      "text": "ServiceNow, Jira, Slack, GitHub — eight live connections. Every answer traced back to real systems, not vibes."
+    },
+    "recap": {
+      "title": "Friday report, instantly",
+      "text": "One click compiles the week — backlog burned, 12 Austin access packs shipped early, CVE stragglers patched. Priya's update writes itself."
+    },
+    "outro": {
+      "title": "Ops at machine speed",
+      "text": "Same Marcus. Same five fires. Now the busywork runs itself — and he runs the strategy."
+    }
+  }
+}
