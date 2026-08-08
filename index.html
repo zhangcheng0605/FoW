@@ -3401,6 +3401,650 @@ body.presenting #toasts { bottom: 90px; }
   #canvas.studio-procurement .st-stat::before { left: 0 !important; }
 }
 
+
+/* == studio-sales.css == */
+/* ============================================================
+   FoW · studio-sales — THE FLOOR
+   Trading-floor scoreboard: flush lanes, hairline separators,
+   big numerals with tight tracking, mono amounts. Boxes only
+   where the metaphor demands an object — the spotlight board,
+   deal tickets, the CLEARED stamp.
+   ============================================================ */
+
+#canvas.studio-sales { gap: 46px; font-variant-numeric: tabular-nums; }
+
+/* ---------- chapter heads: board indices ---------- */
+#canvas.studio-sales .st-head {
+  border-bottom: 2px solid var(--hairline);
+  padding-bottom: 11px;
+  margin-bottom: 20px;
+  gap: 12px;
+  align-items: center;
+}
+#canvas.studio-sales .st-num {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--acc-ink);
+  opacity: 1;
+  background: var(--acc-soft);
+  border-radius: 4px;
+  padding: 4px 8px;
+  line-height: 1;
+}
+#canvas.studio-sales .st-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 13.5px;
+  font-weight: 830;
+}
+#canvas.studio-sales .st-sub { font-family: var(--font-mono); font-size: 10.5px; }
+
+/* ---------- hero: masthead ---------- */
+#canvas.studio-sales .flr-hero { display: flex; flex-direction: column; padding-top: 4px; }
+#canvas.studio-sales .flr-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--acc-ink);
+}
+#canvas.studio-sales .flr-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--good-ink);
+  flex: none;
+  animation: salesPulse 1.8s ease-out infinite;
+}
+#canvas.studio-sales .flr-greet { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+#canvas.studio-sales .flr-title {
+  margin: 6px 0 0;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-title b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-lede {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 570;
+  color: var(--ink);
+  max-width: 64ch;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+#canvas.studio-sales .flr-sub { margin-top: 5px; font-size: 12.5px; color: var(--ink-2); max-width: 68ch; }
+#canvas.studio-sales .flr-acts { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+#canvas.studio-sales .flr-recap { border-radius: 999px; padding: 11px 20px; font-size: 13px; font-weight: 650; }
+
+/* ---------- the board floating above the river ---------- */
+#canvas.studio-sales .flr-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+  position: relative;
+  z-index: 2;
+}
+#canvas.studio-sales .flr-spot {
+  background: var(--card);
+  border: 1px solid var(--acc-line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-pop);
+  padding: 14px 18px 14px;
+  cursor: grab;
+  transition: transform 200ms cubic-bezier(.2,.8,.3,1.2), box-shadow 200ms;
+}
+#canvas.studio-sales .flr-spot:hover { transform: translateY(-3px); }
+#canvas.studio-sales .flr-spot-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--acc-ink);
+}
+#canvas.studio-sales .flr-spot-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 9px;
+}
+#canvas.studio-sales .flr-spot-name { min-width: 0; }
+#canvas.studio-sales .flr-spot-name b {
+  display: block;
+  font-size: 19px;
+  font-weight: 790;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+#canvas.studio-sales .flr-spot-name span { display: block; font-size: 10.5px; color: var(--ink-3); margin-top: 3px; }
+#canvas.studio-sales .flr-spot-amt {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--acc-ink);
+  flex: none;
+}
+#canvas.studio-sales .flr-spot-note { margin-top: 8px; font-size: 11px; color: var(--ink-2); }
+#canvas.studio-sales .flr-cd-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid var(--hairline-soft);
+  flex-wrap: wrap;
+}
+#canvas.studio-sales .flr-cd-l {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--crit);
+}
+#canvas.studio-sales .flr-cd-box.due .flr-cd-l::after { content: " SIGN NOW"; }
+#canvas.studio-sales .flr-cd { display: inline-flex; align-items: flex-start; gap: 5px; }
+#canvas.studio-sales .flr-cd-seg { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+#canvas.studio-sales .flr-cd-seg b {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-cd-seg span { font-size: 7.5px; font-weight: 750; letter-spacing: 0.14em; color: var(--ink-3); }
+#canvas.studio-sales .flr-cd-seg.sec b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-cd-c { font-family: var(--font-mono); font-size: 18px; color: var(--ink-3); line-height: 1.15; }
+#canvas.studio-sales .flr-own {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+  flex-wrap: wrap;
+}
+#canvas.studio-sales .flr-owner {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 3.5px 10px 3.5px 4px;
+  font-size: 10.5px;
+  font-weight: 640;
+  color: var(--ink-2);
+  background: var(--soft);
+}
+#canvas.studio-sales .flr-owner b {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--acc-soft);
+  color: var(--acc-ink);
+  font-size: 8.5px;
+  font-weight: 780;
+}
+#canvas.studio-sales .flr-owner.dim { opacity: 0.75; }
+#canvas.studio-sales .flr-spot-go {
+  margin-left: auto;
+  border: 0;
+  background: var(--acc);
+  color: var(--send-ink);
+  font-size: 11px;
+  font-weight: 720;
+  border-radius: 999px;
+  padding: 6.5px 13px;
+  cursor: pointer;
+  transition: transform 150ms, filter 150ms;
+}
+#canvas.studio-sales .flr-spot-go:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+/* ---------- the quota thermometer ---------- */
+#canvas.studio-sales .flr-thermo { padding-top: 6px; min-width: 0; }
+#canvas.studio-sales .flr-th-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+#canvas.studio-sales .flr-th-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-th-v {
+  font-size: 38px;
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-th-track {
+  position: relative;
+  height: 14px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+}
+#canvas.studio-sales .flr-th-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--acc-ink), var(--acc));
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+#canvas.studio-sales .flr-th-ghost {
+  position: absolute;
+  left: 48.2%;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: repeating-linear-gradient(-55deg, var(--acc-soft) 0 4px, transparent 4px 8px);
+  border-right: 1.5px dashed var(--acc-line);
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1) 0.5s;
+}
+#canvas.studio-sales .flr-th-mark {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--hairline);
+}
+#canvas.studio-sales .flr-th-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+}
+#canvas.studio-sales .flr-th-nord { color: var(--acc-ink); font-weight: 700; }
+#canvas.studio-sales .flr-th-note { margin-top: 9px; font-size: 11px; color: var(--ink-3); line-height: 1.45; }
+
+/* ---------- the pipeline river ---------- */
+#canvas.studio-sales .flr-river-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 30px;
+}
+#canvas.studio-sales .flr-cap-l,
+#canvas.studio-sales .flr-cap-r {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-cap-r { color: var(--acc-ink); }
+#canvas.studio-sales .flr-river {
+  display: flex;
+  margin-top: 9px;
+  border-top: 2px solid var(--hairline);
+  padding-top: 16px;
+}
+#canvas.studio-sales .flr-lane {
+  min-width: 128px;
+  flex-basis: 0;
+  padding: 2px 14px 10px;
+  position: relative;
+  min-height: 0;
+}
+#canvas.studio-sales .flr-lane:first-child { padding-left: 2px; }
+#canvas.studio-sales .flr-lane:last-child { padding-right: 2px; }
+#canvas.studio-sales .flr-lane + .flr-lane { border-left: 1px solid var(--hairline); }
+#canvas.studio-sales .flr-lane + .flr-lane::before {
+  content: "▸";
+  position: absolute;
+  left: -4.5px;
+  top: 0;
+  font-size: 10px;
+  color: var(--ink-3);
+  line-height: 1;
+}
+#canvas.studio-sales .flr-lane-h { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+#canvas.studio-sales .flr-lane-stage {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-lane-share { font-family: var(--font-mono); font-size: 9px; color: var(--ink-3); flex: none; }
+#canvas.studio-sales .flr-lane-amt {
+  margin-top: 7px;
+  font-size: clamp(24px, 2.6vw, 33px);
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-lane:last-child .flr-lane-amt { color: var(--acc-ink); }
+#canvas.studio-sales .flr-lane-flow {
+  display: block;
+  height: 4px;
+  margin-top: 9px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--acc) 0%, var(--acc-soft) 45%, var(--acc) 90%);
+  background-size: 220% 100%;
+  animation: salesFlow 3.4s linear infinite;
+  opacity: 0.75;
+}
+#canvas.studio-sales .flr-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; align-items: flex-start; }
+#canvas.studio-sales .flr-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+  padding: 5.5px 9px;
+  cursor: grab;
+  transition: transform 180ms cubic-bezier(.2,.8,.3,1.3), box-shadow 180ms, border-color 180ms;
+}
+#canvas.studio-sales .flr-chip:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--acc-line);
+}
+#canvas.studio-sales .flr-chip b {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+#canvas.studio-sales .flr-chip span {
+  font-size: 9.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-chip.hot {
+  border-color: var(--acc-line);
+  background: var(--acc-soft);
+  animation: salesGlow 2.4s ease-in-out infinite;
+}
+#canvas.studio-sales .flr-chip.hot b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-chip.warn b::before { content: "● "; color: var(--warn); }
+#canvas.studio-sales .flr-chip.risk b::before { content: "● "; color: var(--crit); }
+#canvas.studio-sales .flr-chip.new b::before { content: "+ "; color: var(--good-ink); font-weight: 800; }
+#canvas.studio-sales .flr-chip.new b { color: var(--good-ink); }
+#canvas.studio-sales .flr-chip.done { border-style: dashed; opacity: 0.78; }
+#canvas.studio-sales .flr-chip.done b::before { content: "✓ "; color: var(--good-ink); }
+
+/* ---------- the naked stat strip ---------- */
+#canvas.studio-sales .st-stat .kpi-value { font-size: 40px; font-weight: 830; letter-spacing: -0.045em; }
+#canvas.studio-sales .st-stat .kpi-label {
+  font-size: 9.5px;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .st-stat .kpi-delta { font-family: var(--font-mono); letter-spacing: -0.02em; }
+
+/* ---------- 02 momentum ---------- */
+#canvas.studio-sales .flr-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+#canvas.studio-sales .flr-col { min-width: 0; }
+#canvas.studio-sales .flr-colhead {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 7px;
+  margin-bottom: 8px;
+}
+#canvas.studio-sales .flr-play,
+#canvas.studio-sales .flr-run { border-bottom: 1px solid var(--hairline-soft); border-radius: 0; padding: 12px 4px; }
+#canvas.studio-sales .flr-play:last-child,
+#canvas.studio-sales .flr-run:last-child { border-bottom: 0; }
+#canvas.studio-sales .flr-play:hover,
+#canvas.studio-sales .flr-run:hover { background: var(--hov); }
+
+/* ---------- 03 commit — the deal desk ---------- */
+#canvas.studio-sales .flr-desk { margin-top: -4px; }
+#canvas.studio-sales .flr-row {
+  display: grid;
+  grid-template-columns: 118px 4px minmax(0, 1fr) 158px 128px;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--hairline-soft);
+  transition: background 150ms, opacity 300ms;
+  cursor: grab;
+}
+#canvas.studio-sales .flr-row:hover { background: var(--hov); }
+#canvas.studio-sales .flr-row.done { opacity: 0.55; }
+#canvas.studio-sales .flr-amt-c { min-width: 0; }
+#canvas.studio-sales .flr-amt {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-amt-s {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-urg { width: 4px; height: 36px; border-radius: 2px; }
+#canvas.studio-sales .flr-urg.high { background: var(--crit); }
+#canvas.studio-sales .flr-urg.med { background: var(--warn); }
+#canvas.studio-sales .flr-urg.low { background: var(--ink-3); opacity: 0.4; }
+#canvas.studio-sales .flr-row-bd { min-width: 0; }
+#canvas.studio-sales .flr-row-t { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+#canvas.studio-sales .flr-type {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc-ink);
+  background: var(--acc-soft);
+  padding: 2.5px 6px;
+  border-radius: 4px;
+  flex: none;
+}
+#canvas.studio-sales .flr-row-title { font-size: 13.5px; font-weight: 720; letter-spacing: -0.012em; }
+#canvas.studio-sales .flr-row-meta { font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+#canvas.studio-sales .flr-req { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+#canvas.studio-sales .flr-req b { font-size: 11.5px; font-weight: 660; }
+#canvas.studio-sales .flr-req span { font-size: 9.5px; color: var(--ink-3); }
+#canvas.studio-sales .flr-act { display: flex; justify-content: flex-end; }
+#canvas.studio-sales .flr-btns { display: inline-flex; align-items: center; gap: 7px; }
+#canvas.studio-sales .flr-clear {
+  border: 0;
+  background: var(--acc);
+  color: var(--send-ink);
+  font-size: 11.5px;
+  font-weight: 720;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: transform 150ms, filter 150ms;
+}
+#canvas.studio-sales .flr-clear:hover { transform: translateY(-1px); filter: brightness(1.08); }
+#canvas.studio-sales .flr-askb {
+  border: 1px solid var(--hairline);
+  background: var(--card);
+  color: var(--ink-2);
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 12px;
+  transition: border-color 150ms, color 150ms;
+}
+#canvas.studio-sales .flr-askb:hover { border-color: var(--acc-line); color: var(--acc-ink); }
+#canvas.studio-sales .flr-stamp {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--good-ink);
+  border: 1.5px solid var(--good-ink);
+  border-radius: 4px;
+  padding: 4px 8px;
+  transform: rotate(-6deg);
+  display: inline-block;
+}
+#canvas.studio-sales .flr-desk-total {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px 2px 0;
+}
+#canvas.studio-sales .flr-desk-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-desk-cnt { font-size: 11px; color: var(--ink-2); }
+#canvas.studio-sales .flr-desk-amt {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 780;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* ---------- 04 the week ---------- */
+#canvas.studio-sales .wk .v { font-size: 23px; font-weight: 800; letter-spacing: -0.03em; }
+#canvas.studio-sales .flr-memo {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--hairline);
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+#canvas.studio-sales .flr-task {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) 44px 82px;
+  gap: 10px;
+  align-items: center;
+  padding: 9.5px 4px;
+  border-bottom: 1px solid var(--hairline-soft);
+  cursor: grab;
+  transition: background 150ms;
+}
+#canvas.studio-sales .flr-task:last-child { border-bottom: 0; }
+#canvas.studio-sales .flr-task:hover { background: var(--hov); }
+#canvas.studio-sales .flr-task-key {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 750;
+  color: var(--acc-ink);
+  white-space: nowrap;
+}
+#canvas.studio-sales .flr-task-title {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-task-due { font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-3); text-align: right; white-space: nowrap; }
+#canvas.studio-sales .flr-task .task-status { justify-self: end; }
+
+/* ---------- wired into ---------- */
+#canvas.studio-sales .flr-wired-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 2px solid var(--hairline);
+  padding-top: 16px;
+}
+#canvas.studio-sales .flr-wired-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-mcp { margin: 0 0 0 auto; width: auto; padding: 7px 14px; border-radius: 999px; }
+#canvas.studio-sales .flr-eod {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+}
+
+/* ---------- motion ---------- */
+@keyframes salesPulse {
+  0% { box-shadow: 0 0 0 0 var(--good-bg); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes salesFlow {
+  from { background-position: 0% 0; }
+  to { background-position: -220% 0; }
+}
+@keyframes salesGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--acc-soft); }
+  50% { box-shadow: 0 0 0 5px var(--acc-soft); }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  #canvas.studio-sales .flr-board { grid-template-columns: 1fr; gap: 22px; }
+  #canvas.studio-sales .flr-river { flex-wrap: wrap; row-gap: 18px; }
+  #canvas.studio-sales .flr-lane { flex-basis: 44%; border-left: 0 !important; padding-left: 2px; }
+  #canvas.studio-sales .flr-lane + .flr-lane::before { display: none; }
+  #canvas.studio-sales .flr-2col { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  #canvas.studio-sales .flr-row { grid-template-columns: 96px 4px minmax(0, 1fr) auto; }
+  #canvas.studio-sales .flr-req { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -9623,6 +10267,433 @@ function renderStudio_procurement(p, cv) {
   };
   tick();
   STUDIO.timer = setInterval(tick, 1000);
+}
+
+/* ============================================================
+   FoW · studio-sales — THE FLOOR
+   Jonas Lindqvist, Enterprise Sales · a trading-floor scoreboard.
+   Hero: the pipeline river — five flush lanes, deal tickets,
+   the OPP-4821 spotlight board and the quota thermometer.
+   Chapters: 01 The truth · 02 Momentum · 03 Commit · 04 The week
+   ============================================================ */
+
+function renderStudio_sales(p, cv) {
+  clearCharts();
+  clearInterval(STUDIO.timer);
+  cv.textContent = "";
+
+  let secI = 0;
+  const sect = cls => { const s = el("section", "st-sec " + (cls || "")); s.style.setProperty("--i", secI++); cv.appendChild(s); return s; };
+  const hourNow = new Date().getHours();
+  const greet = hourNow < 12 ? "Good morning" : hourNow < 18 ? "Good afternoon" : "Good evening";
+  const taskById = id => (p.tasks || []).find(t => t.id === id);
+  const SIGN_BY = new Date(2026, 7, 21, 17, 0, 0); /* OPP-4821 · sign by Aug 21 */
+  const daysLeft = Math.max(0, Math.ceil((SIGN_BY - Date.now()) / 864e5));
+
+  /* =============== HERO — the masthead =============== */
+  const hero = sect("flr-hero");
+  const mast = el("div", "flr-mast");
+  const kick = el("div", "flr-kicker");
+  kick.appendChild(el("span", "flr-live"));
+  kick.appendChild(el("span", "", "THE FLOOR — EMEA DESK · Q3 FY26 · WEEK 32"));
+  mast.appendChild(kick);
+  mast.appendChild(el("div", "flr-greet", greet + ", " + p.user.name.split(" ")[0] + " — Friday, August 8 · " + p.user.location));
+  const title = el("h2", "flr-title");
+  title.appendChild(el("span", "", "Nine deals. "));
+  title.appendChild(el("b", "", "$3.4M."));
+  title.appendChild(el("span", "", " One signature."));
+  mast.appendChild(title);
+  mast.appendChild(el("div", "flr-lede", p.focus.headline));
+  mast.appendChild(el("div", "flr-sub", p.focus.sub));
+  const acts = el("div", "flr-acts");
+  const runBtn = el("button", "lb-enter", "▶ Close the Caldera loop");
+  runBtn.addEventListener("click", () => { if (p.chains && p.chains[0]) { addUserMsg("Run cross-app workflow: " + p.chains[0].name); runChain(p.chains[0]); } });
+  const recapBtn = el("button", "hstat primary flr-recap", "✦ Draft my end-of-week recap");
+  recapBtn.addEventListener("click", () => sendMessage("Draft my end-of-week recap"));
+  const askBtn = el("button", "lb-play", "Brief me for the 10:00");
+  askBtn.addEventListener("click", () => sendMessage("Brief me for the 10:00 Nordvik redline call"));
+  acts.append(runBtn, recapBtn, askBtn);
+  mast.appendChild(acts);
+  hero.appendChild(mast);
+
+  /* ---- the board floating above the river: spotlight + thermometer ---- */
+  const board = el("div", "flr-board");
+
+  const spot = el("div", "flr-spot");
+  const stag = el("div", "flr-spot-tag");
+  stag.appendChild(el("span", "flr-live"));
+  stag.appendChild(el("span", "", "SPOTLIGHT · OPP-4821 · CONTRACTING"));
+  spot.appendChild(stag);
+  const srow = el("div", "flr-spot-row");
+  const sname = el("div", "flr-spot-name");
+  sname.appendChild(el("b", "", "Nordvik Energy"));
+  sname.appendChild(el("span", "", "multi-year MSA · close Aug 21"));
+  srow.appendChild(sname);
+  const samt = el("div", "flr-spot-amt");
+  countUp(samt, "$1.2M");
+  srow.appendChild(samt);
+  spot.appendChild(srow);
+  spot.appendChild(el("div", "flr-spot-note", "in Legal on the liability cap — round-2 redlines landed 07:58"));
+  const cdBox = el("div", "flr-cd-box");
+  cdBox.appendChild(el("div", "flr-cd-l", "SIGN BY THU AUG 21 —"));
+  const cdWrap = el("div", "flr-cd");
+  const segs = {};
+  [["dd", "DAYS"], ["hh", "HRS"], ["mm", "MIN"], ["ss", "SEC"]].forEach(([k, lab], i) => {
+    if (i) cdWrap.appendChild(el("span", "flr-cd-c", ":"));
+    const sg = el("span", "flr-cd-seg" + (k === "ss" ? " sec" : ""));
+    segs[k] = el("b", "", "––");
+    sg.appendChild(segs[k]);
+    sg.appendChild(el("span", "", lab));
+    cdWrap.appendChild(sg);
+  });
+  cdBox.appendChild(cdWrap);
+  spot.appendChild(cdBox);
+  const own = el("div", "flr-own");
+  const oc1 = el("span", "flr-owner");
+  oc1.appendChild(el("b", "", "JL"));
+  oc1.appendChild(el("span", "", "Jonas Lindqvist · owner"));
+  const oc2 = el("span", "flr-owner dim");
+  oc2.appendChild(el("b", "", "AD"));
+  oc2.appendChild(el("span", "", "Amara Diallo · redlines"));
+  const go = el("button", "flr-spot-go", "Brief me →");
+  go.addEventListener("click", e => { e.stopPropagation(); sendMessage("Brief me for the 10:00 Nordvik redline call"); });
+  own.append(oc1, oc2, go);
+  spot.appendChild(own);
+  makeDraggable(spot, { type: "task", label: "OPP-4821 · Nordvik Energy $1.2M — sign by Aug 21", data: taskById("OPP-4821") || { id: "OPP-4821" } });
+  board.appendChild(spot);
+
+  const th = el("div", "flr-thermo");
+  const thh = el("div", "flr-th-head");
+  thh.appendChild(el("span", "flr-th-l", "Q3 QUOTA — TEAM"));
+  const thv = el("b", "flr-th-v");
+  countUp(thv, "48.2%");
+  thh.appendChild(thv);
+  th.appendChild(thh);
+  const track = el("div", "flr-th-track");
+  const fill = el("i", "flr-th-fill");
+  const ghost = el("i", "flr-th-ghost");
+  ghost.title = "OPP-4821 alone lifts Q3 to 66%";
+  const mark = el("i", "flr-th-mark");
+  track.append(fill, ghost, mark);
+  th.appendChild(track);
+  requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = "48.2%"; ghost.style.width = "17.8%"; }));
+  const thf = el("div", "flr-th-foot");
+  thf.appendChild(el("span", "", "$3.28M closed"));
+  thf.appendChild(el("span", "flr-th-nord", "+ Nordvik → 66%"));
+  thf.appendChild(el("span", "", "$6.8M quota"));
+  th.appendChild(thf);
+  th.appendChild(el("div", "flr-th-note", "9 deals land in August · $3.4M commit — hold it and Q3 closes at 98% before September opens"));
+  makeDraggable(th, { type: "kpi", label: "Q3 quota attainment · 48.2%", data: p.kpis[0] });
+  board.appendChild(th);
+  hero.appendChild(board);
+
+  /* ---- the pipeline river — five flush lanes, widths ∝ value ---- */
+  const cap = el("div", "flr-river-cap");
+  cap.appendChild(el("span", "flr-cap-l", "THE PIPELINE RIVER"));
+  cap.appendChild(el("span", "flr-cap-r", "$18.6M OPEN · FLOWS →"));
+  hero.appendChild(cap);
+
+  const river = el("div", "flr-river");
+  const LANE_CHIPS = {
+    "Discovery": [
+      { id: "BLITZ · AUG 18", amt: "+$1.4M", name: "new-pipe target", cls: "new", chip: { type: "kpi", label: "Pipeline coverage 3.1x — $1.4M new pipe needed by Sep 1", data: p.kpis[1] } },
+    ],
+    "Evaluation": [
+      { id: "OPP-4712", amt: "$840K", name: "Aventra Health", cls: "warn", task: "OPP-4712" },
+    ],
+    "Proposal": [
+      { id: "OPP-4956", amt: "$460K", name: "Kessler Automotive", cls: "", task: "OPP-4956" },
+      { id: "OPP-4765", amt: "$180K", name: "Helios Mfg", cls: "warn" },
+    ],
+    "Negotiation": [
+      { id: "OPP-4903", amt: "$520K", name: "Trellis Financial", cls: "risk", appr: "a1" },
+      { id: "OPP-4880", amt: "$310K", name: "Bluewater Logistics", cls: "warn", task: "OPP-4880" },
+    ],
+    "Contracting": [
+      { id: "OPP-4821", amt: "$1.2M", name: "Nordvik Energy", cls: "hot", task: "OPP-4821" },
+      { id: "OPP-4738", amt: "$290K", name: "Caldera · signed 07:12", cls: "done" },
+    ],
+  };
+  const totalPipe = p.donut.segments.reduce((a, s) => a + s.value, 0);
+  p.donut.segments.forEach(sg => {
+    const lane = el("div", "flr-lane");
+    lane.style.flexGrow = String(Math.round(sg.value * 100));
+    const lh = el("div", "flr-lane-h");
+    lh.appendChild(el("span", "flr-lane-stage", sg.label));
+    lh.appendChild(el("span", "flr-lane-share", Math.round((sg.value / totalPipe) * 100) + "%"));
+    lane.appendChild(lh);
+    const v = el("div", "flr-lane-amt");
+    countUp(v, "$" + sg.value.toFixed(1) + "M");
+    lane.appendChild(v);
+    lane.appendChild(el("i", "flr-lane-flow"));
+    const chips = el("div", "flr-chips");
+    (LANE_CHIPS[sg.label] || []).forEach(c => {
+      const pill = el("div", "flr-chip" + (c.cls ? " " + c.cls : ""));
+      pill.appendChild(el("b", "", c.id));
+      pill.appendChild(el("span", "", c.amt + " · " + c.name));
+      const t = c.task && taskById(c.task);
+      const a = c.appr && (p.approvals || []).find(x => x.id === c.appr);
+      const chip = c.chip
+        || (t ? { type: "task", label: t.id + " " + t.title, data: t }
+          : a ? { type: "approval", label: a.type + ": " + a.title, data: a }
+            : { type: "task", label: c.id + " · " + c.amt + " " + c.name, data: { id: c.id } });
+      makeDraggable(pill, chip);
+      pill.title = c.id + " · " + c.amt + " — " + c.name;
+      pill.addEventListener("click", () => { attachChip(chip); sendMessage("What's the status here?"); });
+      chips.appendChild(pill);
+    });
+    lane.appendChild(chips);
+    river.appendChild(lane);
+  });
+  hero.appendChild(river);
+
+  /* =============== the naked stat strip =============== */
+  const strip = sect("st-strip flr-strip");
+  p.kpis.forEach(k => {
+    const s = el("article", "card kpi st-stat");
+    const lb = el("div", "kpi-label");
+    lb.appendChild(srvGlyph(k.source, 15));
+    lb.appendChild(el("span", "", k.label));
+    s.appendChild(lb);
+    const row = el("div", "kpi-row");
+    const val = el("span", "kpi-value");
+    countUp(val, k.value);
+    row.appendChild(val);
+    row.appendChild(el("span", "kpi-delta " + (k.deltaGood ? "good" : "bad"), (k.deltaDir === "up" ? "▲ " : "▼ ") + k.delta));
+    s.appendChild(row);
+    const sp = el("div", "kpi-spark");
+    s.appendChild(sp);
+    registerChart(sp, () => renderSpark(sp, k.spark));
+    makeDraggable(s, { type: "kpi", label: k.label + " · " + k.value, data: k });
+    strip.appendChild(s);
+  });
+
+  /* =============== 01 · The truth =============== */
+  if (p.joined) {
+    const s1 = sect("joined-card flr-truth");
+    stHead(s1, "01", "The truth", p.joined.subtitle);
+    const body = el("div", "joined-body");
+    const ch = el("div", "joined-chart");
+    const aside = el("aside", "joined-aside");
+    aside.appendChild(buildInsight(p.joined.insight));
+    body.append(ch, aside);
+    s1.appendChild(body);
+    registerChart(ch, () => renderJoined(ch, p.joined));
+  }
+
+  /* =============== 02 · Momentum =============== */
+  const s2 = sect("flr-mo");
+  stHead(s2, "02", "Momentum", "keep the floor moving — one-click plays, and runners working the phones for you");
+  const grid2 = el("div", "flr-2col");
+  const chnCol = el("div", "chn-card flr-col");
+  chnCol.appendChild(el("div", "flr-colhead", "Plays — cross-app workflows"));
+  (p.chains || []).forEach(c => {
+    const it = el("div", "chn-item flr-play");
+    const top = el("div", "chn-top");
+    const bd = el("div"); bd.style.cssText = "flex:1;min-width:0";
+    bd.appendChild(el("div", "chn-name", c.name));
+    bd.appendChild(el("div", "chn-desc", c.desc));
+    top.appendChild(bd);
+    const run = el("button", "dg-btn", "▶ Run");
+    run.addEventListener("click", () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); });
+    top.appendChild(run);
+    it.appendChild(top);
+    const path = el("div", "chn-path");
+    c.steps.forEach((st, i) => { if (i) path.appendChild(el("span", "hop", "➜")); path.appendChild(srvGlyph(st.server, 20)); });
+    it.appendChild(path);
+    makeDraggable(it, { type: "chain", label: "Workflow: " + c.name, data: c });
+    chnCol.appendChild(it);
+  });
+  grid2.appendChild(chnCol);
+  const dgCol = el("div", "dg-card flr-col");
+  dgCol.appendChild(el("div", "flr-colhead", "Runners — delegated to askMElah"));
+  (p.delegations || []).forEach(d => {
+    const doneAlready = (state.delegated[state.personaId] || {})[d.id];
+    const it = el("div", "dg-item flr-run");
+    const orb = askmeAv(26); orb.classList.add("dg-orb");
+    it.appendChild(orb);
+    const bd = el("div", "dg-body");
+    bd.appendChild(el("div", "dg-label", d.label));
+    const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
+    bd.appendChild(sub);
+    const prog = el("div", "dg-prog"); prog.hidden = true;
+    const fillEl = el("i"); prog.appendChild(fillEl);
+    bd.appendChild(prog);
+    it.appendChild(bd);
+    const stateBox = el("span", "dg-state");
+    if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
+    else {
+      const btn = el("button", "dg-btn", "▶ Delegate");
+      btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill: fillEl, stateBox, btn, bd }));
+      stateBox.appendChild(btn);
+    }
+    it.appendChild(stateBox);
+    dgCol.appendChild(it);
+  });
+  grid2.appendChild(dgCol);
+  s2.appendChild(grid2);
+
+  /* =============== 03 · Commit — the deal desk =============== */
+  const s3 = sect("ap-card flr-commit");
+  const h3 = stHead(s3, "03", "Commit", "the deal desk — askMElah pre-reads every line; clear it, or send it back with questions");
+  const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
+  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.append(el("span", "", "Autopilot"), el("span", "sw"));
+  h3.appendChild(auto);
+
+  const desk = el("div", "flr-desk");
+  const stakes = { a2: ["$1.2M", "deal at stake"], a3: ["5 days", "Aug 24–28"] };
+  const money = s => parseInt(String(s).replace(/[^0-9]/g, ""), 10) || 0;
+  const deskCnt = el("span", "flr-desk-cnt");
+  const deskTot = el("b", "flr-desk-amt");
+  function refreshDesk() {
+    const pend = FOW.pendingApprovals();
+    const sum = pend.reduce((a, x) => a + money(x.amount), 0);
+    deskTot.textContent = "$" + sum.toLocaleString("en-US");
+    deskCnt.textContent = pend.length ? pend.length + " line" + (pend.length > 1 ? "s" : "") + " open" : "desk clear ✦";
+  }
+  function stampRow(cell) { cell.textContent = ""; cell.appendChild(el("span", "flr-stamp", "CLEARED")); }
+
+  p.approvals.forEach(a => {
+    const done = (state.approved[state.personaId] || new Set()).has(a.id);
+    const row = el("div", "flr-row" + (done ? " done" : ""));
+    row.dataset.approval = a.id;
+    const amtCell = el("div", "flr-amt-c");
+    const [amt, amtSub] = a.amount ? [a.amount, a.type.toLowerCase()] : (stakes[a.id] || ["—", a.type.toLowerCase()]);
+    amtCell.appendChild(el("b", "flr-amt", amt));
+    amtCell.appendChild(el("span", "flr-amt-s", amtSub));
+    row.appendChild(amtCell);
+    row.appendChild(el("span", "flr-urg " + a.urgency));
+    const bd = el("div", "flr-row-bd");
+    const t1 = el("div", "flr-row-t");
+    t1.appendChild(el("span", "flr-type", a.type));
+    t1.appendChild(el("span", "flr-row-title", a.title));
+    bd.appendChild(t1);
+    bd.appendChild(el("div", "flr-row-meta", a.meta));
+    row.appendChild(bd);
+    const req = el("div", "flr-req");
+    req.appendChild(el("b", "", a.requester));
+    req.appendChild(el("span", "", SERVERS[a.source] ? "via " + SERVERS[a.source].name : ""));
+    row.appendChild(req);
+    const actCell = el("span", "flr-act");
+    if (done) stampRow(actCell);
+    else {
+      const btns = el("span", "ap-acts flr-btns");
+      const ok = el("button", "flr-clear", "Clear ✓");
+      ok.addEventListener("click", e => {
+        e.stopPropagation();
+        sparkleAt(e.clientX, e.clientY, { n: 10, d: 34 });
+        stampRow(actCell);
+        FOW.approve(a.id, true);
+        toast("Cleared — " + a.requester + " notified");
+        refreshDesk();
+      });
+      const ask = el("button", "flr-askb", "?");
+      ask.title = "Ask askMElah first";
+      ask.addEventListener("click", e => {
+        e.stopPropagation();
+        attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });
+        sendMessage("Should I approve this?");
+      });
+      btns.append(ok, ask);
+      actCell.appendChild(btns);
+    }
+    row.appendChild(actCell);
+    makeDraggable(row, { type: "approval", label: a.type + ": " + a.title, data: a });
+    desk.appendChild(row);
+  });
+  const totalRow = el("div", "flr-desk-total");
+  totalRow.appendChild(el("span", "flr-desk-l", "ON THE DESK"));
+  totalRow.appendChild(deskCnt);
+  totalRow.appendChild(deskTot);
+  desk.appendChild(totalRow);
+  refreshDesk();
+  s3.appendChild(desk);
+
+  auto.addEventListener("click", () => {
+    const on = !state.autopilot[state.personaId];
+    state.autopilot[state.personaId] = on;
+    auto.classList.toggle("on", on);
+    if (!on) { toast("Autopilot off — every line waits for you again", "info"); return; }
+    const low = FOW.pendingApprovals().filter(a => a.urgency === "low");
+    if (!low.length) { toast("Autopilot on — nothing low-risk on the desk right now", "info"); return; }
+    low.forEach((a, i) => setTimeout(() => {
+      const row = $('[data-approval="' + a.id + '"]');
+      if (row) { const cell = $(".flr-act", row); if (cell) stampRow(cell); }
+      FOW.approve(a.id, i === low.length - 1);
+      refreshDesk();
+      if (i === low.length - 1) toast("Autopilot cleared " + low.length + " low-risk line" + (low.length > 1 ? "s" : "") + " — requesters notified");
+    }, 700 + i * 450));
+    toast("Autopilot clearing " + low.length + " low-risk line" + (low.length > 1 ? "s" : ""), "info");
+  });
+
+  /* =============== 04 · The week =============== */
+  const s4 = sect("wk-card flr-week");
+  stHead(s4, "04", "The week", "what the calendar cost, and what's still open on the book");
+  const grid4 = el("div", "flr-2col");
+  const wkCol = el("div", "flr-col");
+  wkCol.appendChild(el("div", "flr-colhead", "The week in numbers"));
+  const wk = p.week;
+  if (wk) {
+    const tiles = el("div", "wk-stats");
+    [["Meeting hours", wk.meetingHours + "h"], ["Focus hours", wk.focusHours + "h"], ["Meeting cost", wk.meetingCost], ["Deep blocks", String(wk.deepBlocks)]].forEach(([l, v]) => {
+      const t = el("div", "wk");
+      t.appendChild(el("div", "l", l));
+      const vd = el("div", "v"); countUp(vd, v);
+      t.appendChild(vd);
+      tiles.appendChild(t);
+    });
+    wkCol.appendChild(tiles);
+    const chw = el("div");
+    wkCol.appendChild(chw);
+    registerChart(chw, () => renderBars(chw, { title: "wk", unit: "h", categories: wk.days, series: [{ name: "Meetings", values: wk.meetings }, { name: "Focus", values: wk.focus }] }, { mini: true, h: 118 }));
+    wkCol.appendChild(el("div", "flr-memo", "floor note — " + wk.insight));
+  }
+  grid4.appendChild(wkCol);
+  const tCol = el("div", "flr-col");
+  tCol.appendChild(el("div", "flr-colhead", "The book — open positions"));
+  p.tasks.forEach(t => {
+    const it = el("div", "flr-task");
+    it.appendChild(el("span", "flr-task-key", t.id));
+    it.appendChild(el("span", "flr-task-title", t.title));
+    it.appendChild(el("span", "flr-task-due", t.due));
+    it.appendChild(el("span", "task-status " + t.status, t.status === "inprogress" ? "in progress" : t.status));
+    makeDraggable(it, { type: "task", label: t.id + " " + t.title, data: t });
+    tCol.appendChild(it);
+  });
+  grid4.appendChild(tCol);
+  s4.appendChild(grid4);
+
+  /* =============== wired into =============== */
+  const foot = sect("flr-wired");
+  const fr = el("div", "flr-wired-row");
+  fr.appendChild(el("span", "flr-wired-l", "wired into"));
+  (p.connections || []).forEach(cid => fr.appendChild(srvGlyph(cid, 26)));
+  const more = el("button", "rail-more flr-mcp", "MCP console →");
+  more.addEventListener("click", () => mcpOpen());
+  fr.appendChild(more);
+  foot.appendChild(fr);
+  foot.appendChild(el("div", "flr-eod", "THE FLOOR · EMEA DESK — Nordvik signature window: " + daysLeft + " days · desk closes 18:00 CET"));
+
+  /* =============== the live countdown =============== */
+  const tick = () => {
+    if (!document.contains(spot)) { clearInterval(STUDIO.timer); return; }
+    const diff = SIGN_BY - new Date();
+    const P = x => String(x).padStart(2, "0");
+    if (diff <= 0) {
+      segs.dd.textContent = "00"; segs.hh.textContent = "00"; segs.mm.textContent = "00"; segs.ss.textContent = "00";
+      cdBox.classList.add("due");
+      return;
+    }
+    segs.dd.textContent = P(Math.floor(diff / 864e5));
+    segs.hh.textContent = P(Math.floor((diff % 864e5) / 36e5));
+    segs.mm.textContent = P(Math.floor((diff % 36e5) / 6e4));
+    segs.ss.textContent = P(Math.floor((diff % 6e4) / 1000));
+  };
+  tick();
+  STUDIO.timer = setInterval(tick, 1000);
+
+  updateBadges();
 }
 
 </script>

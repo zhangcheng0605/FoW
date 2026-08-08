@@ -91,11 +91,11 @@ function renderStudio_procurement(p, cv) {
 
   /* contacts on the scope — renewals from the 90-day pipeline (DocuSign) */
   const contacts = [
-    { code: "AW", srv: null, name: "AWS EA", value: "$12.0M", renews: "Sep 30", days: 53, owner: "Mei-Ling Chen", deg: 87, cls: "hot", note: "counter due Mon" },
-    { code: "Cc", srv: "adobe", name: "Adobe CC", value: "$82,080", renews: "Aug 31", days: 23, owner: "Anna Kowalski", deg: 118, cls: "urgent", note: "in redline" },
-    { code: "OK", srv: null, name: "Okta SSO", value: "$310,000", renews: "Oct 15", days: 68, owner: "Mei-Ling Chen", deg: 52, cls: "watch", note: "9.2% over budget" },
-    { code: "CB", srv: null, name: "CBRE", value: "$1.4M", renews: "Oct 31", days: 84, owner: "Oluwaseun Adebayo", deg: 142, cls: "", note: "" },
-    { code: "Z", srv: "zoom", name: "Zoom", value: "$188,000", renews: "Nov 1", days: 85, owner: "Diego Ramírez", deg: 32, cls: "", note: "" },
+    { code: "AW", name: "AWS EA", value: "$12.0M", renews: "Sep 30", days: 53, owner: "Mei-Ling Chen", deg: 87, cls: "hot", note: "counter due Mon" },
+    { code: "AD", name: "Adobe CC", value: "$82,080", renews: "Aug 31", days: 23, owner: "Anna Kowalski", deg: 127, cls: "urgent", note: "in redline" },
+    { code: "OK", name: "Okta SSO", value: "$310,000", renews: "Oct 15", days: 68, owner: "Mei-Ling Chen", deg: 52, cls: "watch", note: "9.2% over budget" },
+    { code: "CB", name: "CBRE", value: "$1.4M", renews: "Oct 31", days: 84, owner: "Oluwaseun Adebayo", deg: 148, cls: "", note: "" },
+    { code: "ZM", name: "Zoom", value: "$188,000", renews: "Nov 1", days: 85, owner: "Diego Ramírez", deg: 32, cls: "", note: "" },
   ];
   const contactAsk = {
     "AWS EA": "Draft the AWS EA counter-proposal brief for Marcus",
@@ -108,8 +108,7 @@ function renderStudio_procurement(p, cv) {
     b.style.top = (y / H * 100).toFixed(2) + "%";
     b.title = v.name + " · " + v.value + " · renews " + v.renews + " (" + v.days + " days) · " + v.owner + (v.note ? " · " + v.note : "");
     const dot = el("span", "twr-blip-dot");
-    if (v.srv) dot.appendChild(srvGlyph(v.srv, 20));
-    else dot.appendChild(el("b", "", v.code));
+    dot.appendChild(el("b", "", v.code));
     b.appendChild(dot);
     const tag = el("span", "twr-blip-tag");
     tag.appendChild(el("b", "", v.name));
