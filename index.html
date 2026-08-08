@@ -1282,6 +1282,752 @@ body.presenting #toasts { bottom: 90px; }
 
 .msg .askme-av { width: 26px; height: 26px; margin-top: 2px; }
 
+
+/* == studio-finance.css == */
+/* ============================================================
+   FoW · studio-finance — THE LEDGER
+   Reconciliation as a paradigm: tabular figures, mono amounts,
+   hairline double rules, stamps. No boxes unless the metaphor
+   asks for an object (bars, stamps, tiles).
+   ============================================================ */
+
+#canvas.studio-finance { font-variant-numeric: tabular-nums; gap: 44px; }
+
+/* ---------- chapter heads: ledger folios ---------- */
+#canvas.studio-finance .st-head {
+  border-bottom: 3px double var(--hairline);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  gap: 12px;
+  align-items: center;
+}
+#canvas.studio-finance .st-num {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--acc-ink);
+  opacity: 1;
+  border: 1px solid var(--acc-line);
+  border-radius: 3px;
+  padding: 3px 8px;
+  line-height: 1;
+  background: var(--acc-soft);
+}
+#canvas.studio-finance .st-label {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 13px;
+  font-weight: 800;
+}
+#canvas.studio-finance .st-sub { font-family: var(--font-mono); font-size: 10.5px; }
+
+/* ---------- hero: July, reconciled ---------- */
+#canvas.studio-finance .ldg-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 268px;
+  gap: 10px 46px;
+  padding-top: 6px;
+}
+#canvas.studio-finance .ldg-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--acc-ink);
+}
+#canvas.studio-finance .ldg-greet {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+#canvas.studio-finance .ldg-title {
+  margin: 6px 0 0;
+  font-size: clamp(32px, 3.6vw, 50px);
+  font-weight: 790;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+#canvas.studio-finance .ldg-lede {
+  margin-top: 12px;
+  font-size: 15.5px;
+  font-weight: 570;
+  color: var(--ink);
+  line-height: 1.5;
+  max-width: 60ch;
+  text-wrap: balance;
+}
+#canvas.studio-finance .ldg-subl { margin-top: 6px; font-size: 12.5px; color: var(--ink-2); max-width: 64ch; }
+#canvas.studio-finance .ldg-acts { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+#canvas.studio-finance .ldg-recap { border-radius: 999px; padding: 11px 20px; font-size: 13px; font-weight: 650; }
+
+/* right rail: the clock + sign-off chain, set off by a double rule */
+#canvas.studio-finance .ldg-rail {
+  border-left: 3px double var(--hairline);
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  justify-content: center;
+}
+#canvas.studio-finance .ldg-count-l,
+#canvas.studio-finance .ldg-rail-h {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-finance .ldg-count b {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 31px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--acc-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+#canvas.studio-finance .ldg-count-s { display: block; margin-top: 6px; font-size: 10.5px; color: var(--ink-3); }
+#canvas.studio-finance .ldg-signers { display: flex; flex-direction: column; gap: 0; }
+#canvas.studio-finance .ldg-signer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+#canvas.studio-finance .ldg-signer:last-child { border-bottom: 0; }
+#canvas.studio-finance .ldg-signer b {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  background: var(--soft);
+}
+#canvas.studio-finance .ldg-signer.wait b {
+  border-color: var(--acc-line);
+  color: var(--acc-ink);
+  animation: financePulse 2.2s ease-in-out infinite;
+}
+#canvas.studio-finance .ldg-signer-t { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; flex: 1; }
+#canvas.studio-finance .ldg-signer-t i { font-style: normal; font-size: 12px; font-weight: 650; color: var(--ink); }
+#canvas.studio-finance .ldg-signer-t em { font-style: normal; font-size: 10px; color: var(--ink-3); }
+#canvas.studio-finance .ldg-tick { font-family: var(--font-mono); font-weight: 800; font-size: 12px; color: var(--ink-3); }
+#canvas.studio-finance .ldg-tick.ok { color: var(--good-ink); }
+@keyframes financePulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--acc-soft); }
+  50% { box-shadow: 0 0 0 6px var(--acc-soft); }
+}
+
+/* the waterfall spans the full hero */
+#canvas.studio-finance .ldg-wf { grid-column: 1 / -1; margin-top: 22px; border-top: 3px double var(--hairline); padding-top: 14px; }
+#canvas.studio-finance .ldg-wf-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+#canvas.studio-finance .ldg-wf-t {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+#canvas.studio-finance .ldg-wf-src { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+#canvas.studio-finance .ldg-wf-src span:last-child {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--good-ink);
+}
+#canvas.studio-finance .ldg-wf-chart { min-width: 0; overflow-x: auto; }
+#canvas.studio-finance .ldg-viz text.ldg-cat { font-size: 9px; letter-spacing: 0.08em; fill: var(--ink-3); }
+#canvas.studio-finance .ldg-viz text.ldg-anchor-v { font-size: 11px; font-weight: 750; fill: var(--ink); }
+#canvas.studio-finance .ldg-viz text.ldg-step-v { font-size: 10px; font-weight: 700; }
+#canvas.studio-finance .ldg-viz text.ldg-note-v { font-size: 9px; fill: var(--ink-3); }
+#canvas.studio-finance .ldg-viz text.ldg-total-fig { font-size: 13px; font-weight: 750; fill: var(--bad-ink); }
+#canvas.studio-finance .ldg-viz text.ldg-total-pct { font-size: 9px; fill: var(--ink-3); }
+
+/* ---------- naked stat strip: figures between ruled lines ---------- */
+#canvas.studio-finance .ldg-strip {
+  border-top: 3px double var(--hairline);
+  border-bottom: 3px double var(--hairline);
+  padding: 18px 0;
+}
+#canvas.studio-finance .st-stat .kpi-value {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+#canvas.studio-finance .st-stat .kpi-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+#canvas.studio-finance .st-stat .kpi-delta { font-family: var(--font-mono); font-size: 10px; }
+
+/* ---------- 02 · columns ---------- */
+#canvas.studio-finance .ldg-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+#canvas.studio-finance .ldg-col { min-width: 0; }
+#canvas.studio-finance .ldg-colhead {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+}
+#canvas.studio-finance .ldg-entry { border-radius: 6px; }
+#canvas.studio-finance .chn-item, #canvas.studio-finance .dg-item {
+  border-bottom: 1px solid var(--hairline-soft);
+  border-radius: 0;
+  padding: 12px 6px;
+}
+#canvas.studio-finance .chn-item:last-child, #canvas.studio-finance .dg-item:last-child { border-bottom: 0; }
+#canvas.studio-finance .chn-name, #canvas.studio-finance .dg-label { font-size: 13px; }
+
+/* ---------- 03 · Sign: the ledger lines ---------- */
+#canvas.studio-finance .ldg-lines { min-width: 0; }
+#canvas.studio-finance .ldg-lhead,
+#canvas.studio-finance .ldg-line,
+#canvas.studio-finance .ldg-total {
+  display: grid;
+  grid-template-columns: 5px minmax(0, 1fr) 168px 118px 158px;
+  gap: 16px;
+  align-items: center;
+}
+#canvas.studio-finance .ldg-lhead {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--hairline);
+}
+#canvas.studio-finance .ldg-lhead span:nth-child(4) { text-align: right; }
+#canvas.studio-finance .ldg-line {
+  padding: 13px 0;
+  border-bottom: 3px double var(--hairline);
+  transition: background 150ms, opacity 300ms;
+  cursor: grab;
+}
+#canvas.studio-finance .ldg-line:hover { background: var(--hov); }
+#canvas.studio-finance .ldg-line.done { opacity: 0.62; }
+#canvas.studio-finance .ldg-line.done .ldg-amt { text-decoration: line-through; text-decoration-color: var(--ink-3); text-decoration-thickness: 1px; }
+#canvas.studio-finance .ldg-line .ap-urg { width: 3.5px; height: 30px; align-self: center; }
+#canvas.studio-finance .ldg-li { min-width: 0; }
+#canvas.studio-finance .ldg-li-t { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+#canvas.studio-finance .ldg-type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc-ink);
+  border: 1px solid var(--acc-line);
+  border-radius: 3px;
+  padding: 2px 6px;
+  flex: none;
+}
+#canvas.studio-finance .ldg-li-title { font-size: 13.5px; font-weight: 660; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-finance .ldg-li-meta { margin-top: 4px; font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-finance .ldg-req { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+#canvas.studio-finance .ldg-req b { font-size: 12px; font-weight: 640; color: var(--ink); }
+#canvas.studio-finance .ldg-req span { font-size: 10px; color: var(--ink-3); }
+#canvas.studio-finance .ldg-amt {
+  font-family: var(--font-mono);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: right;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+#canvas.studio-finance .ldg-act { display: flex; justify-content: flex-end; min-width: 0; }
+#canvas.studio-finance .ldg-btns { display: flex; gap: 7px; }
+#canvas.studio-finance .ldg-ok {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--good-ink);
+  border: 1px solid var(--good-ink);
+  border-radius: 4px;
+  padding: 5px 12px;
+  background: none;
+  transition: all 140ms;
+  white-space: nowrap;
+}
+#canvas.studio-finance .ldg-ok:hover { background: var(--good-bg); transform: translateY(-1px); }
+#canvas.studio-finance .ldg-ask {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-3);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  width: 27px;
+  padding: 5px 0;
+  background: none;
+  transition: all 140ms;
+}
+#canvas.studio-finance .ldg-ask:hover { color: var(--acc-ink); border-color: var(--acc-line); background: var(--acc-soft); }
+#canvas.studio-finance .ldg-stamp {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--good-ink);
+  border: 1.5px solid var(--good-ink);
+  border-radius: 4px;
+  padding: 4px 9px;
+  background: var(--good-bg);
+  transform: rotate(-6deg);
+  animation: financeStamp 460ms cubic-bezier(.2,1.3,.35,1) both;
+}
+@keyframes financeStamp {
+  0% { transform: scale(2.1) rotate(-16deg); opacity: 0; }
+  55% { transform: scale(0.94) rotate(-4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+#canvas.studio-finance .ldg-total {
+  padding: 13px 0 5px;
+  align-items: baseline;
+}
+#canvas.studio-finance .ldg-total-l {
+  grid-column: 2;
+  font-size: 12px;
+  font-weight: 720;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+}
+#canvas.studio-finance .ldg-total-c { grid-column: 3; font-size: 10.5px; color: var(--ink-3); }
+#canvas.studio-finance .ldg-total-v {
+  grid-column: 4;
+  font-family: var(--font-mono);
+  font-size: 16.5px;
+  font-weight: 750;
+  text-align: right;
+  color: var(--ink);
+  border-bottom: 3px double var(--ink-2);
+  padding-bottom: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 04 · Close ---------- */
+#canvas.studio-finance .wk .v { font-family: var(--font-mono); font-size: 16px; }
+#canvas.studio-finance .ldg-memo {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-style: italic;
+  border-top: 1px solid var(--hairline-soft);
+  padding-top: 9px;
+}
+#canvas.studio-finance .ldg-task {
+  border-bottom: 1px solid var(--hairline-soft);
+  border-radius: 0;
+  padding: 10px 6px;
+}
+#canvas.studio-finance .ldg-task:last-child { border-bottom: 0; }
+#canvas.studio-finance .ldg-due { flex: none; font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+
+/* ---------- carried forward ---------- */
+#canvas.studio-finance .ldg-wired { margin-top: -6px; }
+#canvas.studio-finance .ldg-wired-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  border-top: 3px double var(--hairline);
+  padding-top: 18px;
+}
+#canvas.studio-finance .ldg-wired-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-right: 6px;
+}
+#canvas.studio-finance .ldg-mcp { width: auto; margin: 0 0 0 auto; padding: 6px 14px; border-radius: 999px; }
+#canvas.studio-finance .ldg-eoe {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  #canvas.studio-finance .ldg-hero { grid-template-columns: 1fr; }
+  #canvas.studio-finance .ldg-rail {
+    border-left: 0;
+    border-top: 3px double var(--hairline);
+    padding: 16px 0 0;
+    margin-top: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 26px;
+  }
+  #canvas.studio-finance .ldg-signers { flex: 1; min-width: 240px; }
+  #canvas.studio-finance .ldg-2col { grid-template-columns: 1fr; gap: 30px; }
+  #canvas.studio-finance .ldg-lhead, #canvas.studio-finance .ldg-line, #canvas.studio-finance .ldg-total {
+    grid-template-columns: 5px minmax(0, 1fr) 108px 130px;
+    gap: 10px;
+  }
+  #canvas.studio-finance .ldg-req { display: none; }
+  #canvas.studio-finance .ldg-lhead span:nth-child(3) { display: none; }
+  #canvas.studio-finance .ldg-lhead span:nth-child(4) { text-align: right; }
+  #canvas.studio-finance .ldg-amt { grid-column: 3; }
+  #canvas.studio-finance .ldg-act { grid-column: 4; }
+  #canvas.studio-finance .ldg-total-c { grid-column: 2; }
+  #canvas.studio-finance .ldg-total-v { grid-column: 3; }
+  #canvas.studio-finance .ldg-total-l { display: none; }
+}
+
+
+/* == studio-it.css == */
+/* ============================================================
+   FoW · studio-it — THE BRIDGE (Marcus Webb, IT Ops)
+   A network-operations console: lamps, gauges, countdowns,
+   mono-heavy chapter heads, faint scanline rhythm.
+   Every selector namespaced under #canvas.studio-it.
+   ============================================================ */
+
+#canvas.studio-it { gap: 46px; }
+
+/* chapter heads go mono-uppercase, like console section rules */
+#canvas.studio-it .st-head { border-bottom: 1px solid var(--hairline); gap: 12px; }
+#canvas.studio-it .st-num { font-family: var(--font-mono); font-size: 19px; font-weight: 640; opacity: 0.55; letter-spacing: 0; }
+#canvas.studio-it .st-num::after { content: " //"; color: var(--ink-3); opacity: 0.7; }
+#canvas.studio-it .st-label { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.17em; font-size: 13.5px; font-weight: 720; }
+#canvas.studio-it .st-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* ---------------- the status board (hero) ---------------- */
+#canvas.studio-it .it-board {
+  position: relative;
+  flex: none; /* overflow:hidden zeroes the flex min-height — don't let the column crush the board */
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+/* scanline rhythm — the CRT ghost, ≤3% */
+#canvas.studio-it .it-board::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, var(--ink) 0 1px, transparent 1px 4px);
+  opacity: 0.024;
+}
+
+#canvas.studio-it .it-topline {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--soft);
+}
+#canvas.studio-it .it-live { display: inline-flex; align-items: center; gap: 6px; color: var(--good-ink); font-weight: 740; }
+#canvas.studio-it .it-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--good-ink); box-shadow: 0 0 8px var(--good-ink); animation: itBlink 2.4s infinite; }
+#canvas.studio-it .it-topname { font-weight: 640; color: var(--ink); }
+#canvas.studio-it .it-topright { margin-left: auto; display: inline-flex; align-items: center; gap: 14px; }
+#canvas.studio-it .it-clock { color: var(--ink); font-weight: 640; font-variant-numeric: tabular-nums; letter-spacing: 0.1em; }
+#canvas.studio-it .it-oncall {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--hairline); border-radius: 999px;
+  padding: 3px 11px; background: var(--card); letter-spacing: 0.1em;
+}
+#canvas.studio-it .it-oncall i { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 6px var(--acc); }
+
+#canvas.studio-it .it-hero { display: flex; gap: 34px; align-items: center; padding: 24px 24px 20px; }
+#canvas.studio-it .it-hero-l { flex: 1; min-width: 0; }
+#canvas.studio-it .it-kicker {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 720;
+  letter-spacing: 0.16em; color: var(--acc-ink);
+}
+#canvas.studio-it .it-kicker::after { content: "▍"; margin-left: 3px; animation: itBlink 1.1s steps(2, start) infinite; }
+#canvas.studio-it .it-headline {
+  margin-top: 11px;
+  font-size: clamp(19px, 2.1vw, 26px);
+  font-weight: 730; letter-spacing: -0.02em; line-height: 1.32;
+  max-width: 58ch; text-wrap: balance;
+}
+#canvas.studio-it .it-subline { margin-top: 9px; font-size: 12.5px; line-height: 1.55; color: var(--ink-2); max-width: 64ch; }
+#canvas.studio-it .it-acts { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+#canvas.studio-it .it-acts .lb-enter,
+#canvas.studio-it .it-acts .lb-play,
+#canvas.studio-it .it-recap { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.03em; }
+#canvas.studio-it .it-recap {
+  border-radius: 999px; padding: 10px 18px; font-weight: 660;
+  background: var(--acc-soft); border: 1px solid var(--acc-line); color: var(--acc-ink);
+}
+#canvas.studio-it .it-recap:hover { box-shadow: 0 4px 14px -8px var(--acc); }
+
+#canvas.studio-it .it-hero-r {
+  flex: none; display: flex; gap: 30px; align-items: center;
+  padding-left: 30px; border-left: 1px solid var(--hairline);
+}
+#canvas.studio-it .it-dial-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+#canvas.studio-it .it-dial { position: relative; width: 138px; }
+#canvas.studio-it .it-dial svg { display: block; width: 100%; height: auto; }
+#canvas.studio-it .it-dial-arc { animation: itArc 1.2s cubic-bezier(.2,.8,.2,1) both; }
+#canvas.studio-it .it-dial-in {
+  position: absolute; inset: 0; display: grid; place-content: center;
+  text-align: center; padding-top: 12px; gap: 2px;
+}
+#canvas.studio-it .it-dial-in b { font-family: var(--font-mono); font-size: 19px; font-weight: 720; letter-spacing: -0.01em; }
+#canvas.studio-it .it-dial-in span { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.14em; color: var(--ink-3); }
+#canvas.studio-it .it-dial-cap { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.08em; color: var(--ink-3); text-align: center; max-width: 165px; line-height: 1.6; }
+
+#canvas.studio-it .it-cd { display: flex; flex-direction: column; gap: 4px; min-width: 195px; }
+#canvas.studio-it .it-cd-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 760;
+  letter-spacing: 0.14em; color: var(--crit);
+}
+#canvas.studio-it .it-cd-tag i { font-style: normal; animation: itBlink 1.3s infinite; }
+#canvas.studio-it .it-cd b {
+  font-family: var(--font-mono); font-size: 31px; font-weight: 700;
+  color: var(--crit); font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em; line-height: 1.05;
+}
+#canvas.studio-it .it-cd-sub { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: var(--ink-2); }
+#canvas.studio-it .it-cd-sub.dim { color: var(--ink-3); }
+
+/* lamp row */
+#canvas.studio-it .it-lamps { display: flex; flex-wrap: wrap; border-top: 1px solid var(--hairline); }
+#canvas.studio-it .it-lamp {
+  flex: 1 1 160px; min-width: 0;
+  display: flex; align-items: center; gap: 11px; text-align: left;
+  padding: 13px 16px;
+  border-right: 1px solid var(--hairline-soft);
+  background: none; cursor: pointer;
+  transition: background 150ms;
+}
+#canvas.studio-it .it-lamp:last-child { border-right: 0; }
+#canvas.studio-it .it-lamp:hover { background: var(--hov); }
+#canvas.studio-it .it-lamp > i {
+  flex: none; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--good-ink);
+  box-shadow: 0 0 9px var(--good-ink);
+  animation: itBlink 3.6s infinite;
+}
+#canvas.studio-it .it-lamp.amber > i {
+  background: var(--warn);
+  box-shadow: 0 0 12px var(--warn);
+  animation: itPulse 1.1s infinite;
+}
+#canvas.studio-it .it-lamp-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+#canvas.studio-it .it-lamp-t b {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 720;
+  letter-spacing: 0.07em; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#canvas.studio-it .it-lamp-t em { font-style: normal; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-3); }
+#canvas.studio-it .it-lamp.amber .it-lamp-t em { color: var(--bad-ink); font-weight: 700; }
+
+/* ---------------- stat strip (mono flavor) ---------------- */
+#canvas.studio-it .st-stat .kpi-label { font-family: var(--font-mono); text-transform: uppercase; font-size: 9.5px; letter-spacing: 0.11em; }
+#canvas.studio-it .st-stat .kpi-value { font-family: var(--font-mono); font-size: 30px; font-weight: 680; letter-spacing: -0.02em; }
+#canvas.studio-it .st-stat .kpi-delta { font-family: var(--font-mono); font-size: 10px; }
+
+/* ---------------- shared column scaffolding ---------------- */
+#canvas.studio-it .it-cols { display: grid; gap: 36px; }
+#canvas.studio-it .it-cols.even { grid-template-columns: 1fr 1fr; }
+#canvas.studio-it .it-cols.triage { grid-template-columns: 1.55fr 1fr; }
+#canvas.studio-it .it-cols.cap { grid-template-columns: 1.05fr 1fr; }
+#canvas.studio-it .it-col { min-width: 0; }
+#canvas.studio-it .it-colcap {
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  padding-bottom: 8px; margin-bottom: 10px;
+  border-bottom: 1px dashed var(--hairline);
+}
+
+/* runbooks + dispatch */
+#canvas.studio-it .chn-name, #canvas.studio-it .dg-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.01em; }
+#canvas.studio-it .it-hops {
+  flex: none; font-family: var(--font-mono); font-size: 8.5px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--ink-3);
+  border: 1px solid var(--hairline); border-radius: 5px; padding: 2px 6px;
+  margin-right: 8px; align-self: center;
+}
+#canvas.studio-it .chn-top { display: flex; align-items: center; gap: 8px; }
+#canvas.studio-it .dg-btn { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+
+/* ---------------- triage queue ---------------- */
+#canvas.studio-it .it-qcap {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+  padding-bottom: 8px; margin-bottom: 4px;
+  border-bottom: 1px dashed var(--hairline);
+}
+#canvas.studio-it .it-qcap-r { margin-left: auto; color: var(--bad-ink); letter-spacing: 0.1em; }
+#canvas.studio-it .it-queue { display: flex; flex-direction: column; }
+#canvas.studio-it .it-q {
+  position: relative;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 12px 12px 16px;
+  border-bottom: 1px solid var(--hairline-soft);
+  border-left: 3px solid var(--warn);
+  transition: background 150ms, border-color 400ms, opacity 400ms;
+  cursor: grab;
+}
+#canvas.studio-it .it-q:hover { background: var(--hov); }
+#canvas.studio-it .it-q.high { border-left-color: var(--crit); }
+#canvas.studio-it .it-q.low { border-left-color: var(--hairline); }
+#canvas.studio-it .it-q.done { border-left-color: var(--good-ink); opacity: 0.62; }
+#canvas.studio-it .it-q-lamp { flex: none; width: 9px; height: 9px; border-radius: 50%; }
+#canvas.studio-it .it-q-lamp.high { background: var(--crit); box-shadow: 0 0 9px var(--crit); animation: itBlink 0.9s infinite; }
+#canvas.studio-it .it-q-lamp.med { background: var(--warn); box-shadow: 0 0 8px var(--warn); animation: itBlink 1.7s infinite; }
+#canvas.studio-it .it-q-lamp.low { background: var(--ink-3); }
+#canvas.studio-it .it-q.done .it-q-lamp { background: var(--good-ink); box-shadow: 0 0 8px var(--good-ink); animation: none; }
+#canvas.studio-it .it-q-pri {
+  flex: none; font-family: var(--font-mono); font-size: 9.5px; font-weight: 780;
+  letter-spacing: 0.08em; padding: 2px 7px; border-radius: 5px;
+}
+#canvas.studio-it .it-q-pri.high { color: var(--bad-ink); background: var(--bad-bg); }
+#canvas.studio-it .it-q-pri.med { color: var(--ink-2); border: 1px solid var(--warn); }
+#canvas.studio-it .it-q-pri.low { color: var(--ink-3); background: var(--soft); }
+#canvas.studio-it .it-q.done .it-q-pri { color: var(--good-ink); background: var(--good-bg); border: 0; }
+#canvas.studio-it .it-q-ref {
+  flex: none; width: 88px;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--acc-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#canvas.studio-it .it-q-bd { flex: 1; min-width: 0; }
+#canvas.studio-it .it-q-title { font-size: 13px; font-weight: 660; letter-spacing: -0.008em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-it .it-q-meta { font-size: 10.5px; color: var(--ink-3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-it .it-q-acts { flex: none; margin-left: auto; display: inline-flex; gap: 8px; }
+#canvas.studio-it .it-q-ok, #canvas.studio-it .it-q-ask {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 720; letter-spacing: 0.07em;
+  padding: 5px 12px; border-radius: 7px; white-space: nowrap;
+  transition: background 140ms, transform 140ms;
+}
+#canvas.studio-it .it-q-ok { color: var(--good-ink); border: 1px solid var(--good-ink); }
+#canvas.studio-it .it-q-ok:hover { background: var(--good-bg); transform: translateY(-1px); }
+#canvas.studio-it .it-q-ask { color: var(--acc-ink); border: 1px solid var(--acc-line); }
+#canvas.studio-it .it-q-ask:hover { background: var(--acc-soft); transform: translateY(-1px); }
+#canvas.studio-it .it-q.done::after {
+  content: "CLEARED ✓";
+  margin-left: auto; flex: none;
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 740;
+  letter-spacing: 0.12em; color: var(--good-ink);
+}
+
+/* cross-system signal panels */
+#canvas.studio-it .it-sig {
+  display: block; width: 100%; text-align: left;
+  border: 1px dashed var(--hairline); border-radius: 12px;
+  background: none; padding: 14px 16px; margin-bottom: 12px;
+  cursor: pointer; transition: border-color 150ms, background 150ms;
+}
+#canvas.studio-it .it-sig:hover { border-color: var(--acc-line); background: var(--hov); }
+#canvas.studio-it .it-sig-top { display: flex; align-items: center; gap: 5px; }
+#canvas.studio-it .it-plus { color: var(--ink-3); font-size: 10px; }
+#canvas.studio-it .it-sig-tag {
+  margin-left: auto; font-family: var(--font-mono); font-size: 8.5px; font-weight: 760;
+  letter-spacing: 0.14em; color: var(--acc-ink);
+}
+#canvas.studio-it .it-sig-h { margin-top: 9px; font-size: 12.5px; font-weight: 670; line-height: 1.45; color: var(--ink); }
+#canvas.studio-it .it-sig-act {
+  margin-top: 8px; font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.05em; color: var(--acc-ink); line-height: 1.5;
+}
+#canvas.studio-it .it-sig:hover .it-sig-act { text-decoration: underline; }
+
+/* ---------------- capacity ---------------- */
+#canvas.studio-it .wk .l { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.09em; }
+#canvas.studio-it .wk .v { font-family: var(--font-mono); }
+#canvas.studio-it .it-mono-note {
+  margin-top: 8px; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.08em; color: var(--ink-3);
+}
+#canvas.studio-it .it-adv {
+  margin-top: 12px; display: flex; gap: 10px; align-items: flex-start;
+  border-left: 3px solid var(--warn);
+  background: var(--soft); border-radius: 0 9px 9px 0;
+  padding: 9px 12px;
+  font-size: 11.5px; line-height: 1.5; color: var(--ink-2);
+}
+#canvas.studio-it .it-adv b {
+  flex: none; font-family: var(--font-mono); font-size: 9px; font-weight: 760;
+  letter-spacing: 0.12em; color: var(--ink); margin-top: 2px;
+}
+#canvas.studio-it .it-task { align-items: center; }
+#canvas.studio-it .it-t-pri {
+  flex: none; font-family: var(--font-mono); font-size: 9px; font-weight: 780;
+  letter-spacing: 0.06em; padding: 2px 6px; border-radius: 5px;
+}
+#canvas.studio-it .it-t-pri.p1 { color: var(--bad-ink); background: var(--bad-bg); }
+#canvas.studio-it .it-t-pri.p2 { color: var(--ink-2); border: 1px solid var(--warn); }
+#canvas.studio-it .it-t-pri.p3 { color: var(--ink-3); background: var(--soft); }
+#canvas.studio-it .it-t-bd { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+#canvas.studio-it .it-t-bd .task-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-it .it-t-due { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; color: var(--ink-3); }
+
+/* ---------------- uplinks ---------------- */
+#canvas.studio-it .it-upl { font-family: var(--font-mono); font-size: 10px; font-weight: 720; letter-spacing: 0.16em; color: var(--ink-3); }
+#canvas.studio-it .it-upl-ok {
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 720;
+  letter-spacing: 0.12em; color: var(--good-ink);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+#canvas.studio-it .it-upl-ok::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--good-ink); box-shadow: 0 0 8px var(--good-ink);
+  animation: itBlink 2.8s infinite;
+}
+#canvas.studio-it .it-mcp { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; }
+
+/* ---------------- motion ---------------- */
+@keyframes itBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+@keyframes itPulse {
+  0%, 100% { box-shadow: 0 0 4px var(--warn); opacity: 1; }
+  50% { box-shadow: 0 0 15px var(--warn); opacity: 0.7; }
+}
+@keyframes itArc { from { stroke-dasharray: 0 400; } to { stroke-dasharray: 400 400; } }
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1180px) {
+  #canvas.studio-it .it-hero { flex-direction: column; align-items: stretch; }
+  #canvas.studio-it .it-hero-r { padding-left: 0; border-left: 0; border-top: 1px solid var(--hairline); padding-top: 18px; justify-content: space-between; }
+}
+@media (max-width: 1100px) {
+  #canvas.studio-it .it-cols.even, #canvas.studio-it .it-cols.triage, #canvas.studio-it .it-cols.cap { grid-template-columns: 1fr; }
+  #canvas.studio-it .it-q-ref { display: none; }
+  #canvas.studio-it .it-topright { margin-left: 0; }
+}
+
 </style>
 </head>
 <body>
@@ -5402,6 +6148,828 @@ function fxSend() {
   setTimeout(() => btn.classList.remove("fly"), 620);
   const r = btn.getBoundingClientRect();
   sparkleAt(r.left + r.width / 2, r.top + r.height / 2, { n: 4, d: 20, ring: false });
+}
+
+/* ============================================================
+   FoW · studio-finance — THE LEDGER
+   Daniel Okafor, FP&A · the day framed as a reconciliation.
+   Chapters: 01 Reconcile · 02 Move money · 03 Sign · 04 Close
+   ============================================================ */
+
+function renderStudio_finance(p, cv) {
+  clearCharts();
+  clearInterval(STUDIO.timer);
+  cv.textContent = "";
+
+  let secI = 0;
+  const sect = cls => { const s = el("section", "st-sec " + (cls || "")); s.style.setProperty("--i", secI++); cv.appendChild(s); return s; };
+  const svgEl = (tag, attrs) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs || {}) n.setAttribute(k, attrs[k]); return n; };
+  const money = s => parseInt(String(s).replace(/[^0-9]/g, ""), 10) || 0;
+  const hourNow = new Date().getHours();
+  const greet = hourNow < 12 ? "Good morning" : hourNow < 18 ? "Good afternoon" : "Good evening";
+
+  /* =============== HERO — "July, reconciled" =============== */
+  const hero = sect("ldg-hero");
+  const main = el("div", "ldg-main");
+  main.appendChild(el("div", "ldg-kicker", "The Ledger · Period 07 · FY26"));
+  main.appendChild(el("div", "ldg-greet", greet + ", " + p.user.name.split(" ")[0] + " — Friday, August 8 · " + p.user.location));
+  main.appendChild(el("h2", "ldg-title", "July, reconciled."));
+  main.appendChild(el("div", "ldg-lede", p.focus.headline));
+  main.appendChild(el("div", "ldg-subl", p.focus.sub));
+  const acts = el("div", "ldg-acts");
+  const runBtn = el("button", "lb-enter", "▶ Post the variance bridge");
+  runBtn.addEventListener("click", () => { if (p.chains && p.chains[0]) { addUserMsg("Run cross-app workflow: " + p.chains[0].name); runChain(p.chains[0]); } });
+  const recapBtn = el("button", "hstat primary ldg-recap", "✦ Draft my end-of-week recap");
+  recapBtn.addEventListener("click", () => sendMessage("Draft my end-of-week recap"));
+  const askBtn = el("button", "lb-play", "Ask about the close");
+  askBtn.addEventListener("click", () => sendMessage("Summarize July close status for Priya"));
+  acts.append(runBtn, recapBtn, askBtn);
+  main.appendChild(acts);
+  hero.appendChild(main);
+
+  /* right rail — the clock and the sign-off chain */
+  const rail = el("aside", "ldg-rail");
+  const cd = el("div", "ldg-count");
+  cd.appendChild(el("div", "ldg-count-l", "month-end closes in"));
+  const cdV = el("b", "", "–– ––:––:––");
+  cd.appendChild(cdV);
+  cd.appendChild(el("span", "ldg-count-s", "period 07 hard-close · Tuesday 09:00"));
+  rail.appendChild(cd);
+  const sg = el("div", "ldg-signers");
+  sg.appendChild(el("div", "ldg-rail-h", "sign-off chain"));
+  [
+    ["Marcus Webb", "variance bridge", true],
+    ["James Whitfield", "AWS true-up", true],
+    ["Priya Raghavan", "QBR prep · 14:00", false],
+  ].forEach(([name, step, done]) => {
+    const r = el("div", "ldg-signer" + (done ? " done" : " wait"));
+    r.appendChild(el("b", "", name.split(" ").map(x => x[0]).join("")));
+    const t = el("span", "ldg-signer-t");
+    t.appendChild(el("i", "", name));
+    t.appendChild(el("em", "", step));
+    r.appendChild(t);
+    r.appendChild(el("span", "ldg-tick" + (done ? " ok" : ""), done ? "✓" : "…"));
+    sg.appendChild(r);
+  });
+  rail.appendChild(sg);
+  hero.appendChild(rail);
+
+  /* the variance waterfall — Budget bridged to Actual, step by step */
+  const wf = el("div", "ldg-wf");
+  const wfh = el("div", "ldg-wf-head");
+  wfh.appendChild(el("span", "ldg-wf-t", "July opex — budget bridged to actual, by department · $K"));
+  const wfsrc = el("span", "ldg-wf-src");
+  wfsrc.appendChild(srvGlyph("sap", 15));
+  wfsrc.appendChild(srvGlyph("netsuite", 15));
+  wfsrc.appendChild(el("span", "", "reconciles ✓"));
+  wfh.appendChild(wfsrc);
+  wf.appendChild(wfh);
+  const wfc = el("div", "ldg-wf-chart");
+  wf.appendChild(wfc);
+  hero.appendChild(wf);
+  makeDraggable(wf, { type: "bars", label: p.bars.title, data: { title: p.bars.title } });
+
+  function waterfall(box) {
+    box.textContent = "";
+    const cats = p.bars.categories;
+    const vals = p.bars.series[0].values;
+    const JUL = 10; /* Sep-indexed fiscal months → Jul */
+    const budget = p.trend.series[1].points[JUL]; /* 19,900 $K */
+    const actual = p.trend.series[0].points[JUL]; /* 21,340 $K */
+    const total = actual - budget;                /* +1,440 $K */
+    const abbr = { "Engineering": "ENG", "IT": "IT", "Marketing": "MKTG", "Sales": "SALES", "G&A": "G&A", "Product": "PROD", "Cust Success": "CS" };
+    const notes = { "Engineering": "AWS true-up", "IT": "Salesforce renewal" };
+    /* the two biggest absolute steps get their annotation */
+    const bigTwo = vals.map((v, i) => [Math.abs(v), i]).sort((a, b) => b[0] - a[0]).slice(0, 2).map(x => x[1]);
+
+    const w = Math.max(560, box.clientWidth || 920), h = 268;
+    const mL = 10, mR = 136, mT = 40, mB = 34;
+    const xB = w - mR + 48; /* the closing bracket's spine */
+    const cums = [budget];
+    vals.forEach(v => cums.push(cums[cums.length - 1] + v));
+    const peak = Math.max(...cums), dip = Math.min(...cums);
+    const hi = peak + (peak - budget) * 0.10;
+    const lo = Math.min(dip, budget) - (peak - budget) * 0.55;
+    const Y = v => mT + (1 - (v - lo) / (hi - lo)) * (h - mT - mB);
+    const n = cats.length + 2;
+    const band = (w - mL - mR) / n;
+    const barW = Math.min(58, band * 0.58);
+    const bx = i => mL + band * i + (band - barW) / 2;
+    const base = h - mB;
+
+    const svg = svgEl("svg", { class: "viz ldg-viz", width: w, height: h, viewBox: "0 0 " + w + " " + h });
+
+    /* budget guideline, carried across the page like a ruled line */
+    const gl = svgEl("line", { x1: mL + 2, x2: xB, y1: Y(budget), y2: Y(budget), "stroke-dasharray": "5 4" });
+    gl.style.stroke = "var(--ink-3)"; gl.style.opacity = "0.45";
+    svg.appendChild(gl);
+
+    const col = (x, catLabel, delay) => {
+      const g = svgEl("g");
+      svg.appendChild(g);
+      const cl = svgEl("text", { x: x + barW / 2, y: base + 16, "text-anchor": "middle", class: "ldg-cat" });
+      cl.textContent = catLabel;
+      svg.appendChild(cl);
+      g.style.opacity = "0"; g.style.transform = "translateY(10px)";
+      g.style.transition = "opacity .5s ease " + delay + "ms, transform .55s cubic-bezier(.2,.8,.3,1) " + delay + "ms";
+      requestAnimationFrame(() => requestAnimationFrame(() => { g.style.opacity = "1"; g.style.transform = "none"; }));
+      return g;
+    };
+
+    /* anchors — Budget and Actual, footed on the ledger rule */
+    const anchor = (i, v, label, accent) => {
+      const x = bx(i), g = col(x, label, i * 70);
+      const r = svgEl("rect", { x, y: Y(v), width: barW, height: base - Y(v), rx: 2 });
+      r.style.fill = accent ? "var(--acc-soft)" : "var(--soft)";
+      r.style.stroke = accent ? "var(--acc-line)" : "var(--hairline)";
+      g.appendChild(r);
+      const cap = svgEl("line", { x1: x, x2: x + barW, y1: Y(v), y2: Y(v), "stroke-width": 2.5 });
+      cap.style.stroke = accent ? "var(--acc)" : "var(--ink-2)";
+      g.appendChild(cap);
+      const t = svgEl("text", { x: x + barW / 2, y: Y(v) - 8, "text-anchor": "middle", class: "ldg-anchor-v" });
+      t.textContent = "$" + (v / 1000).toFixed(2) + "M";
+      g.appendChild(t);
+      return g;
+    };
+    anchor(0, budget, "BUDGET", false);
+
+    /* floating steps — each department's over/under */
+    vals.forEach((v, i) => {
+      const x = bx(i + 1), from = cums[i], to = cums[i + 1];
+      const g = col(x, (abbr[cats[i]] || cats[i]).toUpperCase(), (i + 1) * 70);
+      const top = Y(Math.max(from, to)), bh = Math.max(3, Math.abs(Y(from) - Y(to)));
+      const r = svgEl("rect", { x, y: top, width: barW, height: bh, rx: 2 });
+      r.style.fill = v >= 0 ? "var(--bad-ink)" : "var(--good-ink)";
+      r.style.opacity = bigTwo.includes(i) ? "0.92" : "0.72";
+      g.appendChild(r);
+      const t = svgEl("text", { x: x + barW / 2, y: v >= 0 ? top - 7 : top + bh + 15, "text-anchor": "middle", class: "ldg-step-v" });
+      t.textContent = (v >= 0 ? "+$" : "−$") + Math.abs(v) + "K";
+      t.style.fill = v >= 0 ? "var(--bad-ink)" : "var(--good-ink)";
+      g.appendChild(t);
+      if (notes[cats[i]] && bigTwo.includes(i)) {
+        const a = svgEl("text", { x: x + barW / 2, y: top - 20, "text-anchor": "middle", class: "ldg-note-v" });
+        a.textContent = notes[cats[i]];
+        g.appendChild(a);
+      }
+      /* connector from the previous column at the new running level */
+      const c = svgEl("line", { x1: bx(i) + barW, x2: x, y1: Y(from), y2: Y(from), "stroke-dasharray": "2 3" });
+      c.style.stroke = "var(--ink-3)"; c.style.opacity = "0.55";
+      g.appendChild(c);
+    });
+
+    /* connector into Actual, then the Actual anchor */
+    const cLast = svgEl("line", { x1: bx(n - 2) + barW, x2: bx(n - 1), y1: Y(actual), y2: Y(actual), "stroke-dasharray": "2 3" });
+    cLast.style.stroke = "var(--ink-3)"; cLast.style.opacity = "0.55";
+    svg.appendChild(cLast);
+    anchor(n - 1, actual, "ACTUAL", true);
+
+    /* the closing figure — bracket from budget to actual */
+    const brk = svgEl("g");
+    [[xB, xB, Y(actual), Y(budget)], [xB - 5, xB, Y(actual), Y(actual)], [xB - 5, xB, Y(budget), Y(budget)]].forEach(([x1, x2, y1, y2]) => {
+      const ln = svgEl("line", { x1, x2, y1, y2, "stroke-width": 1.5 });
+      ln.style.stroke = "var(--bad-ink)";
+      brk.appendChild(ln);
+    });
+    const bl = svgEl("text", { x: xB + 8, y: (Y(actual) + Y(budget)) / 2 - 2, class: "ldg-total-fig" });
+    bl.textContent = "+$" + total.toLocaleString("en-US") + "K";
+    brk.appendChild(bl);
+    const bp = svgEl("text", { x: xB + 8, y: (Y(actual) + Y(budget)) / 2 + 12, class: "ldg-total-pct" });
+    bp.textContent = "+" + (total / budget * 100).toFixed(1) + "% vs budget";
+    brk.appendChild(bp);
+    brk.style.opacity = "0";
+    brk.style.transition = "opacity .6s ease " + (n * 70 + 250) + "ms";
+    requestAnimationFrame(() => requestAnimationFrame(() => { brk.style.opacity = "1"; }));
+    svg.appendChild(brk);
+
+    /* the ledger rule — a hairline double rule under the figures */
+    [0, 3].forEach(dy => {
+      const ln = svgEl("line", { x1: mL, x2: xB, y1: base + 0.5 + dy, y2: base + 0.5 + dy });
+      ln.style.stroke = "var(--ink-3)"; ln.style.opacity = "0.6";
+      svg.appendChild(ln);
+    });
+
+    box.appendChild(svg);
+  }
+  registerChart(wfc, () => waterfall(wfc));
+
+  /* =============== the naked stat strip =============== */
+  const strip = sect("st-strip ldg-strip");
+  p.kpis.forEach(k => {
+    const s = el("article", "card kpi st-stat");
+    const lb = el("div", "kpi-label");
+    lb.appendChild(srvGlyph(k.source, 15));
+    lb.appendChild(el("span", "", k.label));
+    s.appendChild(lb);
+    const row = el("div", "kpi-row");
+    const val = el("span", "kpi-value");
+    countUp(val, k.value);
+    row.appendChild(val);
+    row.appendChild(el("span", "kpi-delta " + (k.deltaGood ? "good" : "bad"), (k.deltaDir === "up" ? "▲ " : "▼ ") + k.delta));
+    s.appendChild(row);
+    const sp = el("div", "kpi-spark");
+    s.appendChild(sp);
+    registerChart(sp, () => renderSpark(sp, k.spark));
+    makeDraggable(s, { type: "kpi", label: k.label + " · " + k.value, data: k });
+    strip.appendChild(s);
+  });
+
+  /* =============== 01 · Reconcile =============== */
+  if (p.joined) {
+    const s1 = sect("joined-card ldg-join");
+    stHead(s1, "01", "Reconcile", p.joined.subtitle);
+    const body = el("div", "joined-body");
+    const ch = el("div", "joined-chart");
+    const aside = el("aside", "joined-aside");
+    aside.appendChild(buildInsight(p.joined.insight));
+    body.append(ch, aside);
+    s1.appendChild(body);
+    registerChart(ch, () => renderJoined(ch, p.joined));
+  }
+
+  /* =============== 02 · Move money =============== */
+  const s2 = sect("ldg-move");
+  stHead(s2, "02", "Move money", "post the work — cross-app entries, and delegations that run in the background");
+  const grid2 = el("div", "ldg-2col");
+  const chnCol = el("div", "chn-card ldg-col");
+  chnCol.appendChild(el("div", "ldg-colhead", "Cross-app workflows"));
+  (p.chains || []).forEach(c => {
+    const it = el("div", "chn-item ldg-entry");
+    const top = el("div", "chn-top");
+    const bd = el("div"); bd.style.cssText = "flex:1;min-width:0";
+    bd.appendChild(el("div", "chn-name", c.name));
+    bd.appendChild(el("div", "chn-desc", c.desc));
+    top.appendChild(bd);
+    const run = el("button", "dg-btn", "▶ Run");
+    run.addEventListener("click", () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); });
+    top.appendChild(run);
+    it.appendChild(top);
+    const path = el("div", "chn-path");
+    c.steps.forEach((st, i) => { if (i) path.appendChild(el("span", "hop", "➜")); path.appendChild(srvGlyph(st.server, 20)); });
+    it.appendChild(path);
+    makeDraggable(it, { type: "chain", label: "Workflow: " + c.name, data: c });
+    chnCol.appendChild(it);
+  });
+  grid2.appendChild(chnCol);
+  const dgCol = el("div", "dg-card ldg-col");
+  dgCol.appendChild(el("div", "ldg-colhead", "Delegated to askMElah"));
+  (p.delegations || []).forEach(d => {
+    const doneAlready = (state.delegated[state.personaId] || {})[d.id];
+    const it = el("div", "dg-item ldg-entry");
+    const orb = askmeAv(26); orb.classList.add("dg-orb");
+    it.appendChild(orb);
+    const bd = el("div", "dg-body");
+    bd.appendChild(el("div", "dg-label", d.label));
+    const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
+    bd.appendChild(sub);
+    const prog = el("div", "dg-prog"); prog.hidden = true;
+    const fill = el("i"); prog.appendChild(fill);
+    bd.appendChild(prog);
+    it.appendChild(bd);
+    const stateBox = el("span", "dg-state");
+    if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
+    else {
+      const btn = el("button", "dg-btn", "▶ Delegate");
+      btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill, stateBox, btn, bd }));
+      stateBox.appendChild(btn);
+    }
+    it.appendChild(stateBox);
+    dgCol.appendChild(it);
+  });
+  grid2.appendChild(dgCol);
+  s2.appendChild(grid2);
+
+  /* =============== 03 · Sign — approvals as ledger lines =============== */
+  const s3 = sect("ap-card ldg-sign");
+  const h3 = stHead(s3, "03", "Sign", "each line pre-read by askMElah — stamp it, or send it back with questions");
+  const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
+  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.append(el("span", "", "Autopilot"), el("span", "sw"));
+  h3.appendChild(auto);
+
+  const ledger = el("div", "ldg-lines");
+  const lh = el("div", "ldg-lhead");
+  ["", "item", "requested by", "amount", ""].forEach(t => lh.appendChild(el("span", "", t)));
+  ledger.appendChild(lh);
+
+  const totalVal = el("b", "ldg-total-v");
+  const totalCnt = el("span", "ldg-total-c");
+  function refreshTotal() {
+    const pend = FOW.pendingApprovals();
+    const sum = pend.reduce((a, x) => a + money(x.amount), 0);
+    totalVal.textContent = "$" + sum.toLocaleString("en-US");
+    totalCnt.textContent = pend.length
+      ? pend.length + " line" + (pend.length > 1 ? "s" : "") + " open"
+      : "all lines signed";
+  }
+  function stamp(cell) { cell.appendChild(el("span", "ldg-stamp", "APPROVED")); }
+
+  p.approvals.forEach(a => {
+    const done = (state.approved[state.personaId] || new Set()).has(a.id);
+    const row = el("div", "ldg-line" + (done ? " done" : ""));
+    row.dataset.approval = a.id;
+    row.appendChild(el("span", "ap-urg " + a.urgency));
+    const item = el("div", "ldg-li");
+    const t1 = el("div", "ldg-li-t");
+    t1.appendChild(el("span", "ldg-type", a.type));
+    t1.appendChild(el("span", "ldg-li-title", a.title));
+    item.appendChild(t1);
+    item.appendChild(el("div", "ldg-li-meta", a.meta));
+    row.appendChild(item);
+    const req = el("div", "ldg-req");
+    req.appendChild(el("b", "", a.requester));
+    req.appendChild(el("span", "", SERVERS[a.source] ? "via " + SERVERS[a.source].name : ""));
+    row.appendChild(req);
+    row.appendChild(el("span", "ldg-amt", a.amount || "—"));
+    const actCell = el("span", "ldg-act");
+    if (done) stamp(actCell);
+    else {
+      const btns = el("span", "ap-acts ldg-btns");
+      const ok = el("button", "ldg-ok", "✓ Approve");
+      ok.addEventListener("click", e => {
+        e.stopPropagation();
+        sparkleAt(e.clientX, e.clientY, { n: 10, d: 34 });
+        stamp(actCell);
+        FOW.approve(a.id, true);
+        toast("Approved — " + a.requester + " notified");
+        refreshTotal();
+      });
+      const ask = el("button", "ldg-ask", "?");
+      ask.title = "Ask askMElah first";
+      ask.addEventListener("click", e => {
+        e.stopPropagation();
+        attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });
+        sendMessage("Should I approve this?");
+      });
+      btns.append(ok, ask);
+      actCell.appendChild(btns);
+    }
+    row.appendChild(actCell);
+    makeDraggable(row, { type: "approval", label: a.type + ": " + a.title, data: a });
+    ledger.appendChild(row);
+  });
+  const totalRow = el("div", "ldg-total");
+  totalRow.appendChild(el("span", "ldg-total-l", "Total awaiting signature"));
+  totalRow.appendChild(totalCnt);
+  totalRow.appendChild(totalVal);
+  ledger.appendChild(totalRow);
+  refreshTotal();
+  s3.appendChild(ledger);
+
+  auto.addEventListener("click", () => {
+    const on = !state.autopilot[state.personaId];
+    state.autopilot[state.personaId] = on;
+    auto.classList.toggle("on", on);
+    if (!on) { toast("Autopilot off — every line waits for your signature again", "info"); return; }
+    const low = FOW.pendingApprovals().filter(a => a.urgency === "low");
+    if (!low.length) { toast("Autopilot on — nothing low-risk on the ledger right now", "info"); return; }
+    low.forEach((a, i) => setTimeout(() => {
+      const row = $('[data-approval="' + a.id + '"]');
+      if (row) { const cell = $(".ldg-act", row); if (cell) stamp(cell); }
+      FOW.approve(a.id, i === low.length - 1);
+      refreshTotal();
+      if (i === low.length - 1) toast("Autopilot signed " + low.length + " low-risk line" + (low.length > 1 ? "s" : "") + " — requesters notified");
+    }, 700 + i * 450));
+    toast("Autopilot clearing " + low.length + " low-risk line" + (low.length > 1 ? "s" : ""), "info");
+  });
+
+  /* =============== 04 · Close =============== */
+  const s4 = sect("wk-card ldg-closebook");
+  stHead(s4, "04", "Close", "what the week cost, and what's still open before the books shut");
+  const grid4 = el("div", "ldg-2col");
+  const wkCol = el("div", "ldg-col");
+  wkCol.appendChild(el("div", "ldg-colhead", "The week in numbers"));
+  const wk = p.week;
+  if (wk) {
+    const tiles = el("div", "wk-stats");
+    [["Meeting hours", wk.meetingHours + "h"], ["Focus hours", wk.focusHours + "h"], ["Meeting cost", wk.meetingCost], ["Deep blocks", String(wk.deepBlocks)]].forEach(([l, v]) => {
+      const t = el("div", "wk");
+      t.appendChild(el("div", "l", l));
+      const vd = el("div", "v"); countUp(vd, v);
+      t.appendChild(vd);
+      tiles.appendChild(t);
+    });
+    wkCol.appendChild(tiles);
+    const chw = el("div");
+    wkCol.appendChild(chw);
+    registerChart(chw, () => renderBars(chw, { title: "wk", unit: "h", categories: wk.days, series: [{ name: "Meetings", values: wk.meetings }, { name: "Focus", values: wk.focus }] }, { mini: true, h: 118 }));
+    wkCol.appendChild(el("div", "ldg-memo", "memo — " + wk.insight));
+  }
+  grid4.appendChild(wkCol);
+  const tCol = el("div", "ldg-col");
+  tCol.appendChild(el("div", "ldg-colhead", "Close checklist — open items"));
+  p.tasks.forEach(t => {
+    const it = el("div", "task-item ldg-task");
+    it.appendChild(el("span", "task-key", t.id));
+    it.appendChild(el("span", "task-title", t.title));
+    it.appendChild(el("span", "ldg-due", t.due));
+    it.appendChild(el("span", "task-status " + t.status, t.status === "inprogress" ? "in progress" : t.status));
+    makeDraggable(it, { type: "task", label: t.id + " " + t.title, data: t });
+    tCol.appendChild(it);
+  });
+  grid4.appendChild(tCol);
+  s4.appendChild(grid4);
+
+  /* =============== carried forward — wired into =============== */
+  const foot = sect("ldg-wired");
+  const fr = el("div", "ldg-wired-row");
+  fr.appendChild(el("span", "ldg-wired-l", "wired into"));
+  (p.connections || []).forEach(cid => fr.appendChild(srvGlyph(cid, 26)));
+  const more = el("button", "rail-more ldg-mcp", "MCP console →");
+  more.addEventListener("click", () => mcpOpen());
+  fr.appendChild(more);
+  foot.appendChild(fr);
+  foot.appendChild(el("div", "ldg-eoe", "Period 07 · FY26 — bridge reconciles to +$1,440K · E&OE"));
+
+  /* =============== the live clock =============== */
+  const tick = () => {
+    if (!document.contains(cdV)) { clearInterval(STUDIO.timer); return; }
+    const now = new Date();
+    const t = new Date(now);
+    t.setDate(now.getDate() + ((2 - now.getDay()) + 7) % 7);
+    t.setHours(9, 0, 0, 0);
+    if (t <= now) t.setDate(t.getDate() + 7);
+    const diff = t - now;
+    const dd = Math.floor(diff / 864e5);
+    const hh = Math.floor((diff % 864e5) / 36e5);
+    const mm = Math.floor((diff % 36e5) / 6e4);
+    const ss = Math.floor((diff % 6e4) / 1000);
+    const P = x => String(x).padStart(2, "0");
+    cdV.textContent = (dd ? dd + "d " : "") + P(hh) + ":" + P(mm) + ":" + P(ss);
+  };
+  tick();
+  STUDIO.timer = setInterval(tick, 1000);
+}
+
+/* ============================================================
+   FoW · studio-it — THE BRIDGE
+   Marcus Webb's network-operations console: a status board of
+   service lamps, an uptime dial, a patch-deadline countdown —
+   then four chapters: Correlate / Automate / Triage / Capacity.
+   ============================================================ */
+
+function renderStudio_it(p, cv) {
+  clearCharts();
+  clearInterval(STUDIO.timer);
+  state.cardIndex = 0;
+  cv.textContent = "";
+  let sec = 0;
+  const sect = cls => { const s = el("section", "st-sec " + (cls || "")); s.style.setProperty("--i", sec++); cv.appendChild(s); return s; };
+  const z = n => String(n).padStart(2, "0");
+
+  /* ================= HERO — THE STATUS BOARD ================= */
+  const board = sect("it-board");
+
+  /* topline: live badge · console name · on-call · clock */
+  const topline = el("div", "it-topline");
+  const live = el("span", "it-live");
+  live.appendChild(el("i"));
+  live.appendChild(el("span", "", "LIVE"));
+  topline.appendChild(live);
+  topline.appendChild(el("span", "it-topname", "OPS BRIDGE // " + p.user.dept + " OPERATIONS · " + p.user.location.toUpperCase()));
+  const topR = el("span", "it-topright");
+  const oncall = el("span", "it-oncall");
+  oncall.appendChild(el("i"));
+  oncall.appendChild(el("span", "", "ON CALL · LENA PARK · APAC"));
+  const clockEl = el("span", "it-clock", "--:--:--");
+  topR.append(oncall, clockEl);
+  topline.appendChild(topR);
+  board.appendChild(topline);
+
+  /* hero body: briefing (left) + dial & countdown (right) */
+  const hero = el("div", "it-hero");
+  const hL = el("div", "it-hero-l");
+  const hr = new Date().getHours();
+  const greet = hr < 12 ? "GOOD MORNING" : hr < 18 ? "GOOD AFTERNOON" : "GOOD EVENING";
+  hL.appendChild(el("div", "it-kicker", greet + ", " + p.user.name.split(" ")[0].toUpperCase() + " · FRI AUG 8 2026 · 3,120 ENDPOINTS · 5 SITES"));
+  hL.appendChild(el("div", "it-headline", p.focus.headline));
+  hL.appendChild(el("div", "it-subline", p.focus.sub));
+  const acts = el("div", "it-acts");
+  const runBtn = el("button", "lb-enter", "▶ Run: clear CVE exposure");
+  runBtn.addEventListener("click", () => { if (p.chains && p.chains[0]) { addUserMsg("Run cross-app workflow: " + p.chains[0].name); runChain(p.chains[0]); } });
+  const recapBtn = el("button", "hstat primary it-recap", "✦ Draft my end-of-week recap");
+  recapBtn.addEventListener("click", () => sendMessage("Draft my end-of-week recap"));
+  const askBtn = el("button", "lb-play", "Trace the exposure");
+  askBtn.addEventListener("click", () => {
+    attachChip({ type: "kpi", label: "Patch compliance · 96.8%", data: p.kpis[2] });
+    sendMessage("Which endpoints still need the CVE-2026-31842 patch?");
+  });
+  acts.append(runBtn, recapBtn, askBtn);
+  hL.appendChild(acts);
+  hero.appendChild(hL);
+
+  const hR = el("div", "it-hero-r");
+  /* uptime dial — SVG arc gauge */
+  const upK = p.kpis.find(k => /uptime/i.test(k.label)) || p.kpis[1];
+  const upVal = parseFloat(upK.value) || 99.9;
+  const LO = 99.0, HI = 100.0;
+  const frac = Math.max(0, Math.min(1, (upVal - LO) / (HI - LO)));
+  const CX = 66, CY = 66, R = 48;
+  const pt = (a, r) => { const rad = a * Math.PI / 180; return (CX + r * Math.sin(rad)).toFixed(2) + " " + (CY - r * Math.cos(rad)).toFixed(2); };
+  const arc = f => { const a0 = -120, a1 = -120 + 240 * f; return "M " + pt(a0, R) + " A " + R + " " + R + " 0 " + ((a1 - a0) > 180 ? 1 : 0) + " 1 " + pt(a1, R); };
+  const sloA = -120 + 240 * ((99.9 - LO) / (HI - LO));
+  const dial = el("div", "it-dial");
+  dial.innerHTML =
+    '<svg viewBox="0 0 132 112">' +
+    '<path d="' + arc(1) + '" fill="none" stroke="var(--hairline)" stroke-width="8" stroke-linecap="round"/>' +
+    '<path class="it-dial-arc" d="' + arc(frac) + '" fill="none" stroke="var(--good-ink)" stroke-width="8" stroke-linecap="round"/>' +
+    '<line x1="' + pt(sloA, R - 8).split(" ")[0] + '" y1="' + pt(sloA, R - 8).split(" ")[1] + '" x2="' + pt(sloA, R + 8).split(" ")[0] + '" y2="' + pt(sloA, R + 8).split(" ")[1] + '" stroke="var(--crit)" stroke-width="1.6" opacity="0.85"/>' +
+    "</svg>";
+  const dialIn = el("div", "it-dial-in");
+  const dialV = el("b", "", upK.value);
+  dialIn.appendChild(dialV);
+  dialIn.appendChild(el("span", "", "UPTIME · CORE"));
+  dial.appendChild(dialIn);
+  const dialWrap = el("div", "it-dial-wrap");
+  dialWrap.appendChild(dial);
+  dialWrap.appendChild(el("div", "it-dial-cap", "SLO 99.90 · JUL LOW 99.71 · " + upK.delta.toUpperCase() + " " + upK.vs.toUpperCase()));
+  hR.appendChild(dialWrap);
+
+  /* CVE patch-deadline countdown */
+  const cd = el("div", "it-cd");
+  const cdTag = el("span", "it-cd-tag");
+  cdTag.appendChild(el("i", "", "▲"));
+  cdTag.appendChild(el("span", "", "CVE-2026-31842"));
+  cd.appendChild(cdTag);
+  const cdV = el("b", "", "--:--:--");
+  cd.appendChild(cdV);
+  cd.appendChild(el("span", "it-cd-sub", "PATCH DEADLINE · TUE 09:00"));
+  cd.appendChild(el("span", "it-cd-sub dim", "214 ENDPOINTS STILL EXPOSED"));
+  hR.appendChild(cd);
+  hero.appendChild(hR);
+  board.appendChild(hero);
+
+  /* service lamps — from p.bars */
+  const lampBar = el("div", "it-lamps");
+  const vals = p.bars.series[0].values;
+  const hot = vals.indexOf(Math.max.apply(null, vals));
+  p.bars.categories.forEach((name, i) => {
+    const amber = i === hot;
+    const lamp = el("button", "it-lamp" + (amber ? " amber" : ""));
+    lamp.appendChild(el("i"));
+    const t = el("span", "it-lamp-t");
+    t.appendChild(el("b", "", name.toUpperCase()));
+    t.appendChild(el("em", "", vals[i] + " INC · 30D · " + (amber ? "WATCH" : "NOM")));
+    lamp.appendChild(t);
+    lamp.title = name + " — " + vals[i] + " incidents in the last 30 days";
+    lamp.addEventListener("click", () => {
+      attachChip({ type: "service", label: name + " · " + vals[i] + " incidents / 30d", data: { name: name, incidents: vals[i] } });
+      sendMessage("What's driving incidents on " + name + "?");
+    });
+    makeDraggable(lamp, { type: "service", label: name + " · " + vals[i] + " incidents / 30d", data: { name: name, incidents: vals[i] } });
+    lampBar.appendChild(lamp);
+  });
+  board.appendChild(lampBar);
+
+  /* live tick: clock + countdown */
+  function nextTue9(from) {
+    const d = new Date(from);
+    d.setHours(9, 0, 0, 0);
+    let add = (2 - d.getDay() + 7) % 7;
+    if (add === 0 && from >= d) add = 7;
+    d.setDate(d.getDate() + add);
+    return d;
+  }
+  const tickFn = () => {
+    if (!document.contains(clockEl)) { clearInterval(STUDIO.timer); return; }
+    const now = new Date();
+    clockEl.textContent = z(now.getHours()) + ":" + z(now.getMinutes()) + ":" + z(now.getSeconds()) + " SGT";
+    const diff = Math.max(0, nextTue9(now) - now);
+    const dd = Math.floor(diff / 864e5), hh = Math.floor(diff / 36e5) % 24, mm = Math.floor(diff / 6e4) % 60, ss = Math.floor(diff / 1e3) % 60;
+    cdV.textContent = (dd > 0 ? dd + "D " : "") + z(hh) + ":" + z(mm) + ":" + z(ss);
+  };
+  tickFn();
+  STUDIO.timer = setInterval(tickFn, 1000);
+
+  /* ================= NAKED STAT STRIP ================= */
+  const strip = sect("st-strip it-strip");
+  p.kpis.forEach(k => {
+    const s = el("article", "card kpi st-stat");
+    const lb = el("div", "kpi-label");
+    lb.appendChild(srvGlyph(k.source, 15));
+    lb.appendChild(el("span", "", k.label));
+    s.appendChild(lb);
+    const row = el("div", "kpi-row");
+    const val = el("span", "kpi-value");
+    countUp(val, k.value);
+    row.appendChild(val);
+    row.appendChild(el("span", "kpi-delta " + (k.deltaGood ? "good" : "bad"), (k.deltaDir === "up" ? "▲ " : "▼ ") + k.delta));
+    s.appendChild(row);
+    const sp = el("div", "kpi-spark");
+    s.appendChild(sp);
+    registerChart(sp, () => renderSpark(sp, k.spark));
+    makeDraggable(s, { type: "kpi", label: k.label + " · " + k.value, data: k });
+    strip.appendChild(s);
+  });
+
+  /* ================= 01 · CORRELATE ================= */
+  if (p.joined) {
+    const s1 = sect("joined-card st-join it-join");
+    stHead(s1, "01", "Correlate", p.joined.subtitle);
+    const body = el("div", "joined-body");
+    const ch = el("div", "joined-chart");
+    const aside = el("aside", "joined-aside");
+    aside.appendChild(buildInsight(p.joined.insight));
+    body.append(ch, aside);
+    s1.appendChild(body);
+    registerChart(ch, () => renderJoined(ch, p.joined));
+  }
+
+  /* ================= 02 · AUTOMATE ================= */
+  const s2 = sect("it-make");
+  stHead(s2, "02", "Automate", "runbooks and dispatches — askMElah executes end to end, every hop logged");
+  const makeGrid = el("div", "it-cols even");
+  const chainsCol = el("div", "chn-card it-col");
+  chainsCol.appendChild(el("div", "it-colcap", "RUNBOOKS // CROSS-APP CHAINS"));
+  (p.chains || []).forEach(c => {
+    const it = el("div", "chn-item it-chain");
+    const top = el("div", "chn-top");
+    const bd = el("div");
+    bd.style.cssText = "flex:1;min-width:0";
+    bd.appendChild(el("div", "chn-name", c.name));
+    bd.appendChild(el("div", "chn-desc", c.desc));
+    top.appendChild(bd);
+    top.appendChild(el("span", "it-hops", c.steps.length + " HOPS"));
+    const run = el("button", "dg-btn", "▶ Run");
+    run.addEventListener("click", () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); });
+    top.appendChild(run);
+    it.appendChild(top);
+    const path = el("div", "chn-path");
+    c.steps.forEach((st, i) => { if (i) path.appendChild(el("span", "hop", "➜")); path.appendChild(srvGlyph(st.server, 20)); });
+    it.appendChild(path);
+    makeDraggable(it, { type: "chain", label: "Workflow: " + c.name, data: c });
+    chainsCol.appendChild(it);
+  });
+  makeGrid.appendChild(chainsCol);
+  const dgCol = el("div", "dg-card it-col");
+  dgCol.appendChild(el("div", "it-colcap", "DISPATCH // DELEGATED TO ASKMELAH"));
+  (p.delegations || []).forEach(d => {
+    const doneAlready = (state.delegated[state.personaId] || {})[d.id];
+    const it = el("div", "dg-item");
+    const orb = askmeAv(26);
+    orb.classList.add("dg-orb");
+    it.appendChild(orb);
+    const bd = el("div", "dg-body");
+    bd.appendChild(el("div", "dg-label", d.label));
+    const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
+    bd.appendChild(sub);
+    const prog = el("div", "dg-prog");
+    prog.hidden = true;
+    const fill = el("i");
+    prog.appendChild(fill);
+    bd.appendChild(prog);
+    it.appendChild(bd);
+    const stateBox = el("span", "dg-state");
+    if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
+    else {
+      const btn = el("button", "dg-btn", "▶ Delegate");
+      btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill, stateBox, btn, bd }));
+      stateBox.appendChild(btn);
+    }
+    it.appendChild(stateBox);
+    dgCol.appendChild(it);
+  });
+  makeGrid.appendChild(dgCol);
+  s2.appendChild(makeGrid);
+
+  /* ================= 03 · TRIAGE ================= */
+  const s3 = sect("ap-card it-triage");
+  const h3 = stHead(s3, "03", "Triage", "approvals routed like incidents — pre-read by askMElah, cleared by you");
+  const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
+  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.append(el("span", "", "Autopilot"), el("span", "sw"));
+  auto.addEventListener("click", () => {
+    const on = !state.autopilot[state.personaId];
+    state.autopilot[state.personaId] = on;
+    auto.classList.toggle("on", on);
+    if (!on) { toast("Autopilot off — everything waits for you again", "info"); return; }
+    const low = FOW.pendingApprovals().filter(a => a.urgency === "low");
+    low.forEach((a, i) => setTimeout(() => { FOW.approve(a.id, i === low.length - 1); }, 600 + i * 450));
+    toast(low.length ? "Autopilot clearing " + low.length + " low-risk item" + (low.length > 1 ? "s" : "") : "Autopilot on — nothing low-risk right now", "info");
+  });
+  h3.appendChild(auto);
+
+  const triCols = el("div", "it-cols triage");
+  const qCol = el("div", "it-col");
+  const doneSet = state.approved[state.personaId] || new Set();
+  const qHead = el("div", "it-qcap");
+  qHead.appendChild(el("span", "", "TRIAGE QUEUE // " + p.approvals.length + " ITEMS NEED YOUR SIGN-OFF"));
+  qHead.appendChild(el("span", "it-qcap-r", "SLA WATCH · RITM-8841 BREACHES 15:00"));
+  qCol.appendChild(qHead);
+  const queue = el("div", "it-queue");
+  p.approvals.forEach(a => {
+    const isDone = doneSet.has(a.id);
+    const row = el("div", "it-q " + a.urgency + (isDone ? " done" : ""));
+    row.dataset.approval = a.id;
+    row.appendChild(el("span", "it-q-lamp " + a.urgency));
+    row.appendChild(el("span", "it-q-pri " + a.urgency, a.urgency === "high" ? "P1" : a.urgency === "med" ? "P2" : "P3"));
+    const ref = (a.meta.match(/[A-Z]{2,}-\d+/) || [a.source.toUpperCase()])[0];
+    row.appendChild(el("span", "it-q-ref", ref));
+    const bd = el("div", "it-q-bd");
+    bd.appendChild(el("div", "it-q-title", a.title + (a.amount ? " · " + a.amount : "")));
+    bd.appendChild(el("div", "it-q-meta", a.requester + " · " + a.meta));
+    row.appendChild(bd);
+    if (!isDone) {
+      const rActs = el("span", "ap-acts it-q-acts");
+      const ok = el("button", "it-q-ok", "CLEAR ✓");
+      ok.addEventListener("click", e => {
+        sparkleAt(e.clientX, e.clientY, { n: 8, d: 30 });
+        FOW.approve(a.id, true);
+        toast("Approved — " + a.requester + " notified");
+      });
+      const ask = el("button", "it-q-ask", "ASK");
+      ask.addEventListener("click", () => { attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
+      rActs.append(ok, ask);
+      row.appendChild(rActs);
+    }
+    makeDraggable(row, { type: "approval", label: a.type + ": " + a.title, data: a });
+    queue.appendChild(row);
+  });
+  qCol.appendChild(queue);
+  triCols.appendChild(qCol);
+
+  /* cross-system signals from the chains */
+  const sigCol = el("div", "it-col");
+  sigCol.appendChild(el("div", "it-colcap", "SIGNALS // ONLY VISIBLE IN THE JOIN"));
+  (p.chains || []).filter(c => c.insight).forEach((c, i) => {
+    const ins = c.insight;
+    const panel = el("button", "it-sig");
+    const top = el("div", "it-sig-top");
+    (ins.sources || []).forEach((sv, j) => { if (j) top.appendChild(el("span", "it-plus", "+")); top.appendChild(srvGlyph(sv, 16)); });
+    top.appendChild(el("span", "it-sig-tag", "⚡ SIGNAL"));
+    panel.appendChild(top);
+    panel.appendChild(el("div", "it-sig-h", ins.headline));
+    panel.appendChild(el("div", "it-sig-act", "▶ " + ins.action));
+    panel.addEventListener("click", () => {
+      if (i === 0) {
+        attachChip({ type: "insight", label: ins.headline, data: ins });
+        sendMessage("Which endpoints still need the CVE-2026-31842 patch?");
+      } else {
+        addUserMsg("Act on this signal: " + ins.action);
+        runChain(c);
+      }
+    });
+    makeDraggable(panel, { type: "insight", label: ins.headline, data: ins });
+    sigCol.appendChild(panel);
+  });
+  triCols.appendChild(sigCol);
+  s3.appendChild(triCols);
+
+  /* ================= 04 · CAPACITY ================= */
+  const s4 = sect("wk-card it-cap");
+  stHead(s4, "04", "Capacity", "the human node — this week's load vs the change queue");
+  const capCols = el("div", "it-cols cap");
+  if (p.week) {
+    const wk = p.week;
+    const wkCol = el("div", "it-col");
+    wkCol.appendChild(el("div", "it-colcap", "LOAD // MEETINGS VS FOCUS"));
+    const grid = el("div", "wk-stats");
+    [["MEETING HOURS", wk.meetingHours + "h"], ["FOCUS HOURS", wk.focusHours + "h"], ["DEEP BLOCKS", String(wk.deepBlocks)], ["CONTEXT SWITCHES", String(wk.contextSwitches)]].forEach(([l, v]) => {
+      const t = el("div", "wk");
+      t.appendChild(el("div", "l", l));
+      const vd = el("div", "v");
+      countUp(vd, v);
+      t.appendChild(vd);
+      grid.appendChild(t);
+    });
+    wkCol.appendChild(grid);
+    const chw = el("div");
+    wkCol.appendChild(chw);
+    registerChart(chw, () => renderBars(chw, { title: "wk", unit: "h", categories: wk.days, series: [{ name: "Meetings", values: wk.meetings }, { name: "Focus", values: wk.focus }] }, { mini: true, h: 118 }));
+    wkCol.appendChild(el("div", "it-mono-note", "MEETING COST · " + wk.meetingCost.toUpperCase()));
+    const adv = el("div", "it-adv");
+    adv.appendChild(el("b", "", "ADVISORY"));
+    adv.appendChild(el("span", "", wk.insight));
+    wkCol.appendChild(adv);
+    capCols.appendChild(wkCol);
+  }
+  const tCol = el("div", "it-col");
+  tCol.appendChild(el("div", "it-colcap", "CHANGE QUEUE // OPEN WORK"));
+  p.tasks.forEach(t => {
+    const it = el("div", "task-item it-task");
+    it.appendChild(el("span", "it-t-pri " + t.priority.toLowerCase(), t.priority));
+    it.appendChild(el("span", "task-key", t.id));
+    const bd = el("span", "it-t-bd");
+    bd.appendChild(el("span", "task-title", t.title));
+    bd.appendChild(el("span", "it-t-due", "DUE " + t.due.toUpperCase()));
+    it.appendChild(bd);
+    it.appendChild(el("span", "task-status " + t.status, t.status === "inprogress" ? "in progress" : t.status));
+    makeDraggable(it, { type: "task", label: t.id + " " + t.title, data: t });
+    tCol.appendChild(it);
+  });
+  capCols.appendChild(tCol);
+  s4.appendChild(capCols);
+
+  /* ================= UPLINKS ================= */
+  const foot = sect("st-wired it-wired");
+  const fl = el("div", "st-wired-row");
+  fl.appendChild(el("span", "it-upl", "UPLINKS //"));
+  (p.connections || []).forEach(cid => fl.appendChild(srvGlyph(cid, 26)));
+  fl.appendChild(el("span", "it-upl-ok", (p.connections || []).length + "/" + (p.connections || []).length + " NOMINAL"));
+  const more = el("button", "rail-more it-mcp", "MCP CONSOLE →");
+  more.style.width = "auto";
+  more.addEventListener("click", mcpOpen);
+  fl.appendChild(more);
+  foot.appendChild(fl);
 }
 
 </script>
