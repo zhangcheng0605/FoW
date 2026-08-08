@@ -160,6 +160,69 @@ body[data-theme="dark"] #onboard { background: radial-gradient(ellipse 100% 90% 
   animation: obIn 700ms 60ms cubic-bezier(.2,.9,.25,1) both;
 }
 .ob-sub { margin: 0 0 34px; color: var(--ink-2); font-size: 15px; animation: obIn 700ms 120ms cubic-bezier(.2,.9,.25,1) both; }
+/* ---------- the Lobby: choose-your-seat stage ---------- */
+.lb-wrap { text-align: center; padding: 28px 24px; max-width: 1080px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 0; }
+.lb-stage { display: flex; align-items: center; gap: 18px; width: 100%; justify-content: center; margin-top: 8px; }
+.lb-center { display: flex; flex-direction: column; align-items: center; min-width: 0; max-width: 640px; }
+.lb-center.pop { animation: lbPop 420ms cubic-bezier(.2,.9,.3,1.15) both; }
+@keyframes lbPop { from { opacity: 0.35; transform: translateY(6px) scale(0.985); } to { opacity: 1; transform: none; } }
+.lb-avatar { position: relative; width: min(228px, 24vh); aspect-ratio: 1; margin-bottom: 14px; }
+.lb-avatar::before {
+  content: ""; position: absolute; inset: -14%; border-radius: 50%; z-index: -1;
+  background: radial-gradient(closest-side, var(--acc-soft), transparent 74%);
+  transition: background 600ms ease;
+}
+.lb-avatar svg, .lb-avatar .p-avatar { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.lb-avatar .p-avatar { box-shadow: 0 18px 44px -18px color-mix(in oklab, var(--acc) 55%, transparent); border-radius: 50%; }
+.lb-avatar.swap svg { animation: lbSwap 460ms cubic-bezier(.2,.9,.3,1.1) both; }
+@keyframes lbSwap { from { opacity: 0; transform: translateX(26px) scale(0.94); } to { opacity: 1; transform: none; } }
+.lb-kicker { font-size: 10.5px; font-weight: 780; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc-ink); transition: color 400ms; }
+.lb-name { margin: 4px 0 0; font-size: clamp(30px, 4vw, 44px); font-weight: 760; letter-spacing: -0.03em; color: var(--ink); line-height: 1.1; }
+.lb-role { margin-top: 4px; font-size: 14.5px; color: var(--ink-2); }
+.lb-teaser { margin-top: 10px; font-size: 13px; color: var(--ink-3); font-style: italic; max-width: 56ch; line-height: 1.5; min-height: 2.9em; text-wrap: balance; }
+.lb-stats { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+.lb-stat {
+  display: inline-flex; align-items: baseline; gap: 6px; font-size: 11.5px; color: var(--ink-3);
+  border: 1px solid var(--hairline); background: var(--card); border-radius: 999px; padding: 5px 12px;
+}
+.lb-stat b { font-size: 13px; color: var(--ink); font-weight: 700; }
+.lb-actions { display: flex; gap: 10px; margin-top: 16px; }
+.lb-enter {
+  font-size: 14px; font-weight: 680; color: #fff; background: var(--acc);
+  border-radius: 999px; padding: 11px 26px; transition: transform 160ms, box-shadow 160ms, background 400ms;
+  box-shadow: 0 10px 26px -10px var(--acc);
+}
+.lb-enter:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -10px var(--acc); }
+.lb-play {
+  font-size: 13px; font-weight: 640; color: var(--acc-ink); border: 1.5px solid var(--acc-line);
+  border-radius: 999px; padding: 11px 20px; background: var(--card); transition: all 160ms;
+}
+.lb-play:hover { background: var(--acc-soft); transform: translateY(-2px); }
+.lb-arrow {
+  flex: none; width: 46px; height: 46px; border-radius: 50%; font-size: 26px; line-height: 1;
+  color: var(--ink-3); border: 1px solid var(--hairline); background: var(--card);
+  transition: all 160ms; padding-bottom: 4px;
+}
+.lb-arrow:hover { color: var(--acc-ink); border-color: var(--acc-line); transform: scale(1.08); }
+.lb-rail { display: flex; gap: 10px; margin-top: 22px; justify-content: center; flex-wrap: wrap; }
+.lb-face {
+  width: 52px; height: 52px; border-radius: 50%; padding: 0; position: relative;
+  opacity: 0.55; filter: saturate(0.6); transition: all 220ms cubic-bezier(.2,.8,.3,1.2);
+}
+.lb-face .p-avatar, .lb-face svg { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.lb-face .ob-ava { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; }
+.lb-face:hover { opacity: 1; filter: none; transform: translateY(-3px); }
+.lb-face.cur { opacity: 1; filter: none; transform: scale(1.18); box-shadow: 0 0 0 3px var(--card), 0 0 0 5.5px var(--pa); }
+@media (max-height: 760px) { .lb-avatar { width: 158px; } .lb-teaser { display: none; } }
+@media (max-width: 760px) { .lb-arrow { display: none; } .lb-name { font-size: 30px; } }
+
+/* avatar container used across the app */
+.p-avatar { display: inline-grid; flex: none; }
+.p-avatar svg { width: 100%; height: 100%; display: block; border-radius: inherit; }
+.pp-avatar.has-av, .tb-avatar.has-av { background: none; overflow: hidden; }
+.pp-avatar.has-av svg, .tb-avatar.has-av svg { width: 100%; height: 100%; display: block; }
+.pm-item .p-avatar { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; }
+
 .ob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .ob-card {
   --pa: var(--acc);

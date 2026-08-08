@@ -56,7 +56,7 @@ def build() -> None:
     style = read(SRC / "style.css")
     body = read(SRC / "body.html")
     script_names = [
-        "logos.js", "logos-custom.js",  # brand marks load first so the registry can use them
+        "logos.js", "logos-custom.js", "avatars.js",  # brand marks + avatars load first
         "registry.js", "charts.js", "chat.js", "app.js", "pet.js", "present.js", "fx.js",
     ]
     scripts = "\n".join(

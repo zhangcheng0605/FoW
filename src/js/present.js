@@ -186,9 +186,12 @@ function prScript() {
     const onboardEl = $("#onboard");
     const onboardOpen = onboardEl && getComputedStyle(onboardEl).display !== "none" && !onboardEl.classList.contains("gone");
     if (onboardOpen) {
-      const target = $$(".ob-card").find(c => c.textContent.includes(meta.name.split(" ")[0]));
-      if (target) await prClick(target);
-      else { onboardEl.classList.add("gone"); setTimeout(() => { onboardEl.style.display = "none"; }, 400); selectPersona(PRESENT.pid, true); }
+      if (typeof lobbyFocus === "function" && $("#lbEnter")) {
+        lobbyFocus(PRESENT.pid, true);
+        LOBBY.touched = true;
+        await psleep(800);
+        await prClick($("#lbEnter"));
+      } else { onboardEl.classList.add("gone"); setTimeout(() => { onboardEl.style.display = "none"; }, 400); selectPersona(PRESENT.pid, true); }
     } else if (state.personaId !== PRESENT.pid) {
       selectPersona(PRESENT.pid);
     }

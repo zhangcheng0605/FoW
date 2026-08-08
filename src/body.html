@@ -3,13 +3,27 @@
   <div class="dotgrid"></div>
 </div>
 
-<div id="onboard" role="dialog" aria-label="Choose your role">
-  <div class="ob-inner">
+<div id="onboard" role="dialog" aria-label="Choose your seat">
+  <div class="lb-wrap">
     <div class="ob-brand"><span class="ob-logo" id="obLogo"></span><span class="mc-word ob-word">mediacorp</span><em>FoW · Future of Work workspace</em></div>
-    <h1 class="ob-title">Who's signing in today?</h1>
-    <p class="ob-sub">One workspace, shaped around your work. Pick a seat — or press ▶ on anyone to watch their story play itself.</p>
-    <div class="ob-grid" id="obGrid"></div>
-    <p class="ob-foot">Proof of concept · demo data · every card on the canvas can be dragged into the chat</p>
+    <div class="lb-stage">
+      <button class="lb-arrow" id="lbPrev" aria-label="Previous person">‹</button>
+      <div class="lb-center" id="lbCenter">
+        <div class="lb-avatar" id="lbAvatar"></div>
+        <div class="lb-kicker" id="lbKicker"></div>
+        <h1 class="lb-name" id="lbName"></h1>
+        <div class="lb-role" id="lbRole"></div>
+        <div class="lb-teaser" id="lbTeaser"></div>
+        <div class="lb-stats" id="lbStats"></div>
+        <div class="lb-actions">
+          <button class="lb-enter" id="lbEnter">Step in →</button>
+          <button class="lb-play" id="lbPlay">▶ Watch the story</button>
+        </div>
+      </div>
+      <button class="lb-arrow" id="lbNext" aria-label="Next person">›</button>
+    </div>
+    <div class="lb-rail" id="lbRail"></div>
+    <p class="ob-foot">Proof of concept · demo data · ‹ › or scroll to meet the team</p>
   </div>
 </div>
 

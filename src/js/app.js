@@ -836,14 +836,23 @@ function selectPersona(id, first) {
   state.personaId = id;
   const meta = PERSONAS.find(x => x.id === id);
   document.body.dataset.persona = id;
+  /* persona avatars in the topbar */
+  const pill = $("#ppAvatar"), tbav = $("#tbAvatar");
+  let hasAv = false;
+  try { hasAv = typeof AVATARS !== "undefined" && !!AVATARS[id]; } catch (_) { }
+  if (hasAv) {
+    pill.innerHTML = AVATARS[id]; pill.classList.add("has-av");
+    tbav.innerHTML = AVATARS[id]; tbav.classList.add("has-av");
+  } else {
+    pill.classList.remove("has-av"); pill.textContent = meta.initials;
+    tbav.classList.remove("has-av"); tbav.textContent = meta.initials;
+  }
   /* seed the MCP call feed with this persona's recent history */
   MCPLOG.length = 0;
   const pk = FOW.data();
   if (pk) (pk.chatFlows || []).flatMap(f => f.toolCalls || []).slice(0, 6).reverse().forEach(c => mcpLog(c.server, c.tool, c.ms));
-  $("#ppAvatar").textContent = meta.initials;
   $("#ppName").textContent = meta.name;
   $("#ppRole").textContent = meta.role + " · " + meta.dept;
-  $("#tbAvatar").textContent = meta.initials;
   $("#cdStatus").textContent = "online · " + ((FOW.data() || {}).connections || []).length + " tools connected · " + (((FOW.data() || {}).skills) || []).length + " skills";
   renderCanvas();
   renderTicker();
@@ -854,42 +863,114 @@ function selectPersona(id, first) {
   petWelcome(id);
 }
 
-/* ---------------- onboarding ---------------- */
+/* ---------------- avatars ---------------- */
+function avatarEl(id, sz) {
+  const meta = PERSONAS.find(x => x.id === id);
+  let src = null;
+  try { src = typeof AVATARS !== "undefined" && AVATARS[id]; } catch (_) { }
+  if (src) {
+    const s = el("span", "p-avatar");
+    s.innerHTML = src;
+    if (sz) { s.style.width = sz + "px"; s.style.height = sz + "px"; }
+    return s;
+  }
+  const f = el("span", "ob-ava", meta ? meta.initials : "?");
+  if (meta) f.style.setProperty("--pa", meta.accent);
+  if (sz) { f.style.width = sz + "px"; f.style.height = sz + "px"; }
+  return f;
+}
+
+/* ---------------- the Lobby — choose your seat ---------------- */
+const LOBBY = { idx: 0, auto: null, touched: false, wired: false };
+
+function lobbyFocus(which, instant) {
+  const idx = typeof which === "number" ? which : Math.max(0, PERSONAS.findIndex(p => p.id === which));
+  LOBBY.idx = (idx + PERSONAS.length) % PERSONAS.length;
+  const p = PERSONAS[LOBBY.idx];
+  const pack = (window.FOW_DATA || {})[p.id];
+  document.body.dataset.persona = p.id; /* ambient accent follows the focused person */
+
+  const av = $("#lbAvatar");
+  const swap = () => { av.textContent = ""; av.appendChild(avatarEl(p.id)); };
+  if (instant) swap();
+  else {
+    av.classList.remove("swap"); void av.offsetWidth; av.classList.add("swap");
+    setTimeout(swap, 120);
+  }
+  $("#lbKicker").textContent = p.dept + " · " + p.loc;
+  $("#lbName").textContent = p.name;
+  $("#lbRole").textContent = p.role + " — " + p.tag;
+  $("#lbTeaser").textContent = pack ? "“" + pack.focus.headline + "”" : "";
+  const stats = $("#lbStats");
+  stats.textContent = "";
+  if (pack) {
+    [[String(pack.meetings.length), "meetings"], [String(pack.approvals.length), "approvals"], [String(pack.inbox.filter(i => i.unread).length), "unread"], [String((pack.chains || []).length), "workflows"]].forEach(([n, l]) => {
+      const c = el("span", "lb-stat");
+      c.appendChild(el("b", "", n));
+      c.appendChild(el("span", "", l));
+      stats.appendChild(c);
+    });
+  }
+  $$("#lbRail .lb-face").forEach((f, i) => f.classList.toggle("cur", i === LOBBY.idx));
+  const center = $("#lbCenter");
+  if (!instant) { center.classList.remove("pop"); void center.offsetWidth; center.classList.add("pop"); }
+}
+function lobbyStep(d) { LOBBY.touched = true; lobbyFocus(LOBBY.idx + d); }
+function lobbyTouch() { LOBBY.touched = true; }
+
 function renderOnboarding() {
-  const grid = $("#obGrid");
-  grid.textContent = "";
+  const rail = $("#lbRail");
+  rail.textContent = "";
   PERSONAS.forEach((p, i) => {
-    const b = el("button", "ob-card");
-    b.style.setProperty("--i", i);
+    const b = el("button", "lb-face");
+    b.title = p.name + " — " + p.role;
     b.style.setProperty("--pa", p.accent);
-    const ava = el("span", "ob-ava", p.initials);
-    b.appendChild(ava);
-    b.appendChild(el("div", "ob-name", p.name));
-    b.appendChild(el("div", "ob-role", p.role + " · " + p.dept));
-    b.appendChild(el("div", "ob-tag", p.tag));
-    b.appendChild(el("span", "ob-enter", "enter ↵"));
-    const play = el("span", "ob-play");
-    play.setAttribute("role", "button");
-    play.tabIndex = 0;
-    play.textContent = "▶ play " + p.name.split(" ")[0] + "'s story";
-    play.addEventListener("click", e => { e.stopPropagation(); startPresent(p.id); });
-    b.appendChild(play);
-    b.addEventListener("click", () => {
+    b.appendChild(avatarEl(p.id, 52));
+    b.addEventListener("click", () => { lobbyTouch(); lobbyFocus(i); });
+    rail.appendChild(b);
+  });
+  if (!LOBBY.wired) {
+    LOBBY.wired = true;
+    $("#lbPrev").addEventListener("click", () => lobbyStep(-1));
+    $("#lbNext").addEventListener("click", () => lobbyStep(1));
+    $("#lbEnter").addEventListener("click", () => {
+      lobbyTouch();
+      const p = PERSONAS[LOBBY.idx];
       $("#onboard").classList.add("gone");
       setTimeout(() => { $("#onboard").style.display = "none"; }, 520);
       selectPersona(p.id, true);
     });
-    grid.appendChild(b);
-  });
+    $("#lbPlay").addEventListener("click", () => { lobbyTouch(); startPresent(PERSONAS[LOBBY.idx].id); });
+    document.addEventListener("keydown", e => {
+      const ob = $("#onboard");
+      if (!ob || ob.classList.contains("gone") || getComputedStyle(ob).display === "none") return;
+      if (PRESENT.on) return;
+      if (e.key === "ArrowLeft") { e.preventDefault(); lobbyStep(-1); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); lobbyStep(1); }
+      else if (e.key === "Enter" && !e.target.closest("button")) { $("#lbEnter").click(); }
+    });
+    let wheelAt = 0;
+    $("#onboard").addEventListener("wheel", e => {
+      const now = Date.now();
+      if (now - wheelAt < 450) return;
+      wheelAt = now;
+      lobbyStep(e.deltaY > 0 || e.deltaX > 0 ? 1 : -1);
+    }, { passive: true });
+    /* gentle auto-rotate until the user touches anything */
+    LOBBY.auto = setInterval(() => {
+      const ob = $("#onboard");
+      if (LOBBY.touched || !ob || ob.classList.contains("gone") || getComputedStyle(ob).display === "none" || PRESENT.on) return;
+      lobbyFocus(LOBBY.idx + 1);
+    }, 5200);
+  }
+  lobbyFocus(state.personaId || 0, true);
 }
 function renderPersonaMenu() {
   const menu = $("#personaMenu");
   menu.textContent = "";
   PERSONAS.forEach(p => {
     const it = el("button", "pm-item" + (p.id === state.personaId ? " cur" : ""));
-    const ava = el("span", "ob-ava", p.initials);
-    ava.style.setProperty("--pa", p.accent);
-    it.appendChild(ava);
+    it.appendChild(avatarEl(p.id, 30));
     const bd = el("div");
     bd.appendChild(el("div", "pm-name", p.name));
     bd.appendChild(el("div", "pm-role", p.role + " · " + p.dept));
