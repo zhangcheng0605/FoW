@@ -673,7 +673,11 @@ body[data-theme="dark"] .orb::after {
   width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
   background: var(--card); border: 1px solid var(--acc-line);
   box-shadow: 0 8px 30px -8px var(--acc);
+  transition: transform 160ms ease;
 }
+#chatFab:hover { transform: translateY(-2px) scale(1.05); }
+/* only exists while the chat dock is collapsed */
+#chatFab[hidden] { display: none; }
 
 /* ============================== ticker */
 #ticker {
