@@ -1,0 +1,39 @@
+{
+  "personaId": "it",
+  "newConnections": ["ariba"],
+  "joined": {
+    "title": "The refresh stall aging your fleet",
+    "subtitle": "Device refresh (Ariba) x patch compliance (ServiceNow) x hardware tickets (Jira) - indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Devices refreshed",
+        "server": "ariba",
+        "points": [58, 64, 70, 44, 46, 30, 0, 0, 0, 0, 0, 0],
+        "unit": "devices"
+      },
+      {
+        "name": "Patch compliance",
+        "server": "servicenow",
+        "points": [91.2, 91.8, 92.4, 90.6, 93.1, 93.5, 94.0, 94.4, 93.8, 94.2, 94.7, 96.8],
+        "unit": "%"
+      },
+      {
+        "name": "Hardware tickets",
+        "server": "jira",
+        "points": [31, 29, 30, 28, 32, 34, 39, 45, 52, 58, 71, 64],
+        "unit": "tickets"
+      }
+    ],
+    "annotation": {
+      "from": 6,
+      "to": 10,
+      "label": "refresh stops, hardware tickets climb"
+    },
+    "insight": {
+      "sources": ["ariba", "servicenow", "jira"],
+      "headline": "Zero laptops refreshed since March — hardware tickets up 82% while patch compliance stalls under 95%",
+      "detail": "Joining Ariba deliveries to ServiceNow compliance and Jira tickets shows wave 3 froze at 312 of 690 devices in March — the month hardware tickets started climbing from 39 to 71 and patch compliance flatlined in the 94s until August's forced restarts. Ariba only sees a pending $142,800 Dell PO, ServiceNow only sees a compliance plateau, and Jira only sees ticket creep — none alone shows the aging un-refreshed fleet driving both.",
+      "action": "Approve PO-58217 today and front-load the 72-unit Austin shipment at the 13:00 Dell check-in"
+    }
+  }
+}

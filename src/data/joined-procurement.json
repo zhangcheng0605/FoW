@@ -1,0 +1,40 @@
+{
+  "personaId": "procurement",
+  "newConnections": ["servicenow"],
+  "joined": {
+    "title": "Paying more to vendors that break more",
+    "subtitle": "PO spend (SAP) x vendor incidents (ServiceNow) x renewals due (DocuSign) - indexed, Sep = 100",
+    "series": [
+      {
+        "name": "PO spend",
+        "server": "sap",
+        "points": [7080, 7420, 7610, 6180, 7460, 7310, 7840, 7690, 7920, 8110, 9420, 8210],
+        "unit": "$K"
+      },
+      {
+        "name": "Vendor incidents",
+        "server": "servicenow",
+        "points": [41, 39, 43, 37, 42, 40, 44, 46, 51, 62, 75, 83],
+        "unit": "tickets"
+      },
+      {
+        "name": "Renewals due",
+        "server": "docusign",
+        "points": [14, 16, 15, 18, 17, 19, 18, 20, 19, 21, 22, 23],
+        "unit": "contracts"
+      }
+    ],
+    "annotation": {
+      "from": 8,
+      "to": 11,
+      "label": "incidents surge, spend keeps flowing"
+    },
+    "insight": {
+      "sources": ["sap", "servicenow", "docusign"],
+      "headline": "Vendor incidents up 63% since May at vendors holding 23 expiring contracts — spend still $8M+/month",
+      "detail": "Joining ServiceNow's incident queue with SAP spend and the DocuSign renewal calendar shows service quality collapsing at the exact vendors — AWS, Okta, Dell among them — whose $18.9M in contracts renew inside 90 days. SAP only sees POs posting on schedule, ServiceNow only sees tickets, and DocuSign only sees expiry dates, so no single system connects degrading vendors to imminent renewal leverage."
+      ,
+      "action": "Attach the May-Aug incident record to the AWS EA and Okta counters as SLA-credit leverage before Monday"
+    }
+  }
+}

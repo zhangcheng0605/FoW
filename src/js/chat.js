@@ -36,7 +36,7 @@ function parseBlocks(text) {
     const ln = lines[i];
     const t = ln.trim();
     if (!t) { i++; continue; }
-    const emb = t.match(/^\{\{(chart:(trend|donut|bars|heatmap)|kpis|spark:([\w-]+)|gen:images)\}\}$/);
+    const emb = t.match(/^\{\{(chart:(trend|donut|bars|heatmap|joined)|kpis|spark:([\w-]+)|gen:images)\}\}$/);
     if (emb) {
       const kind = emb[1] === "gen:images" ? "gen" : (emb[2] || (emb[1] === "kpis" ? "kpis" : "spark"));
       blocks.push({ t: "embed", kind, id: emb[3] }); i++; continue;
@@ -109,6 +109,7 @@ function buildEmbed(kind, id) {
     if (kind === "trend") renderTrend(body, data, { mini: true });
     else if (kind === "donut") renderDonut(body, data, { mini: true });
     else if (kind === "bars") renderBars(body, data, { mini: true });
+    else if (kind === "joined") renderJoined(body, data, { mini: true });
     else renderHeatmap(body, data, { mini: true });
   }));
   return box;
@@ -653,7 +654,7 @@ function capabilitiesFlow() {
 
 /* ---------------- chip responders ---------------- */
 function chipIcon(type) {
-  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person", week: "clockIco", file: "file", chain: "bolt", news: "file" }[type] || "spark";
+  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person", week: "clockIco", file: "file", chain: "bolt", news: "file", joined: "bolt" }[type] || "spark";
 }
 function chipFlow(chips, text) {
   const p = FOW.data();
@@ -804,6 +805,23 @@ function chipFlow(chips, text) {
     }
     case "chain":
       return { runChain: d };
+    case "joined": {
+      const jn = p.joined;
+      if (!jn) break;
+      return {
+        thinkMs: 850,
+        tools: jn.series.map((s, i) => ({
+          server: s.server, tool: SERVERS[s.server] ? SERVERS[s.server].tools[0] : "read",
+          args: "range=12mo", result: s.name + " · 12 points", ms: 380 + i * 150,
+        })),
+        text: "Re-running the join live — three systems, one axis:\n{{chart:joined}}\nEach line lives in a different tool. Put them on one indexed axis and the story is the **divergence**, not the values.",
+        insight: jn.insight,
+        actions: [
+          { label: "Watch this join weekly", toast: "Watching — you'll get a digest when the gap moves" },
+          { label: "Add slide to my deck", toast: "Slide added to 'Weekly review.pptx'" },
+        ],
+      };
+    }
     case "news":
       return {
         thinkMs: 650,

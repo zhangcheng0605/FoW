@@ -248,6 +248,33 @@ function renderCanvas() {
     }));
   });
 
+  /* the joined chart — three systems, one axis, one story */
+  if (p.joined) {
+    const jn = p.joined;
+    const jc = card(12, {
+      cls: "joined-card",
+      icon: "bolt", title: jn.title, sub: jn.subtitle,
+      chip: { type: "joined", label: jn.title, data: {} },
+      table: { kind: "joined", data: jn },
+      body: b => {
+        b.textContent = "";
+        const row = el("div", "joined-body");
+        const ch = el("div", "joined-chart");
+        const aside = el("aside", "joined-aside");
+        aside.appendChild(buildInsight(jn.insight));
+        row.append(ch, aside);
+        b.appendChild(row);
+        registerChart(ch, () => { if (b.dataset.mode !== "table") renderJoined(ch, jn); });
+      },
+    });
+    const jb = el("span", "joined-badge");
+    jb.appendChild(el("span", "", "⚡ joined across " + jn.series.length + " systems"));
+    jn.series.forEach(s => jb.appendChild(srvGlyph(s.server, 15)));
+    const jh = $(".card-h", jc);
+    jh.insertBefore(jb, $(".ch-acts", jh));
+    cv.appendChild(jc);
+  }
+
   /* main charts */
   cv.appendChild(card(8, {
     icon: "chart", title: p.trend.title, sub: p.trend.subtitle, badge: p.trend.source,

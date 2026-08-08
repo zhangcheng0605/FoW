@@ -1,0 +1,39 @@
+{
+  "personaId": "marketing",
+  "newConnections": ["sap"],
+  "joined": {
+    "title": "Velocity, not spend, drove reach",
+    "subtitle": "Media spend (SAP) x campaign reach (Salesforce) x assets shipped (Monday) — indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Media spend",
+        "server": "sap",
+        "points": [1240, 1260, 1310, 1380, 1250, 1225, 1270, 1290, 1315, 1340, 1305, 1330],
+        "unit": "S$K"
+      },
+      {
+        "name": "Campaign reach",
+        "server": "salesforce",
+        "points": [21.4, 22.1, 23.5, 26.8, 22.9, 23.4, 24.8, 25.6, 27.2, 29.8, 33.5, 38.6],
+        "unit": "M reach"
+      },
+      {
+        "name": "Assets shipped",
+        "server": "monday",
+        "points": [148, 165, 189, 172, 236, 288, 342, 398, 452, 511, 568, 590],
+        "unit": "assets"
+      }
+    ],
+    "annotation": {
+      "from": 4,
+      "to": 7,
+      "label": "Output surges, reach lags two months"
+    },
+    "insight": {
+      "sources": ["sap", "salesforce", "monday"],
+      "headline": "Reach grew 80% on just +7% media spend — 4x content output did the work",
+      "detail": "Overlaying SAP spend actuals on the Monday publishing calendar and Salesforce reach shows the January Higgsfield output surge pulling reach up with a two-month lag, while paid spend stayed essentially flat. SAP only sees a flat budget, Monday only sees volume, and Salesforce only sees a reach curve — none alone can prove velocity, not media dollars, is the growth engine.",
+      "action": "Hold FY27 media budget flat and reinvest the headroom in overnight Higgsfield batch capacity."
+    }
+  }
+}

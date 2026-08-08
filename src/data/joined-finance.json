@@ -1,0 +1,39 @@
+{
+  "personaId": "finance",
+  "newConnections": ["servicenow"],
+  "joined": {
+    "title": "ServiceNow saw July's overrun coming",
+    "subtitle": "Opex actuals (SAP) x Eng headcount (Workday) x cloud capacity incidents (ServiceNow) - indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Opex actual",
+        "server": "sap",
+        "points": [18120, 18540, 18910, 17650, 19240, 18870, 19410, 19380, 19720, 20050, 21340, 20380],
+        "unit": "$K"
+      },
+      {
+        "name": "Eng headcount",
+        "server": "workday",
+        "points": [412, 415, 418, 416, 419, 421, 420, 422, 421, 423, 424, 425],
+        "unit": "FTE"
+      },
+      {
+        "name": "Cloud incidents",
+        "server": "servicenow",
+        "points": [11, 12, 14, 10, 13, 12, 15, 14, 16, 34, 41, 23],
+        "unit": "tickets"
+      }
+    ],
+    "annotation": {
+      "from": 9,
+      "to": 10,
+      "label": "incidents triple, headcount flat, spend follows"
+    },
+    "insight": {
+      "sources": ["sap", "workday", "servicenow"],
+      "headline": "Cloud capacity incidents tripled in June — one month before July's $1.44M opex overrun",
+      "detail": "Joining ServiceNow's capacity-alert queue to SAP actuals shows incidents jumping from 16 to 34 in June while Engineering headcount in Workday stayed flat at ~420 FTE, so July's $862K AWS true-up was capacity strain, not hiring. SAP only sees the spend after it posts, Workday only proves the team didn't grow, and ServiceNow's early-warning spike never reaches Finance on its own.",
+      "action": "Add the ServiceNow cloud-capacity alert count to the driver-based forecast model as a one-month leading indicator, and flag June-style spikes to James Whitfield before the commit trues up."
+    }
+  }
+}

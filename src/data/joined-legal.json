@@ -1,0 +1,39 @@
+{
+  "personaId": "legal",
+  "newConnections": ["salesforce"],
+  "joined": {
+    "title": "Paper is outrunning revenue",
+    "subtitle": "Contract intake (DocuSign) x deals closed (Salesforce) x open matters (SharePoint) - indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Contract intake",
+        "server": "docusign",
+        "points": [96, 104, 98, 72, 101, 108, 112, 118, 109, 121, 138, 126],
+        "unit": "contracts"
+      },
+      {
+        "name": "Deals closed",
+        "server": "salesforce",
+        "points": [41, 44, 42, 31, 43, 46, 48, 50, 46, 48, 47, 44],
+        "unit": "deals"
+      },
+      {
+        "name": "Open matters",
+        "server": "sharepoint",
+        "points": [46, 44, 47, 43, 45, 48, 47, 49, 50, 51, 52, 54],
+        "unit": "matters"
+      }
+    ],
+    "annotation": {
+      "from": 9,
+      "to": 11,
+      "label": "intake spikes, closed deals flat"
+    },
+    "insight": {
+      "sources": ["docusign", "salesforce", "sharepoint"],
+      "headline": "July intake hit 138 contracts, +44% vs Sep, while closed deals rose just 15% — paper is outrunning revenue",
+      "detail": "Joining DocuSign intake against Salesforce closed-won shows the Jun-Aug surge is reps front-loading paper ahead of the Sep 30 quota gate, not new revenue — while SharePoint's matter load quietly grinds to a 12-month high of 54. DocuSign sees only volume, Salesforce sees only bookings, SharePoint sees only disputes; no single system shows legal absorbing a speculative paper wave with rising matter risk and zero matching revenue.",
+      "action": "Ask Marcus Webb for a 2-week deal-to-paper forecast and gate speculative pre-quota contracts behind a Salesforce opportunity-stage check"
+    }
+  }
+}

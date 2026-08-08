@@ -1,0 +1,39 @@
+{
+  "personaId": "sales",
+  "newConnections": ["sharepoint"],
+  "joined": {
+    "title": "The June peak ate the pipeline",
+    "subtitle": "Bookings (Salesforce) x customer meetings (Google Calendar) x proposals sent (SharePoint) — indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Bookings",
+        "server": "salesforce",
+        "points": [2380, 1520, 1890, 2760, 1340, 1980, 2540, 1610, 2080, 2910, 1860, 1420],
+        "unit": "$K"
+      },
+      {
+        "name": "Customer meetings",
+        "server": "gcal",
+        "points": [118, 112, 121, 98, 105, 117, 124, 119, 116, 88, 64, 58],
+        "unit": "meetings"
+      },
+      {
+        "name": "Proposals sent",
+        "server": "sharepoint",
+        "points": [34, 29, 31, 38, 27, 33, 36, 32, 30, 19, 14, 11],
+        "unit": "docs"
+      }
+    ],
+    "annotation": {
+      "from": 9,
+      "to": 11,
+      "label": "bookings spiked, sell motion collapsed"
+    },
+    "insight": {
+      "sources": ["salesforce", "gcal", "sharepoint"],
+      "headline": "June's 127% bookings peak hid a 51% meeting collapse — today's $1.4M pipe gap began there",
+      "detail": "Overlaying the three feeds shows the June pull-forward wasn't funded by new selling: customer meetings fell 51% and proposals sent 63% from May to August even as bookings hit $2.91M. Salesforce showed a record month, Calendar just looked like vacation season, and SharePoint's thinning proposal folder had no dashboard — only the join reveals the engine stalled two months before coverage dropped to 3.1x.",
+      "action": "Approve Kenji's Aug 18 outbound blitz with $250K per-rep pipe targets and a 45-activity weekly floor"
+    }
+  }
+}

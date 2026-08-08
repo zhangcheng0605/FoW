@@ -39,6 +39,13 @@ def load_data() -> str:
             chains = SRC / "data" / f"chains-{pid}.json"
             if chains.exists():
                 packs[pid]["chains"] = json.loads(read(chains)).get("chains", [])
+            joined = SRC / "data" / f"joined-{pid}.json"
+            if joined.exists():
+                j = json.loads(read(joined))
+                packs[pid]["joined"] = j.get("joined")
+                for c in j.get("newConnections", []):
+                    if c not in packs[pid].get("connections", []):
+                        packs[pid]["connections"].append(c)
     blob = json.dumps(packs, ensure_ascii=False, separators=(",", ":"))
     # a literal "</script>" inside JSON strings would end the inline script tag early
     blob = blob.replace("</", "<\\/")

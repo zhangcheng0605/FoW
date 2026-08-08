@@ -341,6 +341,118 @@ function renderHeatmap(container, hm, opts) {
   container.appendChild(svg);
 }
 
+/* ---------- joined chart: series from different MCP servers on one indexed axis ---------- */
+function renderJoined(container, joined, opts) {
+  const o = opts || {};
+  container.textContent = "";
+  const V = VIZ();
+  const w = container.clientWidth || 640;
+  const h = o.h || (o.mini ? 158 : 238);
+  const mL = 46, mR = 14, mT = 24, mB = 22;
+  const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+  const n = 12;
+  /* index every series to 100 at Sep — one honest axis across different units */
+  const idx = joined.series.map(s => {
+    const base = s.points[0] || s.points.find(v => v !== 0) || 1;
+    return s.points.map(v => (v / base) * 100);
+  });
+  const flat = idx.flat();
+  let min = Math.min(...flat), max = Math.max(...flat);
+  const pad = (max - min || 10) * 0.14;
+  min -= pad; max += pad;
+  const ticks = niceTicks(min, max, o.mini ? 3 : 4);
+  min = ticks[0]; max = ticks[ticks.length - 1];
+  const X = i => mL + (i / (n - 1)) * (w - mL - mR);
+  const Y = v => mT + (1 - (v - min) / (max - min || 1)) * (h - mT - mB);
+
+  /* annotation band — the divergence window, behind everything */
+  const an = joined.annotation;
+  if (an && !o.mini) {
+    const x0 = X(Math.max(0, an.from)), x1 = X(Math.min(11, an.to));
+    const band = svgNode("rect", { x: x0, y: mT, width: Math.max(4, x1 - x0), height: h - mT - mB, rx: 6 });
+    band.style.fill = "var(--acc)"; band.style.opacity = "0.07";
+    svg.appendChild(band);
+    const edge = svgNode("line", { x1: x0, x2: x0, y1: mT, y2: h - mB, "stroke-width": 1 });
+    edge.style.stroke = "var(--acc)"; edge.style.opacity = "0.35";
+    svg.appendChild(edge);
+    const flag = svgNode("text", { x: x0 + 6, y: mT - 8, class: "lbl" });
+    flag.textContent = "⚡ " + an.label;
+    flag.style.fill = "var(--acc-ink)";
+    svg.appendChild(flag);
+  }
+
+  ticks.forEach(t => {
+    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: V.grid, "stroke-width": 1 }));
+    const tx = svgNode("text", { x: mL - 7, y: Y(t) + 3, "text-anchor": "end" });
+    tx.textContent = String(Math.round(t));
+    svg.appendChild(tx);
+  });
+  MONTHS.forEach((m, i) => {
+    if (o.mini && i % 3) return;
+    if (!o.mini && w < 520 && i % 2) return;
+    const tx = svgNode("text", { x: X(i), y: h - 6, "text-anchor": "middle" });
+    tx.textContent = m;
+    svg.appendChild(tx);
+  });
+
+  /* endpoint label slots with collision nudge */
+  const endYs = idx.map(s => Y(s[n - 1]) - 9);
+  for (let a = 0; a < endYs.length; a++)
+    for (let b = a + 1; b < endYs.length; b++)
+      if (Math.abs(endYs[a] - endYs[b]) < 13) { if (endYs[b] > endYs[a]) endYs[b] = endYs[a] + 13; else endYs[b] = endYs[a] - 13; }
+
+  joined.series.forEach((s, si) => {
+    const col = V.series[si];
+    const d = idx[si].map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
+    svg.appendChild(svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(idx[si][n - 1]), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 }));
+    if (!o.mini) {
+      const lb = svgNode("text", { x: X(n - 1) - 6, y: endYs[si], "text-anchor": "end", class: "lbl" });
+      lb.textContent = fmtNum(s.points[n - 1], s.unit);
+      svg.appendChild(lb);
+    }
+  });
+
+  const cross = svgNode("line", { y1: mT, y2: h - mB, stroke: V.cross, "stroke-width": 1, visibility: "hidden" });
+  svg.appendChild(cross);
+  const dots = joined.series.map((s, si) => {
+    const c = svgNode("circle", { r: 4.5, fill: V.series[si], stroke: V.surface, "stroke-width": 2, visibility: "hidden" });
+    svg.appendChild(c); return c;
+  });
+  const hit = svgNode("rect", { x: mL, y: 0, width: Math.max(1, w - mL - mR), height: h, fill: "transparent" });
+  hit.style.cursor = "crosshair";
+  hit.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect();
+    const i = Math.max(0, Math.min(n - 1, Math.round(((e.clientX - r.left) - mL) / ((w - mL - mR) / (n - 1)))));
+    cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i));
+    cross.setAttribute("visibility", "visible");
+    dots.forEach((d, si) => { d.setAttribute("cx", X(i)); d.setAttribute("cy", Y(idx[si][i])); d.setAttribute("visibility", "visible"); });
+    tipShow(e.clientX, e.clientY, MONTHS[i] + (i < 4 ? " 2025" : " 2026"),
+      joined.series.map((s, si) => ({ color: V.series[si], name: s.name, value: fmtNum(s.points[i], s.unit) + " · " + Math.round(idx[si][i]) })));
+  });
+  hit.addEventListener("pointerleave", () => {
+    cross.setAttribute("visibility", "hidden");
+    dots.forEach(d => d.setAttribute("visibility", "hidden"));
+    tipHide();
+  });
+  svg.appendChild(hit);
+  container.appendChild(svg);
+
+  /* legend: color key + source-server glyph per series — the point of the chart */
+  const lg = el("div", "legend jlg");
+  joined.series.forEach((s, si) => {
+    const item = el("span", "lg-item");
+    const key = el("i", "lg-line"); key.style.borderColor = V.series[si];
+    item.appendChild(key);
+    item.appendChild(srvGlyph(s.server, 15));
+    item.appendChild(document.createTextNode(s.name));
+    item.appendChild(el("span", "jlg-via", "via " + (SERVERS[s.server] ? SERVERS[s.server].name : s.server) + " · " + s.unit));
+    lg.appendChild(item);
+  });
+  lg.appendChild(el("span", "jlg-idx", "one axis · indexed, Sep = 100"));
+  container.appendChild(lg);
+}
+
 /* ---------- goals: meters ---------- */
 function renderGoals(container, goals) {
   container.textContent = "";
@@ -388,6 +500,10 @@ function buildTable(kind, data) {
     hr.append(el("th", "", ""), ...data.cols.map(c => el("th", "", c)));
     thead.appendChild(hr);
     data.rows.forEach((r, ri) => addRow([r, ...data.values[ri].map(v => String(v))]));
+  } else if (kind === "joined") {
+    hr.append(el("th", "", "Month"), ...data.series.map(s => el("th", "", s.name + " (" + s.unit + ")")));
+    thead.appendChild(hr);
+    MONTHS.forEach((m, i) => addRow([m, ...data.series.map(s => fmtNum(s.points[i], s.unit))]));
   }
   tb.append(thead, tbody);
   wrap.appendChild(tb);

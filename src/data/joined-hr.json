@@ -1,0 +1,39 @@
+{
+  "personaId": "hr",
+  "newConnections": [],
+  "joined": {
+    "title": "The attrition win may not hold",
+    "subtitle": "Attrition (Workday) x Slack engagement (Slack) x offer acceptance (Greenhouse) - indexed, Sep = 100",
+    "series": [
+      {
+        "name": "Attrition",
+        "server": "workday",
+        "points": [13.2, 13.1, 12.9, 12.7, 13.0, 13.4, 13.1, 12.6, 12.2, 11.9, 11.6, 11.4],
+        "unit": "%"
+      },
+      {
+        "name": "Slack engagement",
+        "server": "slack",
+        "points": [46, 47, 48, 44, 45, 43, 46, 48, 49, 45, 41, 37],
+        "unit": "msgs/user/wk"
+      },
+      {
+        "name": "Offer acceptance",
+        "server": "greenhouse",
+        "points": [81.2, 80.5, 82.1, 79.8, 81.6, 82.4, 83.0, 83.3, 84.8, 85.9, 86.7, 87.5],
+        "unit": "%"
+      }
+    ],
+    "annotation": {
+      "from": 9,
+      "to": 11,
+      "label": "engagement drops while attrition falls"
+    },
+    "insight": {
+      "sources": ["workday", "slack", "greenhouse"],
+      "headline": "Slack engagement down 24% since May even as attrition hit a 12-month low of 11.4%",
+      "detail": "Overlaying the three feeds shows the celebrated attrition decline decoupling from its leading indicator: messages per user fell from 49 to 37 in the Jun-Aug window while exits kept improving and offer acceptance climbed to 87.5%. Workday only reports exits that already happened, Greenhouse only sees candidates coming in, and Slack alone can't tell whether quiet channels matter — but engagement historically leads attrition by about two quarters, so the join flags a Q1 FY27 rebound risk no single system surfaces.",
+      "action": "Pull the Jun-Aug channel-activity cut by team into the 13:00 attrition deep-dive and target stay interviews at the quietest cohorts"
+    }
+  }
+}

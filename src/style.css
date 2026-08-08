@@ -750,6 +750,38 @@ body[data-theme="dark"] .orb::after {
   .wk-stats { grid-template-columns: 1fr 1fr; }
 }
 
+/* ============================== joined chart — the loud one */
+.joined-card {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, var(--card-grad-a), var(--card-grad-b)) padding-box,
+    linear-gradient(120deg, var(--acc), #8b5cf6 45%, var(--acc)) border-box;
+  box-shadow: var(--shadow-card), 0 0 44px -20px var(--acc);
+}
+body:not([data-theme="dark"]) .joined-card {
+  background:
+    linear-gradient(180deg, #ffffff, #ffffff) padding-box,
+    linear-gradient(120deg, var(--acc), #8b5cf6 45%, var(--acc)) border-box;
+}
+.joined-badge {
+  margin-left: auto; flex: none; display: flex; align-items: center; gap: 5px;
+  font-size: 9.5px; font-weight: 780; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--acc-ink); background: var(--acc-soft);
+  border-radius: 999px; padding: 4px 10px;
+}
+.joined-badge .srv-glyph { width: 15px; height: 15px; border-radius: 4px; font-size: 6.5px; }
+.joined-body { display: flex; gap: 16px; align-items: stretch; }
+.joined-chart { flex: 1; min-width: 0; }
+.joined-aside { width: 318px; flex: none; display: flex; }
+.joined-aside .insight { margin: 0; display: flex; flex-direction: column; }
+.joined-aside .in-detail { flex: 1; }
+.jlg { align-items: center; }
+.jlg .lg-item { gap: 5px; }
+.jlg .srv-glyph { width: 15px; height: 15px; border-radius: 4px; font-size: 6.5px; }
+.jlg-via { color: var(--ink-3); font-size: 10px; }
+.jlg-idx { margin-left: auto; font-size: 10px; color: var(--ink-3); font-family: var(--font-mono); }
+@media (max-width: 1100px) { .joined-body { flex-direction: column; } .joined-aside { width: auto; } }
+
 /* ============================== cross-system insights strip */
 .ins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .ins-panel {
