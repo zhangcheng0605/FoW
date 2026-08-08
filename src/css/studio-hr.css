@@ -1,0 +1,264 @@
+/* ============================================================
+   FoW · studio-hr — PEOPLE VIEW (Maya Chen, HRBP)
+   Soft, warm, rounded, generous whitespace. The day organized
+   by person: halos for urgency, faces for team mood.
+   Every selector namespaced under #canvas.studio-hr.
+   ============================================================ */
+
+#canvas.studio-hr { gap: 54px; padding-top: 26px; }
+
+/* chapter heads — soft round number badge, fading rule */
+#canvas.studio-hr .st-head {
+  border-bottom: 0; padding-bottom: 14px; margin-bottom: 20px;
+  gap: 13px; align-items: center; position: relative;
+}
+#canvas.studio-hr .st-head::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(to right, var(--acc-line), var(--hairline) 34%, transparent 88%);
+}
+#canvas.studio-hr .st-num {
+  font-size: 12.5px; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--acc-soft); color: var(--acc-ink);
+  display: grid; place-items: center; opacity: 1; font-weight: 780; letter-spacing: 0;
+}
+#canvas.studio-hr .st-label { font-size: 18px; letter-spacing: -0.02em; }
+#canvas.studio-hr .st-sub { font-size: 11.5px; }
+
+/* ---------------- person avatar — initials on an urgency halo ---------------- */
+#canvas.studio-hr .hr-ava {
+  position: relative; flex: none;
+  width: var(--sz, 44px); height: var(--sz, 44px); border-radius: 50%;
+  background: var(--acc-soft); color: var(--acc-ink);
+  display: grid; place-items: center;
+}
+#canvas.studio-hr .hr-ava b { font-size: calc(var(--sz, 44px) * 0.31); font-weight: 780; letter-spacing: 0.03em; }
+#canvas.studio-hr .hr-ava::before {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+  border: 2px solid var(--halo, var(--acc)); opacity: 0.5;
+}
+#canvas.studio-hr .hr-ava.crit { --halo: var(--crit); }
+#canvas.studio-hr .hr-ava.warn { --halo: var(--warn); }
+#canvas.studio-hr .hr-ava.go   { --halo: var(--acc); }
+#canvas.studio-hr .hr-ava.dim  { --halo: var(--ink-3); }
+#canvas.studio-hr .hr-ava.dim::before { opacity: 0.3; }
+#canvas.studio-hr .hr-ava.crit::after {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+  border: 2px solid var(--crit);
+  animation: hrHalo 2.2s ease-out infinite;
+}
+@keyframes hrHalo {
+  0%   { transform: scale(1);    opacity: 0.55; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* ---------------- hero ---------------- */
+#canvas.studio-hr .hr-greet { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+#canvas.studio-hr .hr-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px var(--good); }
+#canvas.studio-hr .hr-kicker {
+  margin-top: 18px; font-size: 10.5px; font-weight: 800;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--acc-ink);
+}
+#canvas.studio-hr .hr-title {
+  margin: 8px 0 0; font-size: clamp(27px, 3vw, 40px); font-weight: 780;
+  letter-spacing: -0.03em; line-height: 1.14; max-width: 30ch; text-wrap: balance;
+  background: linear-gradient(102deg, var(--ink) 55%, var(--acc-ink));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+#canvas.studio-hr .hr-lede { margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); max-width: 74ch; }
+#canvas.studio-hr .hr-acts { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+#canvas.studio-hr .hr-recap { border-radius: 999px; padding: 10px 20px; font-size: 13px; font-weight: 650; }
+
+/* the people row — protagonist card, then chips */
+#canvas.studio-hr .hr-people {
+  display: flex; gap: 10px; align-items: center;
+  margin-top: 26px; padding: 16px 6px 10px;
+  overflow-x: auto; scrollbar-width: thin;
+}
+
+/* protagonist — the one person-card that earns a box */
+#canvas.studio-hr .hr-prot {
+  flex: none; display: flex; gap: 18px; align-items: center;
+  max-width: 620px; padding: 20px 24px; margin-right: 14px;
+  border-radius: 28px; border: 1px solid var(--acc-line);
+  background: linear-gradient(130deg, var(--acc-soft), transparent 58%) , var(--card);
+  box-shadow: 0 22px 48px -30px var(--acc);
+  transition: box-shadow 200ms, border-color 200ms, opacity 300ms;
+}
+#canvas.studio-hr .hr-prot.done { border-color: var(--hairline); box-shadow: none; }
+#canvas.studio-hr .hr-prot.done .hr-ava.crit::after { animation: none; opacity: 0; }
+#canvas.studio-hr .hr-prot.done .hr-ava.crit { --halo: var(--good-ink); }
+#canvas.studio-hr .hr-prot-b { min-width: 0; }
+#canvas.studio-hr .hr-prot-kick {
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--crit);
+}
+#canvas.studio-hr .hr-prot.done .hr-prot-kick { color: var(--good-ink); }
+#canvas.studio-hr .hr-prot-name { margin-top: 4px; font-size: 22px; font-weight: 770; letter-spacing: -0.02em; }
+#canvas.studio-hr .hr-prot-ask { margin-top: 3px; font-size: 13px; font-weight: 640; line-height: 1.4; }
+#canvas.studio-hr .hr-prot-meta { margin-top: 4px; font-size: 11px; color: var(--ink-3); line-height: 1.45; max-width: 46ch; }
+#canvas.studio-hr .hr-prot-src {
+  display: flex; align-items: center; gap: 6px; margin-top: 9px;
+  font-size: 10px; color: var(--ink-3);
+}
+#canvas.studio-hr .hr-prot-acts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+#canvas.studio-hr .hr-prot-acts .lb-enter { padding: 8px 16px; font-size: 12px; }
+#canvas.studio-hr .hr-prot-acts .lb-play { padding: 8px 14px; font-size: 11.5px; }
+#canvas.studio-hr .hr-prot-r {
+  flex: none; align-self: center; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; padding-left: 18px; text-align: center;
+  border-left: 1px solid var(--hairline-soft);
+}
+#canvas.studio-hr .hr-cd-v {
+  font-family: var(--font-mono); font-size: 23px; font-weight: 700;
+  color: var(--crit); font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+#canvas.studio-hr .hr-prot.done .hr-cd-v { color: var(--good-ink); font-size: 19px; }
+#canvas.studio-hr .hr-cd-s { font-size: 9.5px; color: var(--ink-3); max-width: 15ch; line-height: 1.4; }
+
+/* person chips — no boxes, just people */
+#canvas.studio-hr .hr-chip {
+  flex: none; width: 132px; display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: 4px;
+  padding: 14px 8px 12px; border-radius: 20px;
+  background: none; border: 0; cursor: pointer;
+  transition: background 160ms, transform 180ms cubic-bezier(.2,.8,.3,1.2);
+}
+#canvas.studio-hr .hr-chip:hover { background: var(--hov); transform: translateY(-4px); }
+#canvas.studio-hr .hr-chip .hr-ava { margin-bottom: 6px; }
+#canvas.studio-hr .hr-chip-name { font-size: 12.5px; font-weight: 720; letter-spacing: -0.01em; color: var(--ink); }
+#canvas.studio-hr .hr-chip-why { font-size: 10px; color: var(--ink-3); line-height: 1.38; }
+
+/* team pulse — faces from the eNPS heatmap */
+#canvas.studio-hr .hr-pulse { margin-top: 22px; }
+#canvas.studio-hr .hr-pulse-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+}
+#canvas.studio-hr .hr-pulse-t { font-weight: 800; color: var(--ink-2); }
+#canvas.studio-hr .hr-pulse-s { letter-spacing: 0.06em; text-transform: none; }
+#canvas.studio-hr .hr-pulse-row { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 14px; padding-left: 2px; }
+#canvas.studio-hr .hr-face {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: 0; cursor: pointer; padding: 4px 6px; border-radius: 14px;
+  transition: background 160ms;
+}
+#canvas.studio-hr .hr-face:hover { background: var(--hov); }
+#canvas.studio-hr .hr-face-svg { width: 34px; height: 34px; transition: transform 180ms cubic-bezier(.2,.8,.3,1.4); }
+#canvas.studio-hr .hr-face:hover .hr-face-svg { transform: scale(1.16) rotate(-4deg); }
+#canvas.studio-hr .hr-face-name { margin-top: 3px; font-size: 10.5px; font-weight: 660; color: var(--ink-2); }
+#canvas.studio-hr .hr-face-val { display: flex; align-items: baseline; gap: 4px; }
+#canvas.studio-hr .hr-face-val b { font-size: 12px; font-weight: 740; color: var(--ink); }
+#canvas.studio-hr .hr-face-val i { font-style: normal; font-size: 8.5px; color: var(--ink-3); }
+
+/* ---------------- stat strip (soften the shared naked strip) ---------------- */
+#canvas.studio-hr .st-stat { border-right: 1px solid var(--hairline-soft); }
+#canvas.studio-hr .st-stat .kpi-label { letter-spacing: 0.02em; }
+#canvas.studio-hr .st-stat .kpi-value { font-size: 29px; white-space: nowrap; }
+
+/* ---------------- 02 · in motion ---------------- */
+#canvas.studio-hr .hr-col { min-width: 0; }
+#canvas.studio-hr .hr-colhead {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+}
+#canvas.studio-hr .hr-chn {
+  padding: 14px 14px 12px; border-radius: 20px; margin-bottom: 6px;
+  transition: background 160ms;
+}
+#canvas.studio-hr .hr-chn:hover { background: var(--hov); }
+#canvas.studio-hr .hr-for {
+  display: flex; align-items: center; gap: 7px; margin-bottom: 7px;
+  font-size: 9.5px; font-weight: 780; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--acc-ink);
+}
+#canvas.studio-hr .hr-for .hr-ava::before { inset: -3px; border-width: 1.5px; }
+#canvas.studio-hr .hr-for-mini {
+  font-size: 9px; font-weight: 780; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--acc-ink); margin-bottom: 2px;
+}
+#canvas.studio-hr .hr-dg { border-radius: 18px; padding: 11px 10px; }
+
+/* ---------------- 03 · people waiting ---------------- */
+#canvas.studio-hr .hr-waitlist { display: flex; flex-direction: column; }
+#canvas.studio-hr .hr-wrow {
+  display: flex; align-items: center; gap: 18px;
+  padding: 16px 14px; border-radius: 22px;
+  transition: background 160ms, opacity 300ms;
+}
+#canvas.studio-hr .hr-wrow:hover { background: var(--hov); }
+#canvas.studio-hr .hr-wrow + .hr-wrow { position: relative; }
+#canvas.studio-hr .hr-wrow + .hr-wrow::before {
+  content: ""; position: absolute; left: 78px; right: 14px; top: 0; height: 1px;
+  background: var(--hairline-soft);
+}
+#canvas.studio-hr .hr-wbody { flex: 1; min-width: 0; }
+#canvas.studio-hr .hr-wname { font-size: 16.5px; font-weight: 750; letter-spacing: -0.015em; }
+#canvas.studio-hr .hr-wask { display: flex; align-items: center; gap: 8px; margin-top: 3px; font-size: 12.5px; color: var(--ink); min-width: 0; }
+#canvas.studio-hr .hr-wask > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-hr .hr-wtype {
+  flex: none; font-size: 8.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--acc-ink); background: var(--acc-soft); border-radius: 999px; padding: 2.5px 9px;
+}
+#canvas.studio-hr .hr-wmeta { margin-top: 3px; font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#canvas.studio-hr .hr-wamt {
+  flex: none; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600;
+  color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+#canvas.studio-hr .hr-wacts { display: flex; gap: 8px; flex: none; }
+#canvas.studio-hr .hr-ok {
+  font-size: 11.5px; font-weight: 700; color: var(--acc-ink);
+  border: 1px solid var(--acc-line); border-radius: 999px; padding: 7px 16px;
+  transition: all 150ms;
+}
+#canvas.studio-hr .hr-ok:hover { background: var(--acc); border-color: var(--acc); color: #fff; transform: translateY(-1px); box-shadow: 0 6px 16px -8px var(--acc); }
+#canvas.studio-hr .hr-askb {
+  font-size: 11px; font-weight: 640; color: var(--ink-2);
+  border: 1px solid var(--hairline); border-radius: 999px; padding: 7px 13px;
+  transition: all 150ms;
+}
+#canvas.studio-hr .hr-askb:hover { border-color: var(--acc-line); color: var(--acc-ink); background: var(--acc-soft); }
+#canvas.studio-hr .hr-wdone {
+  display: none; flex: none; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 720; color: var(--good-ink);
+  background: var(--good-bg); border-radius: 999px; padding: 6px 14px;
+  animation: hrPop 420ms cubic-bezier(.2,.9,.3,1.4) both;
+}
+#canvas.studio-hr .hr-wrow.done { opacity: 0.62; }
+#canvas.studio-hr .hr-wrow.done .hr-wdone { display: inline-flex; }
+#canvas.studio-hr .hr-wrow.done .hr-wamt { text-decoration: line-through; opacity: 0.6; }
+#canvas.studio-hr .hr-wrow.done .hr-ava::before,
+#canvas.studio-hr .hr-wrow.done .hr-ava::after { border-color: var(--good-ink); animation: none; opacity: 0.5; }
+@keyframes hrPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---------------- 04 · the pulse ---------------- */
+#canvas.studio-hr .hr-memo {
+  margin-top: 12px; font-size: 11.5px; line-height: 1.55; color: var(--ink-2);
+  padding: 10px 14px; border-left: 3px solid var(--acc-line);
+  background: var(--soft); border-radius: 0 14px 14px 0;
+}
+#canvas.studio-hr .hr-task { border-radius: 14px; }
+#canvas.studio-hr .hr-due { flex: none; font-size: 10px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+/* ---------------- wired into ---------------- */
+#canvas.studio-hr .hr-wired-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  border-top: 1px solid var(--hairline-soft); padding-top: 18px;
+}
+#canvas.studio-hr .hr-wired-l { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 720; margin-right: 4px; }
+#canvas.studio-hr .hr-mcp { margin: 0 0 0 auto; width: auto; padding: 6px 15px; border-radius: 999px; }
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1100px) {
+  #canvas.studio-hr .hr-prot { max-width: 88vw; }
+  #canvas.studio-hr .hr-prot-r { display: none; }
+}
+@media (max-width: 700px) {
+  #canvas.studio-hr .hr-prot { flex-direction: column; align-items: flex-start; gap: 12px; }
+  #canvas.studio-hr .hr-wrow { flex-wrap: wrap; }
+  #canvas.studio-hr .hr-wamt { margin-left: 66px; }
+}
