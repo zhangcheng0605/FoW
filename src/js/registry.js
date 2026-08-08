@@ -153,9 +153,18 @@ function ico(name) {
 }
 function srvGlyph(id, sz) {
   const s = SERVERS[id] || { name: id, color: "#5d6880", glyph: "?" };
-  const g = el("span", "srv-glyph", s.glyph);
-  g.style.background = s.color;
-  if (s.color === "#ffc820" || s.color === "#f29111") g.style.color = "#1a1408";
+  let logo = null;
+  try { logo = typeof BRAND_LOGOS !== "undefined" && BRAND_LOGOS[id]; } catch (_) { }
+  let g;
+  if (logo) {
+    /* real brand mark on an app-icon style white tile */
+    g = el("span", "srv-glyph logo");
+    g.innerHTML = logo;
+  } else {
+    g = el("span", "srv-glyph", s.glyph);
+    g.style.background = s.color;
+    if (s.color === "#ffc820" || s.color === "#f29111") g.style.color = "#1a1408";
+  }
   g.title = s.name;
   if (sz) { g.style.width = sz + "px"; g.style.height = sz + "px"; g.style.fontSize = Math.round(sz * 0.38) + "px"; }
   return g;

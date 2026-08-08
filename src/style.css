@@ -450,6 +450,12 @@ body[data-theme="dark"] .inb-urgent { color: var(--serious); background: transpa
   font-size: 10px; font-weight: 760; color: #fff; letter-spacing: 0.01em;
   font-family: var(--font-ui);
 }
+.srv-glyph.logo {
+  background: #fff;
+  border: 1px solid rgba(20, 28, 55, 0.14);
+}
+.srv-glyph.logo svg { width: 68%; height: 68%; display: block; }
+body[data-theme="dark"] .srv-glyph.logo { border-color: rgba(255, 255, 255, 0.22); }
 .cn-status { flex: none; display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--ink-3); }
 .cn-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 3px var(--good-bg); }
 .cn-dot.sync { background: var(--warn); box-shadow: 0 0 0 3px rgba(250, 178, 25, 0.18); animation: pulse 1.6s infinite; }

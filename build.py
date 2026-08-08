@@ -55,9 +55,14 @@ def load_data() -> str:
 def build() -> None:
     style = read(SRC / "style.css")
     body = read(SRC / "body.html")
+    script_names = [
+        "logos.js", "logos-custom.js",  # brand marks load first so the registry can use them
+        "registry.js", "charts.js", "chat.js", "app.js", "pet.js", "present.js", "fx.js",
+    ]
     scripts = "\n".join(
         read(SRC / "js" / name)
-        for name in ["registry.js", "charts.js", "chat.js", "app.js", "pet.js", "present.js", "fx.js"]
+        for name in script_names
+        if (SRC / "js" / name).exists()
     )
     data = load_data()
     news_file = SRC / "data" / "news.json"
