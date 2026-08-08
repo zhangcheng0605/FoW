@@ -1,0 +1,641 @@
+/* ============================================================
+   FoW · studio-sales — THE FLOOR
+   Trading-floor scoreboard: flush lanes, hairline separators,
+   big numerals with tight tracking, mono amounts. Boxes only
+   where the metaphor demands an object — the spotlight board,
+   deal tickets, the CLEARED stamp.
+   ============================================================ */
+
+#canvas.studio-sales { gap: 46px; font-variant-numeric: tabular-nums; }
+
+/* ---------- chapter heads: board indices ---------- */
+#canvas.studio-sales .st-head {
+  border-bottom: 2px solid var(--hairline);
+  padding-bottom: 11px;
+  margin-bottom: 20px;
+  gap: 12px;
+  align-items: center;
+}
+#canvas.studio-sales .st-num {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--acc-ink);
+  opacity: 1;
+  background: var(--acc-soft);
+  border-radius: 4px;
+  padding: 4px 8px;
+  line-height: 1;
+}
+#canvas.studio-sales .st-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 13.5px;
+  font-weight: 830;
+}
+#canvas.studio-sales .st-sub { font-family: var(--font-mono); font-size: 10.5px; }
+
+/* ---------- hero: masthead ---------- */
+#canvas.studio-sales .flr-hero { display: flex; flex-direction: column; padding-top: 4px; }
+#canvas.studio-sales .flr-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--acc-ink);
+}
+#canvas.studio-sales .flr-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--good-ink);
+  flex: none;
+  animation: salesPulse 1.8s ease-out infinite;
+}
+#canvas.studio-sales .flr-greet { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+#canvas.studio-sales .flr-title {
+  margin: 6px 0 0;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-title b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-lede {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 570;
+  color: var(--ink);
+  max-width: 64ch;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+#canvas.studio-sales .flr-sub { margin-top: 5px; font-size: 12.5px; color: var(--ink-2); max-width: 68ch; }
+#canvas.studio-sales .flr-acts { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+#canvas.studio-sales .flr-recap { border-radius: 999px; padding: 11px 20px; font-size: 13px; font-weight: 650; }
+
+/* ---------- the board floating above the river ---------- */
+#canvas.studio-sales .flr-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+  position: relative;
+  z-index: 2;
+}
+#canvas.studio-sales .flr-spot {
+  background: var(--card);
+  border: 1px solid var(--acc-line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-pop);
+  padding: 14px 18px 14px;
+  cursor: grab;
+  transition: transform 200ms cubic-bezier(.2,.8,.3,1.2), box-shadow 200ms;
+}
+#canvas.studio-sales .flr-spot:hover { transform: translateY(-3px); }
+#canvas.studio-sales .flr-spot-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--acc-ink);
+}
+#canvas.studio-sales .flr-spot-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 9px;
+}
+#canvas.studio-sales .flr-spot-name { min-width: 0; }
+#canvas.studio-sales .flr-spot-name b {
+  display: block;
+  font-size: 19px;
+  font-weight: 790;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+#canvas.studio-sales .flr-spot-name span { display: block; font-size: 10.5px; color: var(--ink-3); margin-top: 3px; }
+#canvas.studio-sales .flr-spot-amt {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--acc-ink);
+  flex: none;
+}
+#canvas.studio-sales .flr-spot-note { margin-top: 8px; font-size: 11px; color: var(--ink-2); }
+#canvas.studio-sales .flr-cd-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid var(--hairline-soft);
+  flex-wrap: wrap;
+}
+#canvas.studio-sales .flr-cd-l {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--crit);
+}
+#canvas.studio-sales .flr-cd-box.due .flr-cd-l::after { content: " SIGN NOW"; }
+#canvas.studio-sales .flr-cd { display: inline-flex; align-items: flex-start; gap: 5px; }
+#canvas.studio-sales .flr-cd-seg { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+#canvas.studio-sales .flr-cd-seg b {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-cd-seg span { font-size: 7.5px; font-weight: 750; letter-spacing: 0.14em; color: var(--ink-3); }
+#canvas.studio-sales .flr-cd-seg.sec b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-cd-c { font-family: var(--font-mono); font-size: 18px; color: var(--ink-3); line-height: 1.15; }
+#canvas.studio-sales .flr-own {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+  flex-wrap: wrap;
+}
+#canvas.studio-sales .flr-owner {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 3.5px 10px 3.5px 4px;
+  font-size: 10.5px;
+  font-weight: 640;
+  color: var(--ink-2);
+  background: var(--soft);
+}
+#canvas.studio-sales .flr-owner b {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--acc-soft);
+  color: var(--acc-ink);
+  font-size: 8.5px;
+  font-weight: 780;
+}
+#canvas.studio-sales .flr-owner.dim { opacity: 0.75; }
+#canvas.studio-sales .flr-spot-go {
+  margin-left: auto;
+  border: 0;
+  background: var(--acc);
+  color: var(--send-ink);
+  font-size: 11px;
+  font-weight: 720;
+  border-radius: 999px;
+  padding: 6.5px 13px;
+  cursor: pointer;
+  transition: transform 150ms, filter 150ms;
+}
+#canvas.studio-sales .flr-spot-go:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+/* ---------- the quota thermometer ---------- */
+#canvas.studio-sales .flr-thermo { padding-top: 6px; min-width: 0; }
+#canvas.studio-sales .flr-th-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+#canvas.studio-sales .flr-th-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-th-v {
+  font-size: 38px;
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-th-track {
+  position: relative;
+  height: 14px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+}
+#canvas.studio-sales .flr-th-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--acc-ink), var(--acc));
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+#canvas.studio-sales .flr-th-ghost {
+  position: absolute;
+  left: 48.2%;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: repeating-linear-gradient(-55deg, var(--acc-soft) 0 4px, transparent 4px 8px);
+  border-right: 1.5px dashed var(--acc-line);
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1) 0.5s;
+}
+#canvas.studio-sales .flr-th-mark {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--hairline);
+}
+#canvas.studio-sales .flr-th-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+}
+#canvas.studio-sales .flr-th-nord { color: var(--acc-ink); font-weight: 700; }
+#canvas.studio-sales .flr-th-note { margin-top: 9px; font-size: 11px; color: var(--ink-3); line-height: 1.45; }
+
+/* ---------- the pipeline river ---------- */
+#canvas.studio-sales .flr-river-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 30px;
+}
+#canvas.studio-sales .flr-cap-l,
+#canvas.studio-sales .flr-cap-r {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-cap-r { color: var(--acc-ink); }
+#canvas.studio-sales .flr-river {
+  display: flex;
+  margin-top: 9px;
+  border-top: 2px solid var(--hairline);
+  padding-top: 16px;
+}
+#canvas.studio-sales .flr-lane {
+  min-width: 128px;
+  flex-basis: 0;
+  padding: 2px 14px 10px;
+  position: relative;
+  min-height: 0;
+}
+#canvas.studio-sales .flr-lane:first-child { padding-left: 2px; }
+#canvas.studio-sales .flr-lane:last-child { padding-right: 2px; }
+#canvas.studio-sales .flr-lane + .flr-lane { border-left: 1px solid var(--hairline); }
+#canvas.studio-sales .flr-lane + .flr-lane::before {
+  content: "▸";
+  position: absolute;
+  left: -4.5px;
+  top: 0;
+  font-size: 10px;
+  color: var(--ink-3);
+  line-height: 1;
+}
+#canvas.studio-sales .flr-lane-h { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+#canvas.studio-sales .flr-lane-stage {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-lane-share { font-family: var(--font-mono); font-size: 9px; color: var(--ink-3); flex: none; }
+#canvas.studio-sales .flr-lane-amt {
+  margin-top: 7px;
+  font-size: clamp(24px, 2.6vw, 33px);
+  font-weight: 830;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-lane:last-child .flr-lane-amt { color: var(--acc-ink); }
+#canvas.studio-sales .flr-lane-flow {
+  display: block;
+  height: 4px;
+  margin-top: 9px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--acc) 0%, var(--acc-soft) 45%, var(--acc) 90%);
+  background-size: 220% 100%;
+  animation: salesFlow 3.4s linear infinite;
+  opacity: 0.75;
+}
+#canvas.studio-sales .flr-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; align-items: flex-start; }
+#canvas.studio-sales .flr-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+  padding: 5.5px 9px;
+  cursor: grab;
+  transition: transform 180ms cubic-bezier(.2,.8,.3,1.3), box-shadow 180ms, border-color 180ms;
+}
+#canvas.studio-sales .flr-chip:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--acc-line);
+}
+#canvas.studio-sales .flr-chip b {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+#canvas.studio-sales .flr-chip span {
+  font-size: 9.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-chip.hot {
+  border-color: var(--acc-line);
+  background: var(--acc-soft);
+  animation: salesGlow 2.4s ease-in-out infinite;
+}
+#canvas.studio-sales .flr-chip.hot b { color: var(--acc-ink); }
+#canvas.studio-sales .flr-chip.warn b::before { content: "● "; color: var(--warn); }
+#canvas.studio-sales .flr-chip.risk b::before { content: "● "; color: var(--crit); }
+#canvas.studio-sales .flr-chip.new b::before { content: "+ "; color: var(--good-ink); font-weight: 800; }
+#canvas.studio-sales .flr-chip.new b { color: var(--good-ink); }
+#canvas.studio-sales .flr-chip.done { border-style: dashed; opacity: 0.78; }
+#canvas.studio-sales .flr-chip.done b::before { content: "✓ "; color: var(--good-ink); }
+
+/* ---------- the naked stat strip ---------- */
+#canvas.studio-sales .st-stat .kpi-value { font-size: 40px; font-weight: 830; letter-spacing: -0.045em; }
+#canvas.studio-sales .st-stat .kpi-label {
+  font-size: 9.5px;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .st-stat .kpi-delta { font-family: var(--font-mono); letter-spacing: -0.02em; }
+
+/* ---------- 02 momentum ---------- */
+#canvas.studio-sales .flr-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+#canvas.studio-sales .flr-col { min-width: 0; }
+#canvas.studio-sales .flr-colhead {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 7px;
+  margin-bottom: 8px;
+}
+#canvas.studio-sales .flr-play,
+#canvas.studio-sales .flr-run { border-bottom: 1px solid var(--hairline-soft); border-radius: 0; padding: 12px 4px; }
+#canvas.studio-sales .flr-play:last-child,
+#canvas.studio-sales .flr-run:last-child { border-bottom: 0; }
+#canvas.studio-sales .flr-play:hover,
+#canvas.studio-sales .flr-run:hover { background: var(--hov); }
+
+/* ---------- 03 commit — the deal desk ---------- */
+#canvas.studio-sales .flr-desk { margin-top: -4px; }
+#canvas.studio-sales .flr-row {
+  display: grid;
+  grid-template-columns: 118px 4px minmax(0, 1fr) 158px 128px;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--hairline-soft);
+  transition: background 150ms, opacity 300ms;
+  cursor: grab;
+}
+#canvas.studio-sales .flr-row:hover { background: var(--hov); }
+#canvas.studio-sales .flr-row.done { opacity: 0.55; }
+#canvas.studio-sales .flr-amt-c { min-width: 0; }
+#canvas.studio-sales .flr-amt {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+#canvas.studio-sales .flr-amt-s {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-urg { width: 4px; height: 36px; border-radius: 2px; }
+#canvas.studio-sales .flr-urg.high { background: var(--crit); }
+#canvas.studio-sales .flr-urg.med { background: var(--warn); }
+#canvas.studio-sales .flr-urg.low { background: var(--ink-3); opacity: 0.4; }
+#canvas.studio-sales .flr-row-bd { min-width: 0; }
+#canvas.studio-sales .flr-row-t { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+#canvas.studio-sales .flr-type {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc-ink);
+  background: var(--acc-soft);
+  padding: 2.5px 6px;
+  border-radius: 4px;
+  flex: none;
+}
+#canvas.studio-sales .flr-row-title { font-size: 13.5px; font-weight: 720; letter-spacing: -0.012em; }
+#canvas.studio-sales .flr-row-meta { font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+#canvas.studio-sales .flr-req { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+#canvas.studio-sales .flr-req b { font-size: 11.5px; font-weight: 660; }
+#canvas.studio-sales .flr-req span { font-size: 9.5px; color: var(--ink-3); }
+#canvas.studio-sales .flr-act { display: flex; justify-content: flex-end; }
+#canvas.studio-sales .flr-btns { display: inline-flex; align-items: center; gap: 7px; }
+#canvas.studio-sales .flr-clear {
+  border: 0;
+  background: var(--acc);
+  color: var(--send-ink);
+  font-size: 11.5px;
+  font-weight: 720;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: transform 150ms, filter 150ms;
+}
+#canvas.studio-sales .flr-clear:hover { transform: translateY(-1px); filter: brightness(1.08); }
+#canvas.studio-sales .flr-askb {
+  border: 1px solid var(--hairline);
+  background: var(--card);
+  color: var(--ink-2);
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 12px;
+  transition: border-color 150ms, color 150ms;
+}
+#canvas.studio-sales .flr-askb:hover { border-color: var(--acc-line); color: var(--acc-ink); }
+#canvas.studio-sales .flr-stamp {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--good-ink);
+  border: 1.5px solid var(--good-ink);
+  border-radius: 4px;
+  padding: 4px 8px;
+  transform: rotate(-6deg);
+  display: inline-block;
+}
+#canvas.studio-sales .flr-desk-total {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px 2px 0;
+}
+#canvas.studio-sales .flr-desk-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-desk-cnt { font-size: 11px; color: var(--ink-2); }
+#canvas.studio-sales .flr-desk-amt {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 780;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* ---------- 04 the week ---------- */
+#canvas.studio-sales .wk .v { font-size: 23px; font-weight: 800; letter-spacing: -0.03em; }
+#canvas.studio-sales .flr-memo {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--hairline);
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+#canvas.studio-sales .flr-task {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) 44px 82px;
+  gap: 10px;
+  align-items: center;
+  padding: 9.5px 4px;
+  border-bottom: 1px solid var(--hairline-soft);
+  cursor: grab;
+  transition: background 150ms;
+}
+#canvas.studio-sales .flr-task:last-child { border-bottom: 0; }
+#canvas.studio-sales .flr-task:hover { background: var(--hov); }
+#canvas.studio-sales .flr-task-key {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 750;
+  color: var(--acc-ink);
+  white-space: nowrap;
+}
+#canvas.studio-sales .flr-task-title {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#canvas.studio-sales .flr-task-due { font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-3); text-align: right; white-space: nowrap; }
+#canvas.studio-sales .flr-task .task-status { justify-self: end; }
+
+/* ---------- wired into ---------- */
+#canvas.studio-sales .flr-wired-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 2px solid var(--hairline);
+  padding-top: 16px;
+}
+#canvas.studio-sales .flr-wired-l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+#canvas.studio-sales .flr-mcp { margin: 0 0 0 auto; width: auto; padding: 7px 14px; border-radius: 999px; }
+#canvas.studio-sales .flr-eod {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+}
+
+/* ---------- motion ---------- */
+@keyframes salesPulse {
+  0% { box-shadow: 0 0 0 0 var(--good-bg); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes salesFlow {
+  from { background-position: 0% 0; }
+  to { background-position: -220% 0; }
+}
+@keyframes salesGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--acc-soft); }
+  50% { box-shadow: 0 0 0 5px var(--acc-soft); }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  #canvas.studio-sales .flr-board { grid-template-columns: 1fr; gap: 22px; }
+  #canvas.studio-sales .flr-river { flex-wrap: wrap; row-gap: 18px; }
+  #canvas.studio-sales .flr-lane { flex-basis: 44%; border-left: 0 !important; padding-left: 2px; }
+  #canvas.studio-sales .flr-lane + .flr-lane::before { display: none; }
+  #canvas.studio-sales .flr-2col { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  #canvas.studio-sales .flr-row { grid-template-columns: 96px 4px minmax(0, 1fr) auto; }
+  #canvas.studio-sales .flr-req { display: none; }
+}
