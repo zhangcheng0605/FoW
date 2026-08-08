@@ -10,6 +10,39 @@
 const vizTip = () => $("#viztip");
 let liveCharts = []; /* re-render closures, re-run on resize + theme change */
 
+/* ---------- draw-in animation (first render per container only) ---------- */
+const FX_DRAWN = new WeakSet();
+function canAnim(container) {
+  if (FX_DRAWN.has(container)) return false;
+  FX_DRAWN.add(container);
+  try { if (FX.reduced) return false; } catch (_) { }
+  return true;
+}
+function drawLine(path, delay) {
+  const len = path.getTotalLength ? path.getTotalLength() : 0;
+  if (!len) return;
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = len;
+  path.getBoundingClientRect();
+  path.style.transition = "stroke-dashoffset 850ms cubic-bezier(.3,.6,.2,1) " + (delay || 0) + "ms";
+  requestAnimationFrame(() => { path.style.strokeDashoffset = "0"; });
+  setTimeout(() => { path.style.strokeDasharray = ""; path.style.strokeDashoffset = ""; path.style.transition = ""; }, 1150 + (delay || 0));
+}
+function fadeIn(node, delay, restore) {
+  node.style.opacity = "0";
+  node.style.transition = "opacity 420ms ease " + (delay || 0) + "ms";
+  requestAnimationFrame(() => { node.style.opacity = "1"; });
+  setTimeout(() => { node.style.transition = restore || ""; }, 520 + (delay || 0));
+}
+function riseIn(path, delay, restore) {
+  path.style.transformBox = "fill-box";
+  path.style.transformOrigin = "center bottom";
+  path.style.transform = "scaleY(0.02)";
+  path.style.transition = "transform 560ms cubic-bezier(.2,.8,.3,1.12) " + (delay || 0) + "ms";
+  requestAnimationFrame(() => { path.style.transform = "scaleY(1)"; });
+  setTimeout(() => { path.style.transition = restore || ""; }, 700 + (delay || 0));
+}
+
 function registerChart(container, fn) {
   fn();
   liveCharts.push({ container, fn });
@@ -113,20 +146,28 @@ function renderTrend(container, trend, opts) {
     for (let b = a + 1; b < endYs.length; b++)
       if (Math.abs(endYs[a] - endYs[b]) < 13) { if (endYs[b] > endYs[a]) endYs[b] = endYs[a] + 13; else endYs[b] = endYs[a] - 13; }
 
+  const anim = canAnim(container);
   trend.series.forEach((s, si) => {
     const col = V.series[si];
     const d = s.points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
     if (si === 0) {
       const base = Y(Math.max(min, 0));
-      svg.appendChild(svgNode("path", { d: d + ` L${X(n - 1).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`, fill: col, opacity: 0.1 }));
+      const area = svgNode("path", { d: d + ` L${X(n - 1).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`, fill: col, opacity: 0.1 });
+      svg.appendChild(area);
+      if (anim) fadeIn(area, 350);
     }
-    svg.appendChild(svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    const line = svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" });
+    svg.appendChild(line);
+    if (anim) drawLine(line, si * 160);
     const last = s.points[n - 1];
-    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(last), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 }));
+    const dot = svgNode("circle", { cx: X(n - 1), cy: Y(last), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 });
+    svg.appendChild(dot);
+    if (anim) fadeIn(dot, 700 + si * 160);
     if (!o.mini) {
       const lb = svgNode("text", { x: X(n - 1) - 6, y: endYs[si], "text-anchor": "end", class: "lbl" });
       lb.textContent = fmtNum(last, trend.unit);
       svg.appendChild(lb);
+      if (anim) fadeIn(lb, 780 + si * 160);
     }
   });
 
@@ -169,6 +210,7 @@ function renderDonut(container, donut, opts) {
   const total = donut.segments.reduce((a, s) => a + s.value, 0);
   let a0 = -Math.PI / 2;
   const arcs = [];
+  const anim = canAnim(container);
   donut.segments.forEach((seg, i) => {
     const frac = seg.value / total;
     const a1 = a0 + frac * Math.PI * 2;
@@ -192,6 +234,7 @@ function renderDonut(container, donut, opts) {
       arcs.forEach(a => a.style.opacity = 1); path.style.transform = "none"; tipHide();
     });
     svg.appendChild(path); arcs.push(path);
+    if (anim) fadeIn(path, i * 75, "opacity 140ms ease, transform 140ms ease");
     a0 = a1;
   });
   const ct = svgNode("text", { x: cx, y: cy - 2, "text-anchor": "middle", class: "lbl-strong" });
@@ -247,6 +290,7 @@ function renderBars(container, bars, opts) {
 
   let extIdx = 0; all.forEach((v, i) => { if (Math.abs(v) > Math.abs(all[extIdx])) extIdx = i; });
 
+  const anim = canAnim(container);
   bars.categories.forEach((cat, ci) => {
     const groupW = nSer * barW + (nSer - 1) * gap;
     const gx = mL + band * ci + (band - groupW) / 2;
@@ -274,6 +318,7 @@ function renderBars(container, bars, opts) {
       p.addEventListener("pointerleave", () => { $$("path", svg).forEach(q => { if (q.__bar) q.style.opacity = 1; }); tipHide(); });
       p.__bar = true;
       svg.appendChild(p);
+      if (anim) riseIn(p, ci * 32 + si * 16, "opacity 120ms ease");
       if (!o.mini && si * nCat + ci === extIdx && Math.abs(all[idx]) === Math.abs(all[extIdx])) {
         const lb = svgNode("text", { x: x + barW / 2, y: v >= 0 ? top - 5 : top + bh + 11, "text-anchor": "middle", class: "lbl" });
         lb.textContent = fmtNum(v, bars.unit);
@@ -310,6 +355,7 @@ function renderHeatmap(container, hm, opts) {
   const cellW = (w - mL - mR) / cols;
   const flat = hm.values.flat();
   const vMin = Math.min(...flat), vMax = Math.max(...flat);
+  const anim = canAnim(container);
   hm.rows.forEach((rl, ri) => {
     const tx = svgNode("text", { x: mL - 8, y: mT + ri * cellH + cellH / 2 + 3, "text-anchor": "end" });
     tx.textContent = rl.length > 8 ? rl.slice(0, 7) + "…" : rl;
@@ -329,6 +375,7 @@ function renderHeatmap(container, hm, opts) {
       });
       rect.addEventListener("pointerleave", () => { $$("rect", svg).forEach(q => q.style.opacity = 1); tipHide(); });
       svg.appendChild(rect);
+      if (anim) fadeIn(rect, Math.min(560, (ri + ci) * 26), "opacity 120ms");
     });
   });
   const colStep = Math.ceil(cols / Math.max(4, Math.floor((w - mL) / 52)));
@@ -401,15 +448,21 @@ function renderJoined(container, joined, opts) {
     for (let b = a + 1; b < endYs.length; b++)
       if (Math.abs(endYs[a] - endYs[b]) < 13) { if (endYs[b] > endYs[a]) endYs[b] = endYs[a] + 13; else endYs[b] = endYs[a] - 13; }
 
+  const anim = canAnim(container);
   joined.series.forEach((s, si) => {
     const col = V.series[si];
     const d = idx[si].map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
-    svg.appendChild(svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
-    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(idx[si][n - 1]), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 }));
+    const line = svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" });
+    svg.appendChild(line);
+    if (anim) drawLine(line, si * 200);
+    const dot = svgNode("circle", { cx: X(n - 1), cy: Y(idx[si][n - 1]), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 });
+    svg.appendChild(dot);
+    if (anim) fadeIn(dot, 800 + si * 200);
     if (!o.mini) {
       const lb = svgNode("text", { x: X(n - 1) - 6, y: endYs[si], "text-anchor": "end", class: "lbl" });
       lb.textContent = fmtNum(s.points[n - 1], s.unit);
       svg.appendChild(lb);
+      if (anim) fadeIn(lb, 880 + si * 200);
     }
   });
 

@@ -86,8 +86,10 @@ function makeDraggable(node, chip) {
     node.classList.add("dragging");
     e.dataTransfer.setData("text/fow-chip", JSON.stringify(chip));
     e.dataTransfer.effectAllowed = "copy";
+    try { e.dataTransfer.setDragImage(fxDragGhost(chip), 24, 16); } catch (_) { }
+    fxDragBegin();
   });
-  node.addEventListener("dragend", () => node.classList.remove("dragging"));
+  node.addEventListener("dragend", () => { node.classList.remove("dragging"); fxDragEnd(); });
 }
 function wireDropzone() {
   const dock = $("#chatdock");
@@ -97,9 +99,13 @@ function wireDropzone() {
   dock.addEventListener("dragover", e => { if (hasChip(e)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } });
   dock.addEventListener("drop", e => {
     e.preventDefault(); depth = 0; dock.classList.remove("droptarget");
+    fxDragEnd();
     try {
       const chip = JSON.parse(e.dataTransfer.getData("text/fow-chip"));
-      if (chip && chip.label) { attachChip(chip); toast("Added to chat — askMElah will take a look", "info"); }
+      if (chip && chip.label) {
+        /* the snap: chip flies from the drop point into the composer */
+        fxSnapChip(chip, e.clientX, e.clientY, () => attachChip(chip));
+      }
     } catch (_) { /* not ours */ }
   });
   function hasChip(e) { return Array.from(e.dataTransfer.types || []).includes("text/fow-chip"); }
@@ -236,7 +242,9 @@ function renderCanvas() {
         lb.appendChild(el("span", "", k.label));
         b.appendChild(lb);
         const row = el("div", "kpi-row");
-        row.appendChild(el("span", "kpi-value", k.value));
+        const val = el("span", "kpi-value");
+        countUp(val, k.value);
+        row.appendChild(val);
         row.appendChild(el("span", "kpi-delta " + (k.deltaGood ? "good" : "bad"), (k.deltaDir === "up" ? "▲ " : "▼ ") + k.delta));
         b.appendChild(row);
         const sp = el("div", "kpi-spark");
@@ -586,7 +594,9 @@ function renderCanvas() {
         [["Meeting hours", wk.meetingHours + "h"], ["Focus hours", wk.focusHours + "h"], ["Meeting cost", wk.meetingCost], ["Deep-work blocks", String(wk.deepBlocks)]].forEach(([l, v]) => {
           const t = el("div", "wk");
           t.appendChild(el("div", "l", l));
-          t.appendChild(el("div", "v", v));
+          const vd = el("div", "v");
+          countUp(vd, v);
+          t.appendChild(vd);
           grid.appendChild(t);
         });
         b.appendChild(grid);

@@ -808,6 +808,59 @@ body:not([data-theme="dark"]) .joined-card {
 .ins-panel:hover .ins-go { text-decoration: underline; }
 @media (max-width: 860px) { .ins-grid { grid-template-columns: 1fr; } }
 
+/* ============================== fx — the motion identity */
+#fxlayer { position: fixed; inset: 0; z-index: 140; pointer-events: none; }
+.fx-p { position: fixed; line-height: 1; will-change: transform, opacity; }
+.fx-p.dot { width: 5px; height: 5px; border-radius: 50%; }
+.fx-ring {
+  position: fixed; width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--acc); will-change: transform, opacity;
+}
+.drag-ghost {
+  display: inline-flex; align-items: center; gap: 7px; max-width: 260px;
+  font-size: 12px; font-weight: 640; color: var(--ink);
+  background: var(--card); border: 1.5px solid var(--acc);
+  border-radius: 10px; padding: 6px 12px; box-shadow: var(--shadow-pop);
+  white-space: nowrap; overflow: hidden;
+}
+.drag-ghost .ck-ico { display: grid; color: var(--acc-ink); }
+.drag-ghost.fly { position: fixed; z-index: 141; pointer-events: none; will-change: transform, opacity; }
+/* while dragging, the chat dock leans in */
+body.dragging-chip #chatdock {
+  border-color: var(--acc-line);
+  box-shadow: 0 0 0 3px var(--acc-soft), var(--shadow-card);
+  animation: dockInvite 1.1s ease-in-out infinite;
+}
+@keyframes dockInvite { 50% { box-shadow: 0 0 0 7px var(--acc-soft), var(--shadow-card); } }
+#pet.excited .pet-eye { transform: scale(1.2); }
+#pet.excited svg { transform: rotate(-5deg) translateY(-3px); }
+/* composer landing flash */
+.cd-composer.flash { border-color: var(--acc); box-shadow: 0 0 0 4px var(--acc-soft); }
+/* paper-plane launch */
+.cd-send svg { transition: transform 200ms ease; }
+.cd-send.fly svg { animation: planeFly 600ms cubic-bezier(.3,.6,.3,1) both; }
+@keyframes planeFly {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  45% { transform: translate(13px, -13px) rotate(-12deg); opacity: 0; }
+  50% { transform: translate(-10px, 10px) rotate(0deg); opacity: 0; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+/* springier user bubble */
+.msg.user .bubble { animation: bubblePop 340ms cubic-bezier(.2,.9,.3,1.4) both; }
+@keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+/* cursor-tracked card glow */
+.card::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -30%), var(--acc-soft), transparent 72%);
+  opacity: 0; transition: opacity 350ms ease;
+}
+.card:hover::before { opacity: 0.9; }
+.hero::before { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .cd-send.fly svg, body.dragging-chip #chatdock { animation: none; }
+  .card::before { display: none; }
+}
+
 /* ============================== Emmi, the pet */
 #pet {
   position: fixed; left: 12px; bottom: 38px; z-index: 36;

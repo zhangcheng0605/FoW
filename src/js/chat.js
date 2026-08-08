@@ -879,6 +879,7 @@ function sendMessage(raw) {
   chat.chips = [];
   renderChips();
   addUserMsg(text, chips);
+  fxSend();
   const spec = routeMessage(text, chips);
   if (spec.runChain) runChain(spec.runChain);
   else agentReply(spec);
