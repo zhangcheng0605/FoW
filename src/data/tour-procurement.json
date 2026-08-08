@@ -3,44 +3,44 @@
   "question": "Draft the AWS EA counter-proposal brief for Marcus",
   "beats": {
     "intro": {
-      "title": "Meet Priya Nair",
-      "text": "Procurement Lead, running $92.2M of managed spend across Ariba, SAP, and DocuSign — and this is her workspace at 8 AM."
+      "title": "Priya's control tower",
+      "text": "Priya Nair runs Mediacorp procurement — $92.2M of managed spend. This morning her workspace opens as a control tower, and askMElah is already on shift."
     },
     "hero": {
-      "title": "Today's number one job",
-      "text": "The brief already knows: get the AWS counter-proposal to Marcus Webb before Monday. The $12.0M commit renews September 30."
+      "title": "Blips on the renewal radar",
+      "text": "A 90-day radar sweeps 23 renewals — AWS's $12.0M blip glows hot at 53 days — while the priority panel counts down to Monday's counter, ask fixed at 14%."
     },
     "kpis": {
-      "title": "The scoreboard, live",
-      "text": "$6.6M realized savings, $410K ahead of plan. PO cycle time down to 6.4 days. 23 renewals inside the 90-day window."
+      "title": "Four dials, no chrome",
+      "text": "The naked stat strip: $92.2M managed spend, $6.6M savings running $410K ahead, cycle time down to 6.4 days, 23 renewals inside the window."
     },
     "chart": {
-      "title": "July, explained instantly",
-      "text": "That $9.42M July spike? An $862K AWS true-up plus Salesforce posting early. August is already back at run-rate."
+      "title": "Three systems, one warning",
+      "text": "The full-bleed Leverage chapter joins SAP, ServiceNow and DocuSign: vendor incidents up 63% since May at vendors holding $18.9M in expiring contracts. Instant negotiating ammunition."
     },
     "ask": {
-      "title": "Drag it. Ask it.",
-      "text": "Priya drops the renewals card into chat and asks for the AWS counter-proposal brief — the day's hardest deliverable."
+      "title": "Drag a blip, ask away",
+      "text": "Priya drags the AWS blip straight off the radar into chat and asks askMElah for the counter-proposal brief — Marcus Webb's number, due Monday."
     },
     "delegate": {
-      "title": "Delegate the invoice fight",
-      "text": "One click chases the Dell invoice block: Amendment 3 pricing reconciled, $8,790 overcharge reversed, corrected invoice due August 15."
+      "title": "Hand askMElah the chase",
+      "text": "In The Chase, one Delegate click sends askMElah after the Dell block: $8,790 overcharge proven against Amendment 3, corrected invoice committed by August 15."
     },
     "autopilot": {
-      "title": "Approvals on autopilot",
-      "text": "Flip the switch — budgeted POs and vetted vendor onboardings clear themselves. Only the Databricks and Adobe calls still need Priya."
+      "title": "Strips clear themselves",
+      "text": "Clear the Queue lays approvals out as flight strips — $486,300 awaiting clearance. Flip Autopilot and routine strips stamp CLEARED; Databricks and Adobe still need Priya."
     },
     "mcp": {
-      "title": "Wired into everything",
-      "text": "Under the hood: live connections to Ariba, SAP, and DocuSign — eight systems answering in one place, no tab-hopping."
+      "title": "Ground systems, all answering",
+      "text": "The footer rail lights the tower's ground systems — Ariba, SAP, DocuSign, eight live connections — with the MCP console one click away."
     },
     "recap": {
-      "title": "Friday report, one click",
-      "text": "The week writes itself: Dell signed, Adobe in redline, queue cut from 18 to 2. Ready before the boss even asks."
+      "title": "The week on the board",
+      "text": "The Week chapter tallies tower hours — 16.5 in meetings, 11 in focus — beside five open work orders. One button drafts the end-of-week recap."
     },
     "outro": {
-      "title": "Priya negotiates. FoW hustles.",
-      "text": "The busywork ran itself today. Priya spent her hours on the $12M deal — that's the whole point."
+      "title": "Priya flies. askMElah sweeps.",
+      "text": "The radar keeps sweeping and the strips keep clearing. Priya's hours went to the $12.0M AWS deal — the tower handled everything else."
     }
   }
 }

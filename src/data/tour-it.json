@@ -3,44 +3,44 @@
   "question": "Why is the incident backlog finally dropping?",
   "beats": {
     "intro": {
-      "title": "Meet Marcus Webb",
-      "text": "IT Operations, Singapore. 3,120 endpoints, five sites, one workspace that already knows what today demands."
+      "title": "Marcus steps onto the Bridge",
+      "text": "IT Operations, Singapore. 3,120 endpoints, five sites — and a network-operations console at Mediacorp that reads like a live status board, not a dashboard."
     },
     "hero": {
-      "title": "The morning brief lands",
-      "text": "Backlog down to 47 incidents — 27 off the July peak. One catch: 214 endpoints still exposed to CVE-2026-31842 before Tuesday."
+      "title": "Dial, countdown, lamps",
+      "text": "The uptime dial holds 99.96% above the 99.90 SLO. Beside it, a live countdown to Tuesday 09:00 — 214 endpoints still exposed to CVE-2026-31842."
     },
     "kpis": {
-      "title": "Four numbers, zero digging",
-      "text": "Uptime 99.96%. Patch compliance 96.8%, up 2.1 points. MTTR down to 3.4 hours. Live from ServiceNow and Jira — no spreadsheet safari."
+      "title": "Four naked numbers",
+      "text": "A bare stat strip, sparklines and all: 47 open incidents, uptime 99.96%, patch compliance 96.8%, MTTR 3.4 hours. Straight from ServiceNow and Jira."
     },
     "chart": {
-      "title": "The backlog story, drawn",
-      "text": "July spiked to 521 tickets on the gateway failover. August flipped it: 474 resolved against 447 opened. The queue is finally shrinking."
+      "title": "Correlate: one joined canvas",
+      "text": "Chapter 01 fuses opened-versus-resolved into a single full-bleed chart. July spiked to 521 opened; August closed 474 against 447 — the backlog finally bends."
     },
     "ask": {
-      "title": "Drag the number, ask why",
-      "text": "Marcus drops the incident card into chat and asks the question every boss asks: why is the backlog finally dropping?"
+      "title": "Drag a lamp, ask why",
+      "text": "GlobalProtect's lamp burns amber — 84 incidents in 30 days. Marcus drags it into chat and asks the obvious: why is the backlog finally dropping?"
     },
     "delegate": {
-      "title": "One click, PO chased",
-      "text": "Chase the Dell PO: Ariba checked, two approvers nudged, ship-split confirmed. $142,800 released four days before the quote expires."
+      "title": "Runbooks and dispatch",
+      "text": "Chapter 02: cross-app runbooks on the left, a dispatch column on the right — askMElah executes end to end, every hop logged across the stack."
     },
     "autopilot": {
-      "title": "Approvals on autopilot",
-      "text": "Flip the switch. Low-risk expenses and routine access grants clear themselves — Marcus keeps the $142K PO and prod-access calls."
+      "title": "Triage queue, autopilot on",
+      "text": "Approvals routed like incidents — P1 to P3, SLA lamps blinking. Flip Autopilot and low-risk items like Lena's $3,940 SSD expense clear themselves."
     },
     "mcp": {
-      "title": "Plugged into everything",
-      "text": "ServiceNow, Jira, Slack, GitHub — eight live connections. Every answer traced back to real systems, not vibes."
+      "title": "Uplinks: eight of eight",
+      "text": "The footer rail reads UPLINKS — ServiceNow, Jira, Slack, GitHub and four more glyphs, 8/8 NOMINAL. One click opens the full MCP console."
     },
     "recap": {
-      "title": "Friday report, instantly",
-      "text": "One click compiles the week — backlog burned, 12 Austin access packs shipped early, CVE stragglers patched. Priya's update writes itself."
+      "title": "Recap on demand",
+      "text": "One button on the board — draft my end-of-week recap — and askMElah compiles the burn-down, patched stragglers and Austin access packs for Priya."
     },
     "outro": {
-      "title": "Ops at machine speed",
-      "text": "Same Marcus. Same five fires. Now the busywork runs itself — and he runs the strategy."
+      "title": "The Bridge holds",
+      "text": "Same Marcus, same five fires. Now the console watches the lamps and the countdown — while he runs the strategy."
     }
   }
 }

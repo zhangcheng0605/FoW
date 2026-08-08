@@ -135,12 +135,12 @@ function renderStudio_sales(p, cv) {
       { id: "OPP-4765", amt: "$180K", name: "Helios Mfg", cls: "warn" },
     ],
     "Negotiation": [
-      { id: "OPP-4903", amt: "$520K", name: "Trellis Financial", cls: "risk", appr: "a1" },
-      { id: "OPP-4880", amt: "$310K", name: "Bluewater Logistics", cls: "warn", task: "OPP-4880" },
+      { id: "OPP-4903", amt: "$520K", name: "Trellis", full: "Trellis Financial — 18% discount pending your override", cls: "risk", appr: "a1" },
+      { id: "OPP-4880", amt: "$310K", name: "Bluewater", full: "Bluewater Logistics — procurement silent 12 days", cls: "warn", task: "OPP-4880" },
     ],
     "Contracting": [
-      { id: "OPP-4821", amt: "$1.2M", name: "Nordvik Energy", cls: "hot", task: "OPP-4821" },
-      { id: "OPP-4738", amt: "$290K", name: "Caldera · signed 07:12", cls: "done" },
+      { id: "OPP-4821", amt: "$1.2M", name: "Nordvik", full: "Nordvik Energy — sign by Aug 21", cls: "hot", task: "OPP-4821" },
+      { id: "OPP-4738", amt: "$290K", name: "Caldera", full: "Caldera Systems renewal — fully executed 07:12", cls: "done" },
     ],
   };
   const totalPipe = p.donut.segments.reduce((a, s) => a + s.value, 0);
@@ -167,7 +167,7 @@ function renderStudio_sales(p, cv) {
           : a ? { type: "approval", label: a.type + ": " + a.title, data: a }
             : { type: "task", label: c.id + " · " + c.amt + " " + c.name, data: { id: c.id } });
       makeDraggable(pill, chip);
-      pill.title = c.id + " · " + c.amt + " — " + c.name;
+      pill.title = c.id + " · " + c.amt + " — " + (c.full || c.name);
       pill.addEventListener("click", () => { attachChip(chip); sendMessage("What's the status here?"); });
       chips.appendChild(pill);
     });

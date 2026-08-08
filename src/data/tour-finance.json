@@ -4,43 +4,43 @@
   "beats": {
     "intro": {
       "title": "Meet Daniel Okafor",
-      "text": "FP&A Manager, London. Close week, a QBR at 14:00, and every system he owns — SAP, NetSuite, Excel — already awake in one workspace."
+      "text": "Mediacorp's FP&A Manager in London, mid close-week. His workspace is a ledger — July framed as one reconciliation, from budget line to hard-close."
     },
     "hero": {
-      "title": "The day, pre-briefed",
-      "text": "Before coffee: July variance needs locking before Priya's 14:00 QBR prep — Engineering is $862K over on AWS. The workspace leads with what matters."
+      "title": "The ledger opens",
+      "text": "A countdown ticks toward Tuesday's 09:00 hard-close; the sign-off chain shows Priya still waiting. Below, a waterfall bridges $19.90M budget to $21.34M actual — +$1,440K."
     },
     "kpis": {
-      "title": "Four numbers, live",
-      "text": "YTD opex $211.2M against plan. DSO down 3 days to 38. Forecast accuracy 95.1%. Pulled straight from SAP and NetSuite, not last week's deck."
+      "title": "Four naked figures",
+      "text": "No dashboard clutter — just the numbers: opex $211.2M YTD, margin 71.4%, DSO down to 38 days, forecast accuracy 95.1%. Sparklines carry the trend."
     },
     "chart": {
-      "title": "The July spike, explained",
-      "text": "Actual vs budget, month by month. July jumps $1.44M over — the AWS true-up and an early Salesforce renewal. August already tracking back to +1.4%."
+      "title": "Chapter 01: Reconcile",
+      "text": "One full-bleed chart joins three systems: ServiceNow incidents tripled to 34 in June, Workday headcount flat at ~420, SAP spend followed. The overrun was foreseeable."
     },
     "ask": {
-      "title": "Drag the number, ask why",
-      "text": "Daniel drops the opex card into chat and asks the question Priya will ask him. Watch it interrogate three systems at once."
+      "title": "Drag the waterfall, ask why",
+      "text": "Daniel drags the waterfall into chat and asks Priya's question. askMElah interrogates SAP, NetSuite and Excel live — the $862K AWS true-up surfaces in seconds."
     },
     "delegate": {
-      "title": "Delegate the chasing",
-      "text": "One click: chase the open accruals. It nudges three cost-center owners in Teams — two of three post within 90 minutes, $228K cleared."
+      "title": "Chapter 02: Move money",
+      "text": "Cross-app workflows on the left, delegations on the right. One click hands askMElah the accrual chase — two of three post within 90 minutes, $228K cleared."
     },
     "autopilot": {
-      "title": "Approvals on autopilot",
-      "text": "Flip the switch. In-policy items like Aisha's $3,214 close-support flights clear themselves; the $86K Adobe renewal still waits for Daniel."
+      "title": "Chapter 03: Sign the lines",
+      "text": "Approvals sit as ledger lines under a running total. Flip Autopilot: askMElah stamps low-risk items APPROVED — Aisha's $3,214 flights clear; the $86,400 Adobe renewal waits."
     },
     "mcp": {
-      "title": "Plugged into everything",
-      "text": "Under the hood: live connections to SAP, NetSuite, Workday, Ariba and more. Every answer traces back to a real system call."
+      "title": "Wired into everything",
+      "text": "The ledger's last line: glyphs for SAP, NetSuite, Workday, Ariba and more, opening the MCP console. Every figure above traces to a live call."
     },
     "recap": {
-      "title": "Friday, in one click",
-      "text": "The week recap writes itself — bridge delivered, accruals posted, six aged approvals cleared. The Friday report stops being an evening job."
+      "title": "Chapter 04: Close the book",
+      "text": "The week in numbers — 16.5 meeting hours against 12 of focus — beside the close checklist. One button drafts Daniel's end-of-week recap."
     },
     "outro": {
-      "title": "More analysis, less chasing",
-      "text": "Daniel walked into the 14:00 with the bridge done by 11:40. That's the point: the copilot chases, he decides."
+      "title": "Books balanced, day back",
+      "text": "The bridge reconciles to +$1,440K, E&OE. Daniel walks into the 14:00 with answers, not spreadsheets — askMElah kept Mediacorp's ledger moving."
     }
   }
 }

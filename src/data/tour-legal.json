@@ -3,44 +3,44 @@
   "question": "Summarize the Orion Systems MSA redlines",
   "beats": {
     "intro": {
-      "title": "Meet Sofia's workspace",
-      "text": "Sofia Reyes, Senior Legal Counsel. 38 contracts in review, 54 open matters, one $1.24M renewal on the clock. Her whole day, one screen."
+      "title": "The docket opens",
+      "text": "Mediacorp Legal, Friday August 8. Sofia Reyes's day arrives as a court docket — pleading caption, rubber stamps, numbered entries. One matter headlines: Orion Systems."
     },
     "hero": {
-      "title": "The brief knows the stakes",
-      "text": "Before coffee: close the Orion liability-cap counter before Marcus's 10:30 call. The $1.24M renewal hangs on it. No inbox digging required."
+      "title": "In re: Orion Systems",
+      "text": "A pleading caption for the $1.24M MSA, a stamp still reading Pending sign-off, the 1×→2× cap counter, and a live countdown to the 10:30 call."
     },
     "kpis": {
-      "title": "Numbers that pull weight",
-      "text": "Turnaround down to 6.8 days despite July's intake spike — and 72.4% of NDAs now clear themselves, up 8.3 points on Q2."
+      "title": "The record, certified",
+      "text": "Four naked figures from source systems: 38 contracts in review, 6.8-day turnaround, 72.4% NDAs auto-cleared, 54 matters open. Sparklines carry the trend."
     },
     "chart": {
-      "title": "138 in, 135 out",
-      "text": "July intake hit 138 on the Q3 sales push. The team completed 135. Backlog barely moved — that's the story this sweep tells."
+      "title": "No. 01 — Exhibits",
+      "text": "Exhibit A, the full-width joined record: July intake spiked to 138, completions hit 135. Exhibit B enters the finding — the backlog barely moved."
     },
     "ask": {
-      "title": "Drag, drop, interrogate",
-      "text": "Sofia drags a KPI straight into chat and asks for the Orion redline summary — the one blocking her 10:30."
+      "title": "Interrogate the docket",
+      "text": "Sofia drags the Orion caption itself into chat and asks askMElah to summarize the MSA redlines — 18 edits, only 3 material."
     },
     "delegate": {
-      "title": "Three DPAs, zero chasing",
-      "text": "One click: DPA templates go to Elena's three Ariba vendors, reminders set, one signed same day. Sofia never opened DocuSign."
+      "title": "No. 02 — Filings",
+      "text": "Cross-app filings run numbered workflows end to end; the clerk's office hands routine matters to askMElah, who reports back done — no chasing, no tabs."
     },
     "autopilot": {
-      "title": "Approvals on autopilot",
-      "text": "Flip the switch — low-risk items like Latham's data-room access clear themselves. The $1.24M Orion cap exception still waits for Sofia."
+      "title": "Ink without the wait",
+      "text": "Flip Autopilot on the For-signature docket: low-risk instruments like Latham's data-room access thud down APPROVED stamps. The $1,240,000 Orion exception still waits for Sofia's pen."
     },
     "mcp": {
-      "title": "Plugged into everything",
-      "text": "DocuSign, SharePoint, Confluence, Outlook — all live under the hood. Every answer traced back to the systems legal already trusts."
+      "title": "Of record, wired in",
+      "text": "The footer lists counsel of record: DocuSign, SharePoint, Confluence, Outlook, Teams, Slack, Drive — seven live MCP connections, certified by askMElah, clerk of record."
     },
     "recap": {
-      "title": "Friday report, one click",
-      "text": "The week writes itself: queue held at 38, four stale envelopes cleared, board litigation summary drafted four days early. Priya gets receipts."
+      "title": "Draft my end-of-week recap",
+      "text": "One hero button and the week writes itself: queue held at 38, 23 renewals tracked, board litigation summary drafted before Priya's Tuesday deadline."
     },
     "outro": {
       "title": "Counsel, amplified",
-      "text": "Same Sofia, same judgment — minus the chasing, drafting, and digging. That's a legal team that scales without headcount."
+      "text": "Same Sofia, same judgment — the docket just keeps itself. Mediacorp's legal team scales on askMElah's clerking, not on headcount."
     }
   }
 }
