@@ -715,6 +715,7 @@ function ckBuild(query) {
   const q = (query || "").toLowerCase();
   const p = FOW.data();
   const items = [];
+  items.push({ sect: "Workspace", label: "Start present mode — the demo drives itself", icon: "▶", sub: "tour", run: () => startPresent() });
   if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask Flow", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });
   if (p) {
@@ -780,6 +781,8 @@ function init() {
     applyTheme(!THEME.dark);
     toast(THEME.dark ? "Dark mode — for the late shift" : "Light mode — bright and crisp", "info");
   });
+  $("#presentBtn").addEventListener("click", () => startPresent());
+  $("#obTour").addEventListener("click", () => startPresent());
 
   $("#personaPill").addEventListener("click", e => {
     e.stopPropagation();

@@ -42,7 +42,7 @@ def build() -> None:
     body = read(SRC / "body.html")
     scripts = "\n".join(
         read(SRC / "js" / name)
-        for name in ["registry.js", "charts.js", "chat.js", "app.js"]
+        for name in ["registry.js", "charts.js", "chat.js", "app.js", "present.js"]
     )
     data = load_data()
 

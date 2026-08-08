@@ -14,6 +14,12 @@ self-contained file (no server, no build step needed to run).
 
 ## What to demo
 
+0. **Present mode** — don't demo it, let it demo itself. Hit "▶ Watch the tour"
+   on the sign-in screen (or the ▶ in the topbar, or ⌘K → "Start present
+   mode"). A spotlight, a ghost cursor and director's captions walk through
+   the whole product in ~2 minutes — dragging cards into chat, flipping on
+   autopilot, delegating work, writing the week recap — all real interactions,
+   then it loops. Space pauses, → skips, Esc hands you the wheel.
 1. **Pick a seat** — the role picker re-shapes the entire workspace: HR, Finance,
    Procurement, IT, Legal or Sales each get their own KPIs, charts, queues,
    skills and MCP connections (and their own accent color).
@@ -50,6 +56,7 @@ src/
   js/charts.js      hand-rolled SVG chart engine (trend/donut/bars/heatmap/spark)
   js/chat.js        Flow: intent router, chip responders, streamed answers
   js/app.js         canvas renderer, drag-and-drop, ⌘K palette, fx
+  js/present.js     present mode: self-driving spotlight tour + player bar
   data/<role>.json  per-persona demo data packs (6 roles)
 ```
 
