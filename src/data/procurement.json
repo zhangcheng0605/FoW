@@ -1,0 +1,572 @@
+{
+  "personaId": "procurement",
+  "user": {
+    "name": "Priya Nair",
+    "role": "Procurement Lead",
+    "dept": "Procurement",
+    "location": "Austin",
+    "initials": "PN"
+  },
+  "focus": {
+    "headline": "Get the AWS EA counter-proposal to Marcus Webb before Monday — the $12.0M commit renews Sep 30.",
+    "sub": "23 renewals now sit inside the 90-day window; Adobe (228 seats, $82,080) must sign by Aug 31 and Okta's quote came back 9.2% over budget."
+  },
+  "connections": ["ariba", "sap", "docusign", "outlook", "teams", "excel", "slack", "sharepoint"],
+  "skills": [
+    {
+      "id": "renewal-radar",
+      "name": "Renewal Radar",
+      "desc": "Scans DocuSign contracts and flags every renewal inside the 90-day window with owner and uplift cap",
+      "icon": "📡",
+      "lastRun": "Today 06:30",
+      "runs": 183
+    },
+    {
+      "id": "po-triage",
+      "name": "PO Triage",
+      "desc": "Prioritizes the Ariba approval queue by value, aging and budget status",
+      "icon": "🧾",
+      "lastRun": "Today 07:15",
+      "runs": 342
+    },
+    {
+      "id": "savings-tracker",
+      "name": "Savings Tracker",
+      "desc": "Reconciles negotiated savings against SAP invoices and books realized savings to the FY26 target",
+      "icon": "💰",
+      "lastRun": "Yesterday",
+      "runs": 128
+    }
+  ],
+  "automations": [
+    {
+      "name": "Renewal window digest",
+      "schedule": "Mon 08:00",
+      "desc": "Emails the 90-day renewal pipeline with owners, values and uplift caps to the sourcing team",
+      "lastResult": "Sent to 6 people · Mon 08:00"
+    },
+    {
+      "name": "PO aging nudge",
+      "schedule": "Daily 07:30",
+      "desc": "Pings requesters in Slack for POs stuck in approval more than 3 days",
+      "lastResult": "9 nudges sent · Today 07:30"
+    },
+    {
+      "name": "Vendor scorecard refresh",
+      "schedule": "Fri 06:00",
+      "desc": "Rebuilds vendor scorecards in Excel from SAP delivery, quality and invoice-accuracy data",
+      "lastResult": "42 vendors scored · Today 06:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Managed spend (YTD)",
+      "value": "$92.2M",
+      "delta": "+6.2%",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs FY25 YTD",
+      "spark": [7.1, 7.4, 7.6, 6.2, 7.5, 7.3, 7.8, 7.7, 7.9, 8.1, 9.4, 8.2],
+      "note": "Jul spiked on the $862K AWS true-up and early Salesforce renewal; Aug back to run-rate",
+      "source": "sap"
+    },
+    {
+      "id": "k2",
+      "label": "Realized savings (YTD)",
+      "value": "$6.6M",
+      "delta": "+$410K",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs plan",
+      "spark": [480, 520, 545, 410, 555, 570, 605, 590, 625, 645, 690, 365],
+      "note": "Dell MPA Amendment 3 and the Zoom consolidation booked $1.1M combined since May",
+      "source": "excel"
+    },
+    {
+      "id": "k3",
+      "label": "PO cycle time",
+      "value": "6.4 days",
+      "delta": "-1.8 days",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs Q2",
+      "spark": [9.6, 9.2, 9.4, 8.8, 8.9, 8.5, 8.2, 7.9, 7.4, 7.1, 6.7, 6.4],
+      "note": "PO Triage auto-routing live since March; only 4 aged approvals left in the queue",
+      "source": "ariba"
+    },
+    {
+      "id": "k4",
+      "label": "Renewals due (90 days)",
+      "value": "23",
+      "delta": "+5",
+      "deltaDir": "up",
+      "deltaGood": false,
+      "vs": "vs last quarter",
+      "spark": [14, 16, 15, 18, 17, 19, 18, 20, 19, 21, 22, 23],
+      "note": "AWS, Adobe and Okta all land Sep–Oct; 9 in negotiation, 5 not yet started",
+      "source": "docusign"
+    }
+  ],
+  "trend": {
+    "title": "Monthly PO spend",
+    "subtitle": "All POs issued, Sep FY26 to date vs FY25",
+    "unit": "$K",
+    "series": [
+      {
+        "name": "FY26",
+        "points": [7080, 7420, 7610, 6180, 7460, 7310, 7840, 7690, 7920, 8110, 9420, 8210]
+      },
+      {
+        "name": "FY25",
+        "points": [6740, 6980, 7150, 5890, 7020, 6870, 7280, 7190, 7350, 7480, 7610, 7550]
+      }
+    ],
+    "insight": "Jul jumped $1.31M over Jun — the $862K AWS commit true-up plus Salesforce's $388K renewal posting early; Aug is back at the $8.2M run-rate.",
+    "source": "sap"
+  },
+  "donut": {
+    "title": "Spend by vendor category (FY26)",
+    "unit": "%",
+    "segments": [
+      {"label": "Cloud & infrastructure", "value": 28},
+      {"label": "Software & SaaS", "value": 24},
+      {"label": "Professional services", "value": 16},
+      {"label": "Facilities", "value": 12},
+      {"label": "Hardware", "value": 11},
+      {"label": "Contingent labor", "value": 9}
+    ],
+    "insight": "Cloud & infrastructure at 28% keeps climbing — the Sep AWS EA outcome moves nearly a third of managed spend.",
+    "source": "sap"
+  },
+  "bars": {
+    "title": "Top vendors by FY26 spend",
+    "unit": "$K",
+    "categories": ["AWS", "Microsoft", "Salesforce", "Dell", "CBRE", "Deloitte", "Workday"],
+    "series": [
+      {
+        "name": "FY26 spend YTD",
+        "values": [11240, 6480, 5150, 4320, 3980, 3240, 2860]
+      }
+    ],
+    "insight": "Top 7 vendors hold 40% of managed spend; AWS alone is 12.2% — the Sep EA talks carry the year.",
+    "source": "sap"
+  },
+  "heatmap": {
+    "title": "PO volume by category",
+    "unit": "POs",
+    "rows": ["Software", "Hardware", "Cloud", "Prof services", "Facilities", "Labor"],
+    "cols": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [
+      [38, 41, 40, 27, 35, 37, 42, 44, 43, 46, 52, 31],
+      [22, 24, 21, 14, 19, 22, 25, 27, 24, 26, 29, 16],
+      [12, 13, 12, 9, 12, 13, 14, 13, 15, 14, 18, 11],
+      [16, 18, 17, 11, 15, 16, 19, 18, 20, 21, 24, 13],
+      [9, 10, 9, 6, 8, 9, 11, 10, 11, 12, 13, 7],
+      [14, 15, 16, 10, 13, 14, 15, 17, 16, 18, 20, 12]
+    ],
+    "insight": "Software POs hit 52 in Jul as teams front-loaded renewals ahead of Sep price uplifts; Dec dipped roughly 35% across every category.",
+    "source": "ariba"
+  },
+  "goals": [
+    {"label": "Deliver $9.0M realized savings", "pct": 73, "detail": "$6.6M booked of $9.0M FY26 target"},
+    {"label": "Cut PO cycle time to 5.0 days", "pct": 70, "detail": "6.4 days now, down from 9.6 in Sep"},
+    {"label": "Renew top-20 contracts ahead of expiry", "pct": 65, "detail": "13 of 20 signed or in redline"},
+    {"label": "Move tail spend to catalog", "pct": 79, "detail": "71% of tail POs via Ariba catalog vs 90% target"}
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "Procurement daily huddle",
+      "platform": "teams",
+      "attendees": ["Diego Ramírez", "Mei-Ling Chen", "Oluwaseun Adebayo"],
+      "agenda": "Renewal pipeline, aged PO queue, AWS EA prep assignments"
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "AWS EA negotiation strategy",
+      "platform": "teams",
+      "attendees": ["Marcus Webb", "James Whitfield", "Mei-Ling Chen"],
+      "agenda": "Commit tiers, 14% discount ask, Graviton credits, walk-away number"
+    },
+    {
+      "time": "13:00",
+      "dur": "30m",
+      "title": "Adobe renewal — final redlines",
+      "platform": "zoom",
+      "attendees": ["Sarah Kim", "Katie O'Brien"],
+      "agenda": "Liability cap, 3% uplift, 228 seats — term ends Aug 31"
+    },
+    {
+      "time": "14:30",
+      "dur": "1h",
+      "title": "Q3 vendor business review — Dell",
+      "platform": "zoom",
+      "attendees": ["Diego Ramírez", "Anna Kowalski"],
+      "agenda": "Scorecard walk-through: 91.2% on-time, invoice mismatch on PO-77812, Q4 refresh pricing"
+    },
+    {
+      "time": "16:30",
+      "dur": "30m",
+      "title": "Contingent labor RFP scoring",
+      "platform": "teams",
+      "attendees": ["Oluwaseun Adebayo", "Diego Ramírez"],
+      "agenda": "Consolidate scores for all 5 bids; shortlist 3 for finalist presentations"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Marcus Webb",
+      "source": "outlook",
+      "subject": "AWS EA counter-proposal — need your number by Monday",
+      "preview": "Priya — before I take this to the CFO I need the commit tier and discount...",
+      "time": "8:05 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "SAP Ariba",
+      "source": "ariba",
+      "subject": "18 POs pending your approval — 4 aged past 3 days",
+      "preview": "Your approval queue has 18 open items totaling $486,300. Four exceed the 3-day...",
+      "time": "7:45 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "SAP S/4HANA",
+      "source": "sap",
+      "subject": "Invoice blocked: Dell $214,380 vs PO-77812 price mismatch",
+      "preview": "Invoice 5601-88274 from Dell Technologies was blocked at posting. Unit price exceeds the...",
+      "time": "8:22 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Sarah Kim",
+      "source": "teams",
+      "subject": "Adobe redlines — liability cap agreed at 12 months fees",
+      "preview": "Good news: their counsel accepted our cap language. Only open item is the auto-renewal...",
+      "time": "8:38 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m5",
+      "from": "DocuSign",
+      "source": "docusign",
+      "subject": "Completed: Dell Master Purchase Agreement — Amendment 3",
+      "preview": "All parties have signed. Amendment 3 locks Latitude pricing through FY27 and adds the...",
+      "time": "7:12 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m6",
+      "from": "Mei-Ling Chen",
+      "source": "slack",
+      "subject": "Okta renewal quote came back 9% over budget",
+      "preview": "Just posted it in #sourcing-saas — $310K against our $284K budget. Want me to...",
+      "time": "8:51 AM",
+      "urgent": false,
+      "unread": false
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "PO",
+      "title": "Databricks — platform expansion, 40 capacity units",
+      "requester": "James Whitfield",
+      "amount": "$128,500",
+      "meta": "Q3 budgeted · consumption up 32% YoY · co-terms with AWS EA",
+      "source": "ariba",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "Contract",
+      "title": "Adobe Creative Cloud renewal — 228 seats",
+      "requester": "Katie O'Brien",
+      "amount": "$82,080",
+      "meta": "3% uplift · 12 seats trimmed after license audit · term ends Aug 31",
+      "source": "docusign",
+      "urgency": "high"
+    },
+    {
+      "id": "a3",
+      "type": "PO",
+      "title": "CBRE — Austin office HVAC retrofit",
+      "requester": "Ingrid Johansson",
+      "amount": "$64,900",
+      "meta": "Two competitive quotes attached · capex approved in Q2",
+      "source": "ariba",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Vendor",
+      "title": "Onboard TalentBridge Staffing as approved supplier",
+      "requester": "Oluwaseun Adebayo",
+      "amount": null,
+      "meta": "Contingent labor RFP finalist · W-9 and insurance certs verified",
+      "source": "ariba",
+      "urgency": "low"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "PRC-1041",
+      "title": "Finalize AWS EA counter-proposal model for Marcus",
+      "due": "Aug 11",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "excel"
+    },
+    {
+      "id": "PRC-1035",
+      "title": "Resolve Dell invoice block on PO-77812 ($214,380)",
+      "due": "Aug 8",
+      "status": "blocked",
+      "priority": "P1",
+      "source": "sap"
+    },
+    {
+      "id": "PRC-1038",
+      "title": "Route Adobe renewal (228 seats) for signature",
+      "due": "Aug 14",
+      "status": "todo",
+      "priority": "P1",
+      "source": "docusign"
+    },
+    {
+      "id": "PRC-1029",
+      "title": "Consolidate contingent labor RFP scores — 5 bids",
+      "due": "Aug 12",
+      "status": "inprogress",
+      "priority": "P2",
+      "source": "excel"
+    },
+    {
+      "id": "PRC-1022",
+      "title": "Publish Q3 vendor scorecards to SharePoint",
+      "due": "Aug 15",
+      "status": "review",
+      "priority": "P3",
+      "source": "sharepoint"
+    }
+  ],
+  "suggestions": [
+    "Which contract renewals land in the next 90 days?",
+    "Why did PO spend spike in July?",
+    "Draft the AWS EA counter-proposal brief for Marcus",
+    "Summarize Dell's scorecard before the 14:30 QBR",
+    "Should we accept Okta's renewal quote?",
+    "How are we tracking against the $9.0M savings target?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "Renewal pipeline",
+      "triggers": ["renewals", "renewal", "90 days", "contracts due", "expiring", "coming due", "renewal pipeline"],
+      "toolCalls": [
+        {
+          "server": "docusign",
+          "tool": "search_agreements",
+          "args": "expiry<=Nov 6 2026",
+          "result": "23 contracts · $18.9M TCV",
+          "ms": 520
+        },
+        {
+          "server": "ariba",
+          "tool": "get_contract_workspaces",
+          "args": "status=active&renewal_window=90d",
+          "result": "9 in negotiation · 5 not started",
+          "ms": 610
+        },
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "file=Renewal_Pipeline_FY26.xlsx",
+          "result": "owners + uplift caps for 23 rows",
+          "ms": 290
+        }
+      ],
+      "response": "**23 contracts renew in the next 90 days — $18.9M total value.** 9 are in negotiation, 9 signed or in redline, and 5 have not started.\n\n{{kpis}}\n\n|Contract|Value|Renews|Owner|\n|---|---|---|---|\n|AWS Enterprise Agreement|$12.0M|Sep 30|Mei-Ling Chen|\n|CBRE facilities services|$1.4M|Oct 31|Oluwaseun Adebayo|\n|Okta SSO (2,400 seats)|$310,000|Oct 15|Mei-Ling Chen|\n|Zoom enterprise (2,400 hosts)|$188,000|Nov 1|Diego Ramírez|\n|Adobe Creative Cloud (228 seats)|$82,080|Aug 31|Anna Kowalski|\n\nTwo flags: **Adobe is 23 days out and still in redline** (Sarah Kim cleared the liability cap this morning), and Okta's quote is 9.2% over budget.\n\n> Recommended: route Adobe for signature today — everything else has runway, that one doesn't.",
+      "actions": [
+        {
+          "label": "Route Adobe for signature",
+          "toast": "Adobe renewal sent for signature in DocuSign — Katie O'Brien cc'd"
+        },
+        {
+          "label": "Post pipeline to #sourcing-team",
+          "toast": "Renewal pipeline posted to #sourcing-team in Slack"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "July spend spike",
+      "triggers": ["july", "spike", "po spend", "why did", "overrun", "spend jump"],
+      "toolCalls": [
+        {
+          "server": "sap",
+          "tool": "get_po_spend",
+          "args": "period=Jul FY26&group_by=category",
+          "result": "$9.42M · +16% vs Jun",
+          "ms": 580
+        },
+        {
+          "server": "ariba",
+          "tool": "list_pos",
+          "args": "period=Jul FY26&min_value=100000",
+          "result": "11 POs over $100K",
+          "ms": 470
+        }
+      ],
+      "response": "July PO spend hit **$9.42M vs $8.11M in June — a $1.31M jump**, the highest month this fiscal year. Two POs explain nearly all of it.\n\n{{chart:trend}}\n\n- **AWS reserved-instance true-up: $862K** — the commit trued up in a single month instead of amortizing across Q3. One-time.\n- **Salesforce renewal: $388K** — posted in July; last year it landed in August. Pure timing.\n\nStrip those out and underlying spend was flat at roughly $8.2M — and August is tracking $8.21M, which confirms it. **This is a spike, not a new run-rate.**\n\n> Recommended: tag both POs as one-time in the savings model so Q3 forecasting doesn't bake in a false baseline — Daniel Okafor's variance bridge already flags them on the finance side.",
+      "actions": [
+        {
+          "label": "Tag POs one-time in tracker",
+          "toast": "Both POs tagged one-time in Savings_Tracker_FY26.xlsx"
+        },
+        {
+          "label": "Send note to Daniel Okafor",
+          "toast": "Draft created in Outlook — ready for review"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "AWS EA brief",
+      "triggers": ["aws", "ea", "counter-proposal", "draft", "enterprise agreement", "negotiation"],
+      "toolCalls": [
+        {
+          "server": "sap",
+          "tool": "vendor_spend_history",
+          "args": "vendor=AWS&period=FY26",
+          "result": "$11.24M YTD · +19% YoY",
+          "ms": 640
+        },
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "file=AWS_EA_Model.xlsx&range=Scenarios!A1:F9",
+          "result": "3 commit tiers modeled",
+          "ms": 320
+        },
+        {
+          "server": "outlook",
+          "tool": "create_draft",
+          "args": "to=marcus.webb@meridianlabs.com",
+          "result": "draft saved with 1 attachment",
+          "ms": 510
+        }
+      ],
+      "response": "Draft is ready — a one-page counter-proposal brief for Marcus, with the scenario model attached.\n\n## The position\n- **Usage**: $11.24M YTD, up 19% YoY — AWS is 12.2% of managed spend, our largest vendor by a wide margin.\n- **Ask**: 3-year, $12.0M/yr commit at **14% discount** (currently 9%), plus $150K/yr in Graviton migration credits.\n- **Walk-away**: 1-year at 12% — we do not sign a 3-year deal below 13%.\n- **Leverage**: the $128,500 Databricks expansion is workload that could land on either cloud, and Microsoft has an Azure proposal on the table against our $6.48M relationship.\n\n> Recommended: send before your 10:30 strategy session so Marcus and James Whitfield can pressure-test the walk-away number live.",
+      "actions": [
+        {
+          "label": "Open draft in Outlook",
+          "toast": "Draft opened in Outlook — AWS_EA_Model.xlsx attached"
+        },
+        {
+          "label": "Add scenarios to 10:30 agenda",
+          "toast": "Scenario table added to the 10:30 meeting agenda in Teams"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Dell scorecard",
+      "triggers": ["dell", "scorecard", "vendor review", "qbr", "summarize", "vendor performance"],
+      "toolCalls": [
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "file=Vendor_Scorecards_Q3.xlsx&sheet=Dell",
+          "result": "score 87.4 · rank 3 of 42",
+          "ms": 300
+        },
+        {
+          "server": "sap",
+          "tool": "get_delivery_stats",
+          "args": "vendor=Dell&period=Q3 FY26",
+          "result": "91.2% on-time · 2 escalations",
+          "ms": 560
+        },
+        {
+          "server": "ariba",
+          "tool": "get_po_history",
+          "args": "vendor=Dell&period=FY26",
+          "result": "$4.32M YTD · 96 POs",
+          "ms": 450
+        }
+      ],
+      "response": "## Dell — Q3 scorecard, ahead of your 14:30\nOverall **87.4/100, ranked 3rd of 42 scored vendors**, and our fourth-largest by spend at $4.32M YTD across 96 POs.\n\n{{chart:bars}}\n\n- **On-time delivery 91.2%** vs 95% target — two June slips on the Latitude refresh, both traced to docking-station shortages.\n- **Quality 98.6%** — best-in-class, zero DOA units this quarter.\n- **Invoice accuracy is the sore spot**: the $214,380 invoice on PO-77812 is blocked in SAP on a unit-price mismatch against Amendment 3 pricing.\n\nAmendment 3 completed in DocuSign this morning, locking Latitude pricing through FY27.\n\n> Recommended: open the QBR with the blocked invoice — get a corrected invoice committed by Aug 15 and a dock-inventory guarantee for the Q4 refresh.",
+      "actions": [
+        {
+          "label": "Export scorecard one-pager",
+          "toast": "Dell scorecard exported to Dell_QBR_Q3.pdf in SharePoint"
+        },
+        {
+          "label": "Draft agenda for 14:30",
+          "toast": "Agenda drafted and shared with Diego and Anna in Teams"
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Okta decision",
+      "triggers": ["okta", "quote", "accept", "should we", "recommend", "sso renewal"],
+      "toolCalls": [
+        {
+          "server": "ariba",
+          "tool": "get_sourcing_event",
+          "args": "event=RFQ-2214&vendor=Okta",
+          "result": "$310,000 quoted · budget $284,000",
+          "ms": 430
+        },
+        {
+          "server": "sap",
+          "tool": "vendor_spend_history",
+          "args": "vendor=Okta&period=FY25",
+          "result": "$268K FY25 · zero SLA credits",
+          "ms": 590
+        },
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "file=SSO_Benchmark_2026.xlsx",
+          "result": "market median $114/seat",
+          "ms": 280
+        }
+      ],
+      "response": "**Counter — do not accept.** Okta's $310,000 quote is 9.2% over the $284K budget and a 15.7% uplift on the $268K we paid in FY25.\n\n1. **Price vs market**: $129/seat for 2,400 seats against a $114 market median — 13% rich.\n2. **Runway**: the contract runs to Oct 15, so Mei-Ling has six weeks; no need to fold early.\n3. **Leverage**: the June license cleanup cut us from 2,520 to 2,400 seats, and Microsoft Entra rides on the E5 estate we already pay for — a credible, cheap alternative.\n\n**Counter at $288,000** (a 7.5% uplift) on a 2-year term with a 5% cap on year-two pricing. Okta has renewed at first counter twice before.\n\n> Recommended: Mei-Ling sends the counter today; escalate to me only if Okta hasn't moved by Aug 20.",
+      "actions": [
+        {
+          "label": "Send counter guidance to Mei-Ling",
+          "toast": "Counter guidance sent to Mei-Ling Chen in Slack"
+        },
+        {
+          "label": "Log counter in Ariba event",
+          "toast": "Counter position logged on RFQ-2214 in Ariba"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    "Ariba · PO-78102 (Databricks, $128,500) awaiting your approval",
+    "DocuSign · Dell MPA Amendment 3 completed — all parties signed",
+    "SAP · Invoice 5601-88274 blocked on PO-77812 (Dell, $214,380) — price mismatch",
+    "Slack · Mei-Ling Chen posted the Okta quote in #sourcing-saas",
+    "Excel · Vendor scorecard refresh completed — 42 vendors scored",
+    "Teams · Sarah Kim replied on the Adobe redlines thread",
+    "Ariba · Contingent labor RFP: 5 of 5 bids received"
+  ]
+}

@@ -1,0 +1,588 @@
+{
+  "personaId": "legal",
+  "user": {
+    "name": "Sofia Reyes",
+    "role": "Senior Legal Counsel",
+    "dept": "Legal",
+    "location": "New York",
+    "initials": "SR"
+  },
+  "focus": {
+    "headline": "Close the Orion Systems liability-cap counter before Marcus's 10:30 call — the $1.24M renewal hangs on it.",
+    "sub": "Queue sits at 38 contracts after July's 138-contract intake spike; Priya needs the board litigation summary by Tue Aug 12."
+  },
+  "connections": ["docusign", "outlook", "sharepoint", "teams", "slack", "gdrive", "confluence"],
+  "skills": [
+    {
+      "id": "nda-auto-clear",
+      "name": "NDA Auto-Clear",
+      "desc": "Screens inbound NDAs against the playbook and auto-approves clean ones in DocuSign",
+      "icon": "🛡️",
+      "lastRun": "Today 08:15",
+      "runs": 342
+    },
+    {
+      "id": "redline-summarizer",
+      "name": "Redline Summarizer",
+      "desc": "Diffs counterparty edits against playbook positions and flags material deviations",
+      "icon": "📝",
+      "lastRun": "Today 07:40",
+      "runs": 187
+    },
+    {
+      "id": "obligation-tracker",
+      "name": "Obligation Tracker",
+      "desc": "Scans executed contracts for renewal and notice dates into the Confluence register",
+      "icon": "⏰",
+      "lastRun": "Yesterday",
+      "runs": 64
+    }
+  ],
+  "automations": [
+    {
+      "name": "Morning contract queue digest",
+      "schedule": "Daily 07:30",
+      "desc": "Posts the DocuSign review queue by age and owner to the #legal-intake Slack channel",
+      "lastResult": "Posted to #legal-intake · Today 07:30"
+    },
+    {
+      "name": "Renewal notice alerts",
+      "schedule": "Mon 08:00",
+      "desc": "Emails contract owners 90/60/30-day renewal notices from the obligation register",
+      "lastResult": "9 alerts sent · Mon 08:00"
+    },
+    {
+      "name": "Signature chaser",
+      "schedule": "Daily 16:00",
+      "desc": "Nudges counterparties on DocuSign envelopes idle more than 3 days",
+      "lastResult": "7 reminders sent · Thu 16:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Contracts in review",
+      "value": "38",
+      "delta": "+2",
+      "deltaDir": "up",
+      "deltaGood": false,
+      "vs": "vs last month",
+      "spark": [24, 27, 25, 19, 26, 28, 30, 29, 31, 33, 36, 38],
+      "note": "July's 138-contract intake spike is still working through; MSAs are the long pole",
+      "source": "docusign"
+    },
+    {
+      "id": "k2",
+      "label": "Avg turnaround days",
+      "value": "6.8 days",
+      "delta": "-1.2 days",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs Q2",
+      "spark": [9.4, 9.1, 8.9, 8.2, 8.6, 8.4, 8.1, 7.9, 7.6, 7.2, 7.0, 6.8],
+      "note": "NDA auto-clear plus the refreshed commercial playbook keep speed up despite volume",
+      "source": "docusign"
+    },
+    {
+      "id": "k3",
+      "label": "NDAs auto-cleared",
+      "value": "72.4%",
+      "delta": "+8.3 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs Q2",
+      "spark": [41, 44, 48, 50, 53, 55, 58, 61, 64, 67, 70, 72.4],
+      "note": "Mutual-NDA rules added in June pushed clearance past 70% for the first time",
+      "source": "docusign"
+    },
+    {
+      "id": "k4",
+      "label": "Matters open",
+      "value": "54",
+      "delta": "+4",
+      "deltaDir": "up",
+      "deltaGood": false,
+      "vs": "vs last month",
+      "spark": [46, 44, 47, 43, 45, 48, 47, 49, 50, 51, 52, 54],
+      "note": "Two new pre-litigation employment disputes opened in Austin in July",
+      "source": "sharepoint"
+    }
+  ],
+  "trend": {
+    "title": "Contracts: received vs completed",
+    "subtitle": "Monthly contract volume, Sep FY26 to date",
+    "unit": "contracts",
+    "series": [
+      {
+        "name": "Received",
+        "points": [96, 104, 98, 72, 101, 108, 112, 118, 109, 121, 138, 126]
+      },
+      {
+        "name": "Completed",
+        "points": [94, 101, 100, 78, 94, 106, 110, 119, 107, 119, 135, 124]
+      }
+    ],
+    "insight": "July intake spiked to 138 on the Q3 sales push, but 135 completions kept the backlog nearly flat",
+    "source": "docusign"
+  },
+  "donut": {
+    "title": "Matters by type",
+    "unit": "matters",
+    "segments": [
+      { "label": "Commercial contracts", "value": 21 },
+      { "label": "Employment", "value": 9 },
+      { "label": "IP & licensing", "value": 8 },
+      { "label": "Privacy & data", "value": 7 },
+      { "label": "Regulatory", "value": 5 },
+      { "label": "Corporate", "value": 4 }
+    ],
+    "insight": "Commercial work is 21 of 54 open matters; two new Austin disputes pushed Employment to 9",
+    "source": "sharepoint"
+  },
+  "bars": {
+    "title": "Turnaround days by contract type",
+    "unit": "days",
+    "categories": ["NDA", "Amendment", "SOW", "Vendor", "DPA", "License", "MSA"],
+    "series": [
+      {
+        "name": "Q3 QTD",
+        "values": [1.9, 4.1, 5.2, 7.4, 8.6, 10.8, 12.3]
+      },
+      {
+        "name": "Q2 avg",
+        "values": [3.4, 5.0, 6.0, 8.1, 9.8, 11.5, 13.9]
+      }
+    ],
+    "insight": "NDAs turn in 1.9 days on 72.4% auto-clear; MSAs at 12.3 days remain the queue's long pole",
+    "source": "docusign"
+  },
+  "heatmap": {
+    "title": "Contract intake by business unit",
+    "unit": "contracts",
+    "rows": ["Sales", "Procurement", "Product", "Marketing", "People", "Finance"],
+    "cols": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [
+      [43, 47, 44, 30, 45, 49, 51, 55, 49, 56, 66, 59],
+      [21, 23, 21, 17, 22, 24, 25, 26, 24, 27, 30, 28],
+      [11, 12, 11, 8, 12, 12, 13, 14, 13, 14, 16, 14],
+      [9, 10, 9, 6, 9, 10, 10, 10, 10, 11, 12, 11],
+      [7, 7, 7, 6, 8, 8, 8, 8, 8, 8, 9, 9],
+      [5, 5, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+    ],
+    "insight": "Sales drove 66 of July's 138 contracts on the Q3 pipeline push; Procurement hit a 12-month high of 30 on the Ariba renewal wave",
+    "source": "docusign"
+  },
+  "goals": [
+    {
+      "label": "Cut avg turnaround to 6.0 days",
+      "pct": 70,
+      "detail": "6.8 today from 8.0 at Q2 close; target 6.0 by Sep 30"
+    },
+    {
+      "label": "NDA auto-clear to 80%",
+      "pct": 72,
+      "detail": "72.4% cleared in July; mutual-NDA rules shipped, one-way v2 in review"
+    },
+    {
+      "label": "Playbook coverage for all contract types",
+      "pct": 60,
+      "detail": "9 of 15 contract types have approved playbooks"
+    },
+    {
+      "label": "Obligation tracker rollout",
+      "pct": 45,
+      "detail": "412 of 918 active contracts tagged with renewal dates"
+    }
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "NDA queue triage",
+      "platform": "teams",
+      "attendees": ["Chloe Dubois", "Jonathan Park"],
+      "agenda": "Clear the 11 flagged NDAs and review auto-clear misses from this week"
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "Orion Systems MSA redline review",
+      "platform": "zoom",
+      "attendees": ["Marcus Webb", "David Chen", "Tomas Lindqvist"],
+      "agenda": "Land the liability cap counter at 2x fees and close out payment terms"
+    },
+    {
+      "time": "12:30",
+      "dur": "30m",
+      "title": "DPA template refresh",
+      "platform": "teams",
+      "attendees": ["Aisha Bello", "Rajesh Iyer"],
+      "agenda": "Fold new sub-processor language into the standard DPA before vendor renewals"
+    },
+    {
+      "time": "14:00",
+      "dur": "1h",
+      "title": "Weekly legal ops sync",
+      "platform": "teams",
+      "attendees": ["Priya Raghavan", "Jonathan Park", "Chloe Dubois"],
+      "agenda": "Queue at 38, Nordwind governing-law exception, board pack timeline"
+    },
+    {
+      "time": "16:00",
+      "dur": "30m",
+      "title": "Austin employment matters check-in",
+      "platform": "zoom",
+      "attendees": ["Hannah Weiss", "Priya Raghavan"],
+      "agenda": "Latham & Watkins strategy update on the two wage claims"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Marcus Webb",
+      "source": "outlook",
+      "subject": "Orion Systems MSA — can we close the cap at 2x?",
+      "preview": "Sofia, their GC won't move off 2x fees. If we can live with it I can...",
+      "time": "8:12 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "DocuSign",
+      "source": "docusign",
+      "subject": "Completed: Vertex Analytics mutual NDA",
+      "preview": "Your envelope has been completed by all parties. Auto-cleared by playbook rules in 1.4 hours...",
+      "time": "8:31 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m3",
+      "from": "Elena Vasquez",
+      "source": "teams",
+      "subject": "Ariba flagged 3 vendor renewals missing DPAs",
+      "preview": "Before these renew in September we need executed DPAs — can your team send the...",
+      "time": "8:47 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Priya Raghavan",
+      "source": "outlook",
+      "subject": "Board pack: litigation summary by Tue Aug 12",
+      "preview": "Need the Q3 litigation and matters summary for the board pack — same format as...",
+      "time": "8:52 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m5",
+      "from": "Aisha Bello",
+      "source": "slack",
+      "subject": "GDPR audit — Stockholm processor list ready",
+      "preview": "Full sub-processor inventory is done and in the shared drive. Flagging two vendors where...",
+      "time": "9:05 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m6",
+      "from": "Tomas Lindqvist",
+      "source": "outlook",
+      "subject": "Nordwind renewal — customer insists on Swedish law",
+      "preview": "Their procurement lead says Swedish governing law is a board requirement. Renewal is $486K...",
+      "time": "9:20 AM",
+      "urgent": false,
+      "unread": true
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "Contract",
+      "title": "Orion Systems MSA — liability cap exception (2x fees)",
+      "requester": "Marcus Webb",
+      "amount": "$1,240,000",
+      "meta": "3-year renewal; playbook cap is 1x, 2x allowed with GC sign-off",
+      "source": "docusign",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "Access",
+      "title": "External counsel access to Project Halcyon data room",
+      "requester": "Jonathan Park",
+      "amount": null,
+      "meta": "Latham & Watkins team of 3; read-only, 90-day expiry",
+      "source": "sharepoint",
+      "urgency": "low"
+    },
+    {
+      "id": "a3",
+      "type": "Expense",
+      "title": "Outside counsel invoice — Latham & Watkins, Austin matters",
+      "requester": "Chloe Dubois",
+      "amount": "$18,400",
+      "meta": "June fees on the two wage claims · within matter budget",
+      "source": "outlook",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Contract",
+      "title": "Nordwind Logistics renewal — Swedish governing-law exception",
+      "requester": "Tomas Lindqvist",
+      "amount": "$486,000",
+      "meta": "Renews Sep 12 at +12% uplift; playbook requires NY law",
+      "source": "docusign",
+      "urgency": "med"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "LGL-1041",
+      "title": "Counter Orion Systems liability cap at 2x fees",
+      "due": "Aug 8",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "docusign"
+    },
+    {
+      "id": "LGL-1038",
+      "title": "Draft Q3 litigation summary for board pack",
+      "due": "Aug 12",
+      "status": "todo",
+      "priority": "P1",
+      "source": "sharepoint"
+    },
+    {
+      "id": "LGL-1027",
+      "title": "Send DPA templates to 3 Ariba vendor renewals",
+      "due": "Aug 14",
+      "status": "inprogress",
+      "priority": "P2",
+      "source": "gdrive"
+    },
+    {
+      "id": "LGL-1019",
+      "title": "Ship one-way NDA v2 rules to auto-clear",
+      "due": "Aug 20",
+      "status": "review",
+      "priority": "P2",
+      "source": "docusign"
+    },
+    {
+      "id": "LGL-1005",
+      "title": "Tag Sep-Oct Sales renewals in obligation register",
+      "due": "Aug 28",
+      "status": "blocked",
+      "priority": "P3",
+      "source": "confluence"
+    }
+  ],
+  "suggestions": [
+    "What's driving the contract backlog this week?",
+    "Why did July intake spike to 138?",
+    "Summarize the Orion Systems MSA redlines",
+    "Draft the Q3 board litigation summary",
+    "Which renewals hit in the next 60 days?",
+    "Which contract types are slowest to turn around?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "Queue status",
+      "triggers": ["backlog", "queue", "contracts in review", "what's driving", "slowest", "turnaround", "contract queue"],
+      "toolCalls": [
+        {
+          "server": "docusign",
+          "tool": "list_envelopes",
+          "args": "status=in_review",
+          "result": "38 active · 11 NDAs · 9 MSAs",
+          "ms": 420
+        },
+        {
+          "server": "docusign",
+          "tool": "get_intake_stats",
+          "args": "period=Jul-Aug FY26",
+          "result": "Jul: 138 in / 135 out · Aug MTD: 126 / 124",
+          "ms": 610
+        },
+        {
+          "server": "slack",
+          "tool": "search_messages",
+          "args": "channel=#legal-intake, since=Mon",
+          "result": "6 escalations · 2 unassigned",
+          "ms": 380
+        }
+      ],
+      "response": "The queue stands at **38 contracts in review** — up 2 from July — and MSAs, not NDAs, are the pressure point.\n\n{{chart:trend}}\n\n- July intake spiked to **138** on the Q3 sales push; the team completed 135, so the backlog barely moved\n- Composition today: 11 NDAs, 9 MSAs, 8 SOWs, 6 DPAs, 4 amendments\n- NDAs self-serve at **72.4% auto-clear** and turn in 1.9 days; MSAs average **12.3 days** — the long pole\n- Two MSAs (Orion Systems, Nordwind) carry playbook exceptions awaiting sign-off\n\n> Overall turnaround is 6.8 days, down 1.2 vs Q2 — volume is up but speed is holding.\n\nRecommend reassigning 3 of the 9 MSAs to Jonathan Park and clearing the 11 flagged NDAs at this morning's 09:00 triage.",
+      "actions": [
+        {
+          "label": "Reassign 3 MSAs to Jonathan Park",
+          "toast": "3 MSAs reassigned in DocuSign CLM — Jonathan notified"
+        },
+        {
+          "label": "Post queue summary to #legal-intake",
+          "toast": "Summary posted to #legal-intake in Slack"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Intake spike analysis",
+      "triggers": ["july", "intake spike", "why did intake", "138", "spike", "intake by business unit"],
+      "toolCalls": [
+        {
+          "server": "docusign",
+          "tool": "get_intake_stats",
+          "args": "period=Jul FY26, groupBy=unit",
+          "result": "138 total · Sales 66 · Procurement 30",
+          "ms": 540
+        },
+        {
+          "server": "gdrive",
+          "tool": "search_files",
+          "args": "q=Q3 pipeline acceleration plan",
+          "result": "Found: Q3 Pipeline Push — Marcus Webb",
+          "ms": 320
+        },
+        {
+          "server": "confluence",
+          "tool": "get_page",
+          "args": "space=LEGAL, title=Intake log",
+          "result": "22 renewal-wave contracts logged in Jul",
+          "ms": 280
+        }
+      ],
+      "response": "July's spike to **138 contracts** was a Sales story: **66 of them (48%)** came from Marcus Webb's Q3 pipeline push, up from 56 in June.\n\n{{chart:heatmap}}\n\n- **Sales: 66** — reps front-loading paper ahead of the Sep 30 quota gate\n- **Procurement: 30**, a 12-month high — Elena Vasquez's Ariba vendor renewal wave\n- Everyone else held steady (Product 16, Marketing 12)\n\nDecember's 72 remains the floor and July's 138 the ceiling — a 92% swing the team absorbed while turnaround still improved to 6.8 days.\n\nAugust is tracking to 126, so the wave is receding but not over. Recommend asking Marcus for a 2-week forward view of deals entering legal, and keeping Chloe Dubois on Sales intake through September.",
+      "actions": [
+        {
+          "label": "Request pipeline forecast from Marcus",
+          "toast": "Draft sent to Marcus Webb in Outlook — 2-week legal intake forecast requested"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Orion redline brief",
+      "triggers": ["orion", "redlines", "msa redline", "summarize redlines", "liability cap"],
+      "toolCalls": [
+        {
+          "server": "docusign",
+          "tool": "get_document_versions",
+          "args": "agreement=Orion Systems MSA v4",
+          "result": "18 edits · 3 material",
+          "ms": 720
+        },
+        {
+          "server": "gdrive",
+          "tool": "fetch_doc",
+          "args": "file=Commercial playbook v3.2",
+          "result": "Cap position: 1x fees, 2x with GC sign-off",
+          "ms": 350
+        },
+        {
+          "server": "outlook",
+          "tool": "search_mail",
+          "args": "from=Marcus Webb, subject=Orion",
+          "result": "2 threads · latest 8:12 AM",
+          "ms": 290
+        }
+      ],
+      "response": "Of Orion's **18 redlines on MSA v4, only 3 are material** — the rest are definitional cleanup I'd accept as-is.\n\n|Clause|Orion asks|Playbook|Call|\n|---|---|---|---|\n|Liability cap|2x annual fees|1x (2x with GC sign-off)|Escalate to Priya|\n|IP indemnity|Uncapped|Capped, IP carve-out OK|Accept with carve-out|\n|Payment terms|Net 60|Net 30|Counter Net 45|\n\nDeal context: **$1,240,000 over 3 years**, our largest Q3 renewal. Marcus's 8:12 AM note confirms Orion won't move off 2x — and the playbook explicitly allows it with GC sign-off, so this is a process step, not a fight.\n\nRecommend sending the cap exception to Priya Raghavan now so you walk into the 10:30 call with sign-off in hand.",
+      "actions": [
+        {
+          "label": "Send cap exception to Priya for sign-off",
+          "toast": "Exception request routed to Priya Raghavan in DocuSign CLM"
+        },
+        {
+          "label": "Draft counter-proposal email to Marcus",
+          "toast": "Draft created in Outlook — 2x cap, IP carve-out, Net 45"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Board litigation brief",
+      "triggers": ["board pack", "litigation summary", "draft for priya", "board", "litigation", "matters summary"],
+      "toolCalls": [
+        {
+          "server": "sharepoint",
+          "tool": "query_matter_list",
+          "args": "status=open",
+          "result": "54 matters · 9 employment · 5 regulatory",
+          "ms": 480
+        },
+        {
+          "server": "outlook",
+          "tool": "search_mail",
+          "args": "folder=Outside Counsel, since=Jul 1",
+          "result": "Latham update · Austin wage claims",
+          "ms": 310
+        }
+      ],
+      "response": "Draft is ready for the Q3 board pack — here's the shape.\n\n## Litigation & matters snapshot\n- **54 open matters**, up 4 vs last month; no active litigation\n- **2 pre-litigation employment disputes** opened in July (Austin) — ex-employee wage claims; Latham & Watkins engaged, June fees $18,400, exposure low-to-moderate\n- **1 IP demand letter** (NPE patent assertion) — outside counsel rates it low risk; response due Aug 21\n- **GDPR audit prep** (Stockholm) on track — processor list complete, Aisha Bello reviewing two flagged vendors\n\n{{chart:donut}}\n\nCommercial work dominates at 21 of 54 matters, which supports the resourcing ask in the appendix.\n\nNext step: save the draft to the board pack folder and send to Priya Raghavan for review before Tue Aug 12.",
+      "actions": [
+        {
+          "label": "Save draft to board pack folder",
+          "toast": "Draft saved to SharePoint — Board Pack Q3 FY26"
+        },
+        {
+          "label": "Send to Priya for review",
+          "toast": "Draft shared with Priya Raghavan in Outlook"
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Renewal radar",
+      "triggers": ["renewals", "next 60 days", "expiring", "renewal", "obligations", "upcoming renewals"],
+      "toolCalls": [
+        {
+          "server": "confluence",
+          "tool": "get_page",
+          "args": "page=Obligation register",
+          "result": "23 renewals in 60 days · $4.6M TCV",
+          "ms": 260
+        },
+        {
+          "server": "docusign",
+          "tool": "search_agreements",
+          "args": "renewal_window=60d",
+          "result": "23 agreements · 5 auto-renew",
+          "ms": 590
+        },
+        {
+          "server": "teams",
+          "tool": "get_channel_messages",
+          "args": "channel=Procurement Sync",
+          "result": "3 vendor DPAs outstanding",
+          "ms": 330
+        }
+      ],
+      "response": "**23 renewals land in the next 60 days — $4.6M TCV.** Three need decisions this week:\n\n1. **Nordwind Logistics** — $486,000, renews Sep 12. Tomas Lindqvist says the customer insists on Swedish governing law; playbook says NY. Recommend holding NY law but offering Stockholm arbitration — precedent from the 2025 Baltika deal.\n2. **3 vendor renewals blocked on missing DPAs** — Elena Vasquez's Ariba flag from this morning. Templates are ready; sending today keeps all three on their September schedule.\n3. **5 auto-renewals** hit their 30-day notice window Aug 15 — Chloe Dubois can clear these from the obligation register.\n\n> Everything else is standard paper the queue absorbs at the current 6.8-day turnaround.\n\nRecommend adding Nordwind to Priya's 14:00 legal ops agenda for the governing-law call.",
+      "actions": [
+        {
+          "label": "Send DPA templates to 3 vendors",
+          "toast": "Templates sent via DocuSign — Elena Vasquez cc'd"
+        },
+        {
+          "label": "Add Nordwind to the 14:00 agenda",
+          "toast": "Agenda item added to Weekly legal ops sync in Teams"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    "DocuSign · Vertex Analytics NDA completed — auto-cleared in 1.4h",
+    "Teams · Marcus Webb replied on the Orion MSA thread",
+    "SharePoint · Chloe Dubois updated matter LGL-1038 litigation summary",
+    "Slack · #legal-intake digest posted — 38 contracts in review",
+    "DocuSign · Nordwind Logistics renewal sent for signature",
+    "Confluence · Obligation register updated — 412 contracts tagged",
+    "Outlook · Reminder sent: 3 vendor DPAs pending with Elena Vasquez"
+  ]
+}

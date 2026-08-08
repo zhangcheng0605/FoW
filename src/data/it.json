@@ -1,0 +1,590 @@
+{
+  "personaId": "it",
+  "user": {
+    "name": "Marcus Webb",
+    "role": "IT Operations Manager",
+    "dept": "IT",
+    "location": "Singapore",
+    "initials": "MW"
+  },
+  "focus": {
+    "headline": "Backlog is finally moving — 47 open incidents, down 27 from the July peak — but 214 endpoints are still exposed to CVE-2026-31842 before Tuesday's deadline.",
+    "sub": "GlobalProtect RCA goes to Priya Raghavan on Monday, Daniel Okafor needs the AWS true-up infra view by noon, and 12 Austin new-hire access packs are due today."
+  },
+  "connections": ["servicenow", "jira", "slack", "teams", "github", "outlook", "confluence", "zoom"],
+  "skills": [
+    {
+      "id": "incident-triage",
+      "name": "Incident Triage Bot",
+      "desc": "Clusters new ServiceNow tickets, sets priority and routes to the right owner",
+      "icon": "🚨",
+      "lastRun": "Today 08:15",
+      "runs": 342
+    },
+    {
+      "id": "patch-radar",
+      "name": "Patch Compliance Radar",
+      "desc": "Sweeps endpoint data nightly and flags devices out of patch SLA",
+      "icon": "🛡️",
+      "lastRun": "Today 06:00",
+      "runs": 188
+    },
+    {
+      "id": "access-pack-builder",
+      "name": "Access Pack Builder",
+      "desc": "Generates role-based access bundles and approval chains for new-hire cohorts",
+      "icon": "🔑",
+      "lastRun": "Yesterday",
+      "runs": 121
+    }
+  ],
+  "automations": [
+    {
+      "name": "Morning ops digest",
+      "schedule": "Daily 07:30",
+      "desc": "Posts overnight P1/P2s, uptime and backlog delta to the #it-ops Slack channel",
+      "lastResult": "Posted to #it-ops · Today 07:30"
+    },
+    {
+      "name": "Patch SLA sweep",
+      "schedule": "Daily 06:00",
+      "desc": "Re-checks non-compliant endpoints and opens ITOPS remediation tickets",
+      "lastResult": "214 devices flagged · Today 06:00"
+    },
+    {
+      "name": "On-call handover pack",
+      "schedule": "Fri 17:00",
+      "desc": "Compiles open incidents and change-freeze notes for the weekend on-call rotation",
+      "lastResult": "Sent to 3 people · Fri 17:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Open incidents",
+      "value": "47",
+      "delta": "-27",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs July peak",
+      "spark": [62, 58, 55, 48, 52, 50, 54, 57, 53, 60, 74, 47],
+      "note": "Peaked at 74 after the Jul 28 outage; surge rota and triage bot cleared the queue",
+      "source": "servicenow"
+    },
+    {
+      "id": "k2",
+      "label": "Uptime (core services)",
+      "value": "99.96%",
+      "delta": "+0.25 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs July",
+      "spark": [99.95, 99.97, 99.93, 99.96, 99.92, 99.95, 99.94, 99.97, 99.96, 99.93, 99.71, 99.96],
+      "note": "July dipped to 99.71% on the 4h12m GlobalProtect outage; August clean so far",
+      "source": "servicenow"
+    },
+    {
+      "id": "k3",
+      "label": "Patch compliance",
+      "value": "96.8%",
+      "delta": "+2.1 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs last month",
+      "spark": [91.2, 91.8, 92.4, 90.6, 93.1, 93.5, 94.0, 94.4, 93.8, 94.2, 94.7, 96.8],
+      "note": "August forced-restart windows closed 480 stragglers; 214 endpoints still on CVE-2026-31842",
+      "source": "servicenow"
+    },
+    {
+      "id": "k4",
+      "label": "Mean time to resolve",
+      "value": "3.4h",
+      "delta": "-1.2h",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs July",
+      "spark": [5.1, 4.9, 5.2, 4.6, 4.8, 4.5, 4.3, 4.4, 4.1, 4.0, 4.6, 3.4],
+      "note": "Triage bot auto-routing plus new failover runbooks; July bump was the gateway outage",
+      "source": "jira"
+    }
+  ],
+  "trend": {
+    "title": "Incidents: opened vs resolved",
+    "subtitle": "Monthly ticket flow, Sep FY26 to date",
+    "unit": "tickets",
+    "series": [
+      {
+        "name": "Opened",
+        "points": [412, 398, 405, 342, 428, 401, 416, 394, 408, 433, 521, 447]
+      },
+      {
+        "name": "Resolved",
+        "points": [407, 402, 408, 349, 424, 403, 412, 397, 412, 426, 507, 474]
+      }
+    ],
+    "insight": "Jul spiked to 521 opened on the gateway failover and Win11 patch wave; Aug resolved 474 vs 447 opened, cutting the backlog to 47.",
+    "source": "servicenow"
+  },
+  "donut": {
+    "title": "Tickets by category",
+    "unit": "%",
+    "segments": [
+      {"label": "Access & identity", "value": 31},
+      {"label": "Software", "value": 24},
+      {"label": "Hardware", "value": 18},
+      {"label": "Network & VPN", "value": 15},
+      {"label": "Security", "value": 7},
+      {"label": "AV & facilities", "value": 5}
+    ],
+    "insight": "Access & identity grew with the Austin hiring wave — ITOPS-2812 auto-provisioning targets this slice.",
+    "source": "servicenow"
+  },
+  "bars": {
+    "title": "Incidents by service",
+    "unit": "incidents (last 30 days)",
+    "categories": ["GlobalProtect VPN", "Okta SSO", "Endpoint fleet", "Microsoft 365", "Office Wi-Fi", "Zoom Rooms"],
+    "series": [
+      {
+        "name": "Incidents",
+        "values": [84, 61, 58, 47, 39, 22]
+      }
+    ],
+    "insight": "GlobalProtect (84) and Okta (61) are 47% of the last 30 days — both trace to the Jul 28 failover and the MFA loop.",
+    "source": "servicenow"
+  },
+  "heatmap": {
+    "title": "Ticket volume by weekday and hour",
+    "unit": "tickets per 2h block (avg week)",
+    "rows": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "cols": ["8a", "10a", "12p", "2p", "4p", "6p"],
+    "values": [
+      [18, 16, 9, 12, 10, 6],
+      [14, 13, 8, 11, 9, 5],
+      [12, 12, 7, 10, 9, 5],
+      [11, 12, 7, 9, 8, 4],
+      [10, 9, 6, 8, 6, 3]
+    ],
+    "insight": "Monday 08:00-10:00 carries 34 tickets — nearly double Friday afternoon; the APAC surge rota covers it through Aug 15.",
+    "source": "servicenow"
+  },
+  "goals": [
+    {
+      "label": "Patch compliance at 97% fleet-wide",
+      "pct": 92,
+      "detail": "96.8% of 3,120 endpoints current · target Sep 30"
+    },
+    {
+      "label": "MTTR below 3.0h",
+      "pct": 67,
+      "detail": "3.4h now vs 4.2h Q2 baseline"
+    },
+    {
+      "label": "Win11 24H2 rollout complete",
+      "pct": 76,
+      "detail": "2,371 of 3,120 endpoints migrated"
+    },
+    {
+      "label": "Laptop refresh wave 3",
+      "pct": 45,
+      "detail": "312 of 690 devices replaced"
+    }
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "Daily ops standup",
+      "platform": "teams",
+      "attendees": ["Lena Park", "Tomas Rivera", "Ingrid Larsson"],
+      "agenda": "Open P1/P2 review and July backlog burn-down status"
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "GlobalProtect post-incident review",
+      "platform": "zoom",
+      "attendees": ["Lena Park", "Rahul Menon", "Priya Raghavan"],
+      "agenda": "Close the two open RCA comments before Monday's publish"
+    },
+    {
+      "time": "13:00",
+      "dur": "30m",
+      "title": "Q3 asset refresh check-in with Dell",
+      "platform": "teams",
+      "attendees": ["Hannah Cho", "Grace Liu"],
+      "agenda": "Wave 3 logistics — 120 Latitude 7460s pending PO approval"
+    },
+    {
+      "time": "14:00",
+      "dur": "45m",
+      "title": "FY27 infra budget pre-read",
+      "platform": "teams",
+      "attendees": ["Daniel Okafor", "Priya Raghavan"],
+      "agenda": "AWS true-up growth assumptions and data-center exit timeline"
+    },
+    {
+      "time": "16:30",
+      "dur": "30m",
+      "title": "On-call handover APAC to EMEA",
+      "platform": "meet",
+      "attendees": ["Lena Park", "Ingrid Larsson"],
+      "agenda": "Weekend coverage, change freeze and CVE restart-window watch"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "ServiceNow",
+      "source": "servicenow",
+      "subject": "P2 INC-20931 approaching SLA breach — Okta MFA loop, London",
+      "preview": "Assigned to IT Ops 42 minutes ago. 63 users affected, SLA breach at 11:00 SGT unless...",
+      "time": "7:58 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "Priya Raghavan",
+      "source": "outlook",
+      "subject": "Board wants the uptime and patch slide by Monday 09:00",
+      "preview": "Marcus — one slide, three numbers, one risk line. Use the Q2 template and keep the...",
+      "time": "8:15 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "Daniel Okafor",
+      "source": "outlook",
+      "subject": "July AWS true-up — need your infra growth view by noon",
+      "preview": "Engineering landed $862K over on AWS. Before the 14:00 pre-read I need your read on...",
+      "time": "8:42 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Rahul Menon",
+      "source": "slack",
+      "subject": "#it-ops: CVE-2026-31842 sweep — 214 endpoints still exposed",
+      "preview": "Overnight sweep results are in. Austin is the long pole with 92 devices. Forced restart...",
+      "time": "8:50 AM",
+      "urgent": true,
+      "unread": false
+    },
+    {
+      "id": "m5",
+      "from": "Aisha Bello",
+      "source": "outlook",
+      "subject": "12 new-hire access packs needed for Monday's Austin cohort",
+      "preview": "Onboarding starts 08:00 Austin time Monday. Can the Access Pack Builder run today so...",
+      "time": "9:05 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m6",
+      "from": "Confluence",
+      "source": "confluence",
+      "subject": "Ingrid Larsson commented on 'GlobalProtect RCA draft'",
+      "preview": "\"Detection section still says 8 minutes — Datadog timeline shows 11. Also can we add...\"",
+      "time": "9:20 AM",
+      "urgent": false,
+      "unread": false
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "Access",
+      "title": "Prod database read access — Aurora replica",
+      "requester": "Elena Petrova",
+      "amount": null,
+      "meta": "RITM-8841 · read-only replica, 90-day grant, sponsor James Whitfield · SLA breach 15:00",
+      "source": "servicenow",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "PO",
+      "title": "Dell Latitude 7460 x 120 — refresh wave 3",
+      "requester": "Hannah Cho",
+      "amount": "$142,800",
+      "meta": "Q3 capex line; Dell quote valid to Aug 15, ships to Austin and New York",
+      "source": "ariba",
+      "urgency": "med"
+    },
+    {
+      "id": "a3",
+      "type": "Expense",
+      "title": "Emergency SSD replacements — Singapore DC",
+      "requester": "Lena Park",
+      "amount": "$3,940",
+      "meta": "6 drives swapped during Jul 28 outage recovery, receipts attached",
+      "source": "sap",
+      "urgency": "low"
+    },
+    {
+      "id": "a4",
+      "type": "Contract",
+      "title": "Zoom Rooms renewal — 84 rooms, 12 months",
+      "requester": "Grace Liu",
+      "amount": "$96,600",
+      "meta": "8% uplift vs FY25; DocuSign envelope awaiting your countersign",
+      "source": "docusign",
+      "urgency": "med"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "ITOPS-2841",
+      "title": "Publish GlobalProtect RCA and failover runbook",
+      "due": "Aug 11",
+      "status": "review",
+      "priority": "P1",
+      "source": "confluence"
+    },
+    {
+      "id": "ITOPS-2853",
+      "title": "Patch CVE-2026-31842 on remaining 214 endpoints",
+      "due": "Aug 12",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "servicenow"
+    },
+    {
+      "id": "ITOPS-2860",
+      "title": "Stage Win11 24H2 ring 4 — Austin, 480 devices",
+      "due": "Aug 15",
+      "status": "todo",
+      "priority": "P2",
+      "source": "jira"
+    },
+    {
+      "id": "ITOPS-2812",
+      "title": "Automate access-pack provisioning for new-hire cohorts",
+      "due": "Aug 20",
+      "status": "inprogress",
+      "priority": "P2",
+      "source": "github"
+    },
+    {
+      "id": "ITOPS-2799",
+      "title": "Decommission legacy file server SGP-FS02",
+      "due": "Aug 28",
+      "status": "blocked",
+      "priority": "P3",
+      "source": "servicenow"
+    }
+  ],
+  "suggestions": [
+    "Why is the incident backlog finally dropping?",
+    "Summarize the GlobalProtect RCA for Priya",
+    "Draft Monday's board slide on uptime and patching",
+    "Which endpoints still need the CVE-2026-31842 patch?",
+    "Should I approve Elena's prod database access?",
+    "When do Monday ticket spikes hit and are we staffed?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "Backlog burn-down",
+      "triggers": ["backlog", "open incidents", "incident trend", "why dropping", "burn-down", "incidents down"],
+      "toolCalls": [
+        {
+          "server": "servicenow",
+          "tool": "query_incidents",
+          "args": "state=open · group=IT Ops",
+          "result": "47 open · -27 vs Jul peak",
+          "ms": 420
+        },
+        {
+          "server": "servicenow",
+          "tool": "aggregate_incidents",
+          "args": "opened vs resolved · Sep-Aug",
+          "result": "Aug: 447 opened / 474 resolved",
+          "ms": 610
+        },
+        {
+          "server": "slack",
+          "tool": "search_messages",
+          "args": "channel=#it-ops · surge rota",
+          "result": "18 threads · rota confirmed to Aug 15",
+          "ms": 340
+        }
+      ],
+      "response": "Backlog is down because August is the first month since the outage where we resolved faster than we opened — 474 closed against 447 new, taking open incidents from the July peak of 74 to 47.\n\n{{chart:trend}}\n\n- **July spike:** 521 tickets opened — the Jul 28 GlobalProtect failover (1,890 users down 4h12m) plus the Win11 24H2 patch wave.\n- **Surge rota:** Lena Park's team has run doubled APAC coverage since Aug 1.\n- **Triage bot:** auto-routing now assigns 68% of new tickets untouched, pulling MTTR to 3.4h from 4.6h in July.\n\n> Monday still lands ~34 tickets before 10:00 — heaviest block of the week.\n\nRecommend holding the surge rota through Aug 15, then stepping back to normal rotation once the backlog sits under 40.",
+      "actions": [
+        {
+          "label": "Extend surge rota to Aug 15",
+          "toast": "Rota updated in ServiceNow — Lena Park's team confirmed through Aug 15"
+        },
+        {
+          "label": "Post burn-down to #it-ops",
+          "toast": "Summary posted to #it-ops in Slack"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Outage RCA brief",
+      "triggers": ["rca", "globalprotect", "outage", "post-incident", "vpn outage", "summarize rca"],
+      "toolCalls": [
+        {
+          "server": "confluence",
+          "tool": "get_page",
+          "args": "space=ITOPS · GlobalProtect RCA draft",
+          "result": "v7 · 2 open comments from Ingrid Larsson",
+          "ms": 380
+        },
+        {
+          "server": "servicenow",
+          "tool": "get_incident",
+          "args": "number=INC-20714",
+          "result": "P1 · 4h12m · 1,890 users affected",
+          "ms": 450
+        },
+        {
+          "server": "zoom",
+          "tool": "get_meeting_transcript",
+          "args": "PIR call · Aug 4",
+          "result": "42 min · 5 action items extracted",
+          "ms": 890
+        }
+      ],
+      "response": "## GlobalProtect outage — RCA in one screen\n\n**Root cause:** an expired intermediate certificate on the Singapore gateway pair, compounded by a failover config that pointed both gateways at the same certificate store — so the backup died with the primary.\n\n|Item|Detail|\n|---|---|\n|Impact|1,890 APAC users · 4h12m on Jul 28|\n|Uptime hit|July fell to 99.71% vs 99.9% SLA|\n|Detection|11 min — the Datadog cert alert was muted|\n|Corrective actions|5 total — 3 closed, 2 open|\n\nOpen items: automated cert-expiry scanning and the failover runbook (ITOPS-2841, in review), plus a quarterly failover drill starting September.\n\n> Priya Raghavan expects the final RCA Monday — the Confluence draft is at v7 with 2 unresolved comments from Ingrid Larsson.\n\nRecommend resolving both comments at the 10:30 PIR today and sending Priya the summary this afternoon so Monday is a formality.",
+      "actions": [
+        {
+          "label": "Send RCA summary to Priya",
+          "toast": "Summary drafted in Outlook to Priya Raghavan — ready for review"
+        },
+        {
+          "label": "Create follow-up tickets",
+          "toast": "2 remediation tickets created in ServiceNow and linked to INC-20714"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Board slide draft",
+      "triggers": ["board slide", "draft slide", "uptime slide", "monday deck", "patch slide", "board deck"],
+      "toolCalls": [
+        {
+          "server": "servicenow",
+          "tool": "export_metrics",
+          "args": "uptime, patch, mttr · FY26",
+          "result": "99.96% · 96.8% · 3.4h",
+          "ms": 520
+        },
+        {
+          "server": "sharepoint",
+          "tool": "get_file",
+          "args": "Board template · Q2 IT ops deck",
+          "result": "8 slides · template applied",
+          "ms": 640
+        },
+        {
+          "server": "outlook",
+          "tool": "create_draft",
+          "args": "to=Priya Raghavan · subj=Board slide",
+          "result": "Draft saved with attachment",
+          "ms": 310
+        }
+      ],
+      "response": "Draft is ready — three headline numbers and one risk line, on the Q2 board template Priya asked for.\n\n{{kpis}}\n\n1. **Uptime 99.96%** — one P1 in July (GlobalProtect, 4h12m); August clean so far.\n2. **Patch compliance 96.8%** — up 2.1 pts, best month this fiscal year, tracking to the 97.0% September target.\n3. **MTTR 3.4h** — down from 4.2h in Q2 on triage automation and new runbooks.\n\n**Risk line:** 214 endpoints remain exposed to CVE-2026-31842; tonight's forced-restart window clears ~140, the rest by Aug 12.\n\n> Priya Raghavan wants this by Monday 09:00 SGT — the draft is saved in Outlook with the slide attached.\n\nRecommend sending tomorrow morning, after the restart window, so the exposure count on the slide reads under 80.",
+      "actions": [
+        {
+          "label": "Send draft to Priya Raghavan",
+          "toast": "Draft sent from Outlook — Priya Raghavan notified"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Patch status lookup",
+      "triggers": ["cve", "patch status", "unpatched", "exposed endpoints", "31842", "compliance"],
+      "toolCalls": [
+        {
+          "server": "servicenow",
+          "tool": "query_cmdb",
+          "args": "vuln=CVE-2026-31842",
+          "result": "214 of 3,120 endpoints exposed",
+          "ms": 730
+        },
+        {
+          "server": "jira",
+          "tool": "get_issue",
+          "args": "key=ITOPS-2853",
+          "result": "In progress · Rahul Menon · due Aug 12",
+          "ms": 290
+        },
+        {
+          "server": "github",
+          "tool": "get_workflow_run",
+          "args": "patch-pipeline · run #412",
+          "result": "Green · 178 endpoints queued",
+          "ms": 410
+        }
+      ],
+      "response": "**214 of 3,120 endpoints** are still missing the CVE-2026-31842 patch — Rahul Menon owns it on ITOPS-2853, due Aug 12.\n\n|Site|Exposed|\n|---|---|\n|Austin|92|\n|London|54|\n|Singapore|38|\n|New York|21|\n|Stockholm|9|\n\n- **~140** clear in tonight's forced-restart window (22:00 SGT).\n- **31** are laptops offline 7+ days — Hannah Cho is chasing owners on Slack.\n- **43** sit in the Win11 24H2 ring-4 hold for Austin; they patch when ITOPS-2860 stages on Aug 15.\n\n> Nightly patch pipeline run #412 is green with 178 endpoints queued.\n\nRecommend approving the forced restart now and pre-clearing a ring-4 exception for the 43 Austin devices so nothing slips past the Aug 12 deadline.",
+      "actions": [
+        {
+          "label": "Approve forced-restart window",
+          "toast": "Restart window approved in ServiceNow — 22:00 SGT tonight"
+        },
+        {
+          "label": "Ping offline-device owners",
+          "toast": "31 owners nudged via Slack DM with restart instructions"
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Access call",
+      "triggers": ["elena", "prod access", "approve access", "database access", "ritm-8841", "access request"],
+      "toolCalls": [
+        {
+          "server": "servicenow",
+          "tool": "get_request",
+          "args": "number=RITM-8841",
+          "result": "Aurora read-only · sponsor James Whitfield",
+          "ms": 360
+        },
+        {
+          "server": "workday",
+          "tool": "verify_employee",
+          "args": "name=Elena Petrova",
+          "result": "DevOps · London · active, 2+ yrs",
+          "ms": 480
+        },
+        {
+          "server": "servicenow",
+          "tool": "search_requests",
+          "args": "similar grants · Q2 FY26",
+          "result": "3 approved · 0 incidents",
+          "ms": 550
+        }
+      ],
+      "response": "**Approve, with guardrails.** Elena Petrova's request (RITM-8841) is low-risk and properly sponsored.\n\n- **Scope:** read-only on the Aurora prod replica — no write path, no PII tables.\n- **Sponsor:** James Whitfield; Workday confirms Elena is active DevOps in London, 2+ years tenure.\n- **Precedent:** 3 similar grants in Q2, zero security incidents.\n\nConditions to attach: 90-day expiry, session audit logging, replica endpoint only.\n\n{{chart:donut}}\n\nBigger picture — access & identity is now 31% of ticket volume, our largest category. ITOPS-2812 (auto-provisioned access packs, in progress) should cut this class of request roughly in half.\n\n> The request breaches its 24h SLA at 15:00 today.\n\nRecommend approving with the 90-day expiry now and adding Elena to the Q4 access recertification list.",
+      "actions": [
+        {
+          "label": "Approve with 90-day expiry",
+          "toast": "RITM-8841 approved in ServiceNow — expiry set to Nov 6"
+        },
+        {
+          "label": "Add to Q4 recert list",
+          "toast": "Elena Petrova added to Q4 access recertification in ServiceNow"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    "ServiceNow · INC-21044 resolved by Lena Park (MTTR 1h52m)",
+    "ServiceNow · P2 INC-20931 opened — Okta MFA loop, London",
+    "GitHub · patch-pipeline run #412 passed — 178 endpoints queued",
+    "Slack · Rahul Menon posted CVE-2026-31842 sweep results in #it-ops",
+    "Jira · ITOPS-2841 moved to Review by Ingrid Larsson",
+    "Ariba · Dell PO for 120 Latitude 7460s awaiting your approval",
+    "Confluence · GlobalProtect RCA draft updated to v7"
+  ]
+}

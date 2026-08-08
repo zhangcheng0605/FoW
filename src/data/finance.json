@@ -1,0 +1,568 @@
+{
+  "personaId": "finance",
+  "user": {
+    "name": "Daniel Okafor",
+    "role": "FP&A Manager",
+    "dept": "Finance",
+    "location": "London",
+    "initials": "DO"
+  },
+  "focus": {
+    "headline": "Lock the July variance story before Priya's 14:00 QBR prep — Engineering is $862K over on AWS.",
+    "sub": "July opex landed $1.44M (7.2%) over budget; bridge drafts are due to Marcus Webb and James Whitfield by noon."
+  },
+  "connections": ["sap", "netsuite", "excel", "outlook", "teams", "workday", "sharepoint", "ariba"],
+  "skills": [
+    {
+      "id": "variance-analyzer",
+      "name": "Variance Analyzer",
+      "desc": "Breaks budget vs actual gaps down to cost-center and GL line",
+      "icon": "📊",
+      "lastRun": "Today 07:30",
+      "runs": 214
+    },
+    {
+      "id": "close-checklist",
+      "name": "Close Checklist Runner",
+      "desc": "Tracks month-end close tasks across SAP and NetSuite and flags blockers",
+      "icon": "✅",
+      "lastRun": "Today 07:10",
+      "runs": 96
+    },
+    {
+      "id": "forecast-refresh",
+      "name": "Forecast Refresher",
+      "desc": "Pulls latest actuals into the rolling 12-month forecast model in Excel",
+      "icon": "🔮",
+      "lastRun": "Today 06:45",
+      "runs": 152
+    }
+  ],
+  "automations": [
+    {
+      "name": "Daily cash position digest",
+      "schedule": "Daily 07:00",
+      "desc": "Emails cash balances and the 13-week forecast from NetSuite to the treasury list",
+      "lastResult": "Sent to 5 people · Today 07:00"
+    },
+    {
+      "name": "Weekly variance pack",
+      "schedule": "Mon 08:30",
+      "desc": "Compiles dept-level budget vs actual pack and posts to the FP&A Teams channel",
+      "lastResult": "Posted to #fpa-weekly · Mon 08:30"
+    },
+    {
+      "name": "Expense aging nudge",
+      "schedule": "Wed 09:00",
+      "desc": "Pings approvers in Outlook for expense reports pending more than 5 days",
+      "lastResult": "12 reminders sent · Wed 09:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Opex vs budget (YTD)",
+      "value": "$211.2M",
+      "delta": "+0.2%",
+      "deltaDir": "up",
+      "deltaGood": false,
+      "vs": "vs plan",
+      "spark": [18.1, 18.5, 18.9, 17.7, 19.2, 18.9, 19.4, 19.4, 19.7, 20.1, 21.3, 20.4],
+      "note": "Jul ran $1.44M over on the AWS true-up; Dec underspend still cushions YTD",
+      "source": "sap"
+    },
+    {
+      "id": "k2",
+      "label": "Gross margin",
+      "value": "71.4%",
+      "delta": "+0.6 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs last quarter",
+      "spark": [70.2, 70.4, 70.1, 70.6, 70.5, 70.8, 70.7, 71.0, 70.9, 71.2, 71.1, 71.4],
+      "note": "Hosting cost per customer down since the Graviton migration in April",
+      "source": "netsuite"
+    },
+    {
+      "id": "k3",
+      "label": "Days sales outstanding",
+      "value": "38 days",
+      "delta": "-3 days",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs Q2",
+      "spark": [43, 42, 44, 41, 42, 41, 40, 41, 39, 40, 39, 38],
+      "note": "Dunning automation live since May; all top-10 accounts now current",
+      "source": "netsuite"
+    },
+    {
+      "id": "k4",
+      "label": "Forecast accuracy",
+      "value": "95.1%",
+      "delta": "+1.2 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs trailing 6-mo",
+      "spark": [92.8, 93.1, 92.5, 93.4, 93.0, 93.8, 94.2, 93.9, 94.6, 94.8, 95.0, 95.1],
+      "note": "Driver-based cloud cost model closed the biggest recurring miss",
+      "source": "excel"
+    }
+  ],
+  "trend": {
+    "title": "Opex: actual vs budget",
+    "subtitle": "Monthly operating spend, Sep FY26 to date",
+    "unit": "$K",
+    "series": [
+      {
+        "name": "Actual",
+        "points": [18120, 18540, 18910, 17650, 19240, 18870, 19410, 19380, 19720, 20050, 21340, 20380]
+      },
+      {
+        "name": "Budget",
+        "points": [18400, 18600, 18700, 18900, 19000, 19100, 19300, 19500, 19600, 19800, 19900, 20100]
+      }
+    ],
+    "insight": "Jul ran $1.44M (7.2%) over on the AWS commit true-up and the early Salesforce renewal; Aug is tracking just +1.4%.",
+    "source": "sap"
+  },
+  "donut": {
+    "title": "Spend by category (Jul)",
+    "unit": "%",
+    "segments": [
+      {"label": "People", "value": 58},
+      {"label": "Cloud & infrastructure", "value": 14},
+      {"label": "Software", "value": 9},
+      {"label": "Professional services", "value": 7},
+      {"label": "Facilities", "value": 7},
+      {"label": "Travel & events", "value": 5}
+    ],
+    "insight": "Cloud & infrastructure climbed to 14% of spend after the July AWS commit true-up.",
+    "source": "netsuite"
+  },
+  "bars": {
+    "title": "July variance by department",
+    "unit": "$K",
+    "categories": ["Engineering", "IT", "Marketing", "Sales", "G&A", "Product", "Cust Success"],
+    "series": [
+      {
+        "name": "Jul actual vs budget",
+        "values": [862, 388, 214, 96, 22, -58, -84]
+      }
+    ],
+    "insight": "Engineering (+$862K, AWS true-up) and IT (+$388K, Salesforce renewal) drive nearly all of July's $1.44M overrun.",
+    "source": "sap"
+  },
+  "heatmap": {
+    "title": "Expense report volume by department",
+    "unit": "reports",
+    "rows": ["Sales", "Marketing", "Engineering", "Cust Success", "Product", "G&A"],
+    "cols": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [
+      [74, 81, 78, 52, 69, 72, 80, 84, 88, 91, 96, 58],
+      [42, 45, 39, 28, 36, 41, 44, 47, 49, 46, 52, 27],
+      [31, 29, 33, 21, 27, 30, 32, 35, 34, 38, 41, 22],
+      [24, 27, 25, 17, 22, 24, 28, 26, 29, 31, 33, 18],
+      [18, 20, 17, 12, 16, 19, 21, 22, 20, 23, 25, 13],
+      [12, 14, 13, 9, 11, 13, 14, 15, 14, 16, 17, 9]
+    ],
+    "insight": "Sales filed 96 reports in Jul on Q3 kickoff travel; Dec dipped roughly 30% company-wide.",
+    "source": "sap"
+  },
+  "goals": [
+    {"label": "Close month-end in 4.0 days", "pct": 75, "detail": "Jul closing in 4.5 days, down from 5.2 in Jun"},
+    {"label": "Hold forecast accuracy above 95%", "pct": 90, "detail": "95.1% trailing 3 months vs 95.0% target"},
+    {"label": "Roll out NetSuite budget module", "pct": 60, "detail": "9 of 15 departments migrated"},
+    {"label": "Cut DSO to 35 days", "pct": 55, "detail": "38 days now, down from 41 in Q2"}
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "FP&A daily stand-up",
+      "platform": "teams",
+      "attendees": ["Sofia Lindqvist", "Marcus Webb", "Aisha Bello"],
+      "agenda": "Close status, July variance pack progress, blockers"
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "AWS spend deep-dive with Engineering",
+      "platform": "teams",
+      "attendees": ["James Whitfield", "Sofia Lindqvist"],
+      "agenda": "Walk through the $862K July overrun and commit true-up mechanics"
+    },
+    {
+      "time": "12:30",
+      "dur": "30m",
+      "title": "DSO review with Revenue Accounting",
+      "platform": "zoom",
+      "attendees": ["Grace Liu", "Aisha Bello"],
+      "agenda": "Top-10 aged accounts and dunning automation results"
+    },
+    {
+      "time": "14:00",
+      "dur": "1h",
+      "title": "Q3 QBR prep with Priya",
+      "platform": "teams",
+      "attendees": ["Priya Raghavan", "Marcus Webb"],
+      "agenda": "Variance narrative, reforecast headlines, board pre-read outline"
+    },
+    {
+      "time": "16:00",
+      "dur": "30m",
+      "title": "NetSuite budget module rollout",
+      "platform": "zoom",
+      "attendees": ["Elena Petrova", "Ravi Menon", "Sofia Lindqvist"],
+      "agenda": "Migration status for the 6 remaining departments"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Priya Raghavan",
+      "source": "outlook",
+      "subject": "Need the July variance bridge before 14:00",
+      "preview": "Daniel — can you get me the one-page bridge with the AWS true-up broken out...",
+      "time": "8:12 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "SAP S/4HANA",
+      "source": "sap",
+      "subject": "July close: 3 cost centers pending final postings",
+      "preview": "Cost centers 4210, 4270 and 5130 have unposted accruals blocking period close for...",
+      "time": "7:55 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "James Whitfield",
+      "source": "teams",
+      "subject": "Re: AWS commit true-up",
+      "preview": "The $862K is real — reserved-instance commit trued up in July, plus the data transfer...",
+      "time": "8:31 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Marcus Webb",
+      "source": "outlook",
+      "subject": "Draft reforecast assumptions for Q4",
+      "preview": "Attached the assumption sheet — flag anything you disagree with before Monday's review...",
+      "time": "7:38 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m5",
+      "from": "NetSuite",
+      "source": "netsuite",
+      "subject": "Scheduled report: 13-week cash forecast ready",
+      "preview": "Your saved search 13-Week Cash Forecast completed with 214 rows and is available in...",
+      "time": "7:00 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m6",
+      "from": "Ravi Menon",
+      "source": "teams",
+      "subject": "Salesforce renewal hit IT's July budget",
+      "preview": "Heads up — the $388K renewal posted in July instead of August like last year, so...",
+      "time": "8:44 AM",
+      "urgent": false,
+      "unread": true
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "PO",
+      "title": "Deloitte — ASC 606 technical accounting memo",
+      "requester": "Grace Liu",
+      "amount": "$42,000",
+      "meta": "Q3 rev-rec review · budgeted under professional services",
+      "source": "ariba",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "Expense",
+      "title": "Q3 sales kickoff dinner — Austin",
+      "requester": "Hannah Cho",
+      "amount": "$4,860",
+      "meta": "58 attendees · exceeds $75/head policy by $9",
+      "source": "sap",
+      "urgency": "med"
+    },
+    {
+      "id": "a3",
+      "type": "Contract",
+      "title": "Adobe Creative Cloud renewal — 240 seats",
+      "requester": "Katie O'Brien",
+      "amount": "$86,400",
+      "meta": "3% uplift vs last year · current term ends Aug 31",
+      "source": "docusign",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Expense",
+      "title": "London–Singapore flights, close support",
+      "requester": "Aisha Bello",
+      "amount": "$3,214",
+      "meta": "Business economy per policy · booked 14 days out",
+      "source": "sap",
+      "urgency": "low"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "FIN-482",
+      "title": "Build July variance bridge for QBR pre-read",
+      "due": "Aug 8",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "excel"
+    },
+    {
+      "id": "FIN-479",
+      "title": "Chase accruals for cost centers 4210/4270/5130",
+      "due": "Aug 8",
+      "status": "blocked",
+      "priority": "P1",
+      "source": "sap"
+    },
+    {
+      "id": "FIN-485",
+      "title": "Refresh Q4 reforecast with driver-based cloud model",
+      "due": "Aug 12",
+      "status": "todo",
+      "priority": "P2",
+      "source": "excel"
+    },
+    {
+      "id": "FIN-471",
+      "title": "Migrate Marketing and CS budgets to NetSuite module",
+      "due": "Aug 15",
+      "status": "inprogress",
+      "priority": "P2",
+      "source": "netsuite"
+    },
+    {
+      "id": "FIN-468",
+      "title": "Document DSO dunning workflow for audit",
+      "due": "Aug 20",
+      "status": "review",
+      "priority": "P3",
+      "source": "sharepoint"
+    }
+  ],
+  "suggestions": [
+    "Why did opex run over budget in July?",
+    "Summarize July close status for Priya",
+    "Draft the variance brief for the 14:00 QBR prep",
+    "Who still has expense approvals pending?",
+    "Should we approve the $42K Deloitte PO?",
+    "How is DSO trending vs our 35-day target?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "July variance",
+      "triggers": ["july", "variance", "over budget", "opex spike", "overrun", "why did opex", "aws"],
+      "toolCalls": [
+        {
+          "server": "sap",
+          "tool": "get_cost_center_actuals",
+          "args": "period=Jul FY26",
+          "result": "14 cost centers · 3 over budget",
+          "ms": 640
+        },
+        {
+          "server": "netsuite",
+          "tool": "run_saved_search",
+          "args": "search=budget_vs_actual&period=Jul FY26",
+          "result": "$21.34M actual vs $19.90M budget",
+          "ms": 480
+        },
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "file=Variance_Bridge_Jul.xlsx",
+          "result": "bridge reconciles to +$1,440K",
+          "ms": 310
+        }
+      ],
+      "response": "July opex landed at **$21.34M vs $19.90M budget — $1.44M (7.2%) over**, the biggest miss this fiscal year.\n\n{{chart:bars}}\n\n- **Engineering +$862K** — AWS reserved-instance commit true-up hit in one month instead of amortizing across Q3.\n- **IT +$388K** — Salesforce renewal posted in July; last year it landed in August, so this is timing, not overspend.\n- **Marketing +$214K** — Q3 sales kickoff in Austin, approved out-of-cycle.\n- Product (-$58K) and Customer Success (-$84K) came in under.\n\nNet of the Salesforce timing shift, the structural overrun is roughly **$1.05M**, nearly all cloud.\n\n> Recommended: confirm the Q4 AWS run-rate with James Whitfield at your 10:30 before this goes in the QBR pre-read.",
+      "actions": [
+        {
+          "label": "Draft email to dept heads",
+          "toast": "Draft created in Outlook — ready for review"
+        },
+        {
+          "label": "Add variance slide to QBR deck",
+          "toast": "Slide added to Q3 QBR deck in SharePoint"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Close status brief",
+      "triggers": ["close", "month-end", "close status", "july close", "summarize close", "period status"],
+      "toolCalls": [
+        {
+          "server": "sap",
+          "tool": "get_period_status",
+          "args": "period=Jul FY26",
+          "result": "Day 5 · 3 cost centers open",
+          "ms": 520
+        },
+        {
+          "server": "workday",
+          "tool": "get_payroll_posting_status",
+          "args": "period=Jul 2026",
+          "result": "5 of 5 entities posted",
+          "ms": 690
+        },
+        {
+          "server": "netsuite",
+          "tool": "get_journal_status",
+          "args": "period=Jul FY26&type=accrual",
+          "result": "3 accruals pending · ~$310K",
+          "ms": 430
+        }
+      ],
+      "response": "## July close — day 5 status\nOn pace for **4.5 days**, ahead of June (5.2) but shy of the 4.0-day target.\n\n{{kpis}}\n\n- **3 cost centers still open**: 4210 (Engineering), 4270 (IT), 5130 (Marketing) — unposted accruals worth roughly $310K.\n- Workday payroll posted for all 5 entities; the UK run was clean for the first time since March.\n- Bank recs complete; Grace Liu signed off revenue accounting in Singapore overnight.\n- Flux commentary drafted for 11 of 14 P&L lines.\n\nPriya's 14:00 QBR prep needs the variance bridge, which depends on those three accruals.\n\n> Recommended: nudge James Whitfield and Ravi Menon before 12:00 — both accruals are one journal entry away.",
+      "actions": [
+        {
+          "label": "Send nudge to cost-center owners",
+          "toast": "Reminders sent in Teams to James Whitfield and Ravi Menon"
+        },
+        {
+          "label": "Post status to #fpa-weekly",
+          "toast": "Close status posted to #fpa-weekly in Teams"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Draft QBR brief",
+      "triggers": ["draft", "qbr", "pre-read", "variance brief", "brief for priya", "prepare"],
+      "toolCalls": [
+        {
+          "server": "excel",
+          "tool": "read_range",
+          "args": "file=Variance_Bridge_Jul.xlsx&range=Bridge!A1:D14",
+          "result": "bridge reconciles to +$1,440K",
+          "ms": 290
+        },
+        {
+          "server": "sharepoint",
+          "tool": "get_document",
+          "args": "doc=Q3_QBR_Template.pptx",
+          "result": "template v3 · 12 slides",
+          "ms": 380
+        },
+        {
+          "server": "outlook",
+          "tool": "create_draft",
+          "args": "to=priya.raghavan@meridianlabs.com",
+          "result": "draft saved with 1 attachment",
+          "ms": 540
+        }
+      ],
+      "response": "Draft is ready — a one-page variance brief for Priya, structured for the 14:00 QBR prep.\n\n|Driver|Jul impact|\n|---|---|\n|AWS commit true-up (Eng)|+$862K|\n|Salesforce renewal timing (IT)|+$388K|\n|Q3 kickoff, Austin (Mktg)|+$214K|\n|Sales travel|+$96K|\n|G&A misc|+$22K|\n|Product / CS underspend|-$142K|\n|**Net vs budget**|**+$1,440K**|\n\nFraming: **roughly a quarter is pure timing** (Salesforce posts in July, not August), and the structural story is cloud. August is tracking just +1.4% vs budget, so the bridge presents July as a spike, not a new run-rate.\n\nThe draft is in your Outlook drafts with the bridge workbook attached and a two-line summary Priya can lift straight into the board pre-read.\n\n> Recommended: send by 12:30 so she reads it before your 14:00.",
+      "actions": [
+        {
+          "label": "Open draft in Outlook",
+          "toast": "Draft opened in Outlook — bridge workbook attached"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Pending approvals",
+      "triggers": ["approvals", "pending", "expense reports", "who owes", "aging", "approvers"],
+      "toolCalls": [
+        {
+          "server": "sap",
+          "tool": "list_pending_approvals",
+          "args": "queue=expense&aging=gt5d",
+          "result": "23 reports · 9 aged >5 days",
+          "ms": 560
+        },
+        {
+          "server": "workday",
+          "tool": "lookup_approver_chain",
+          "args": "reports=aged_9",
+          "result": "3 approvers hold all 9",
+          "ms": 720
+        }
+      ],
+      "response": "**23 expense reports are pending approval — 9 aged past the 5-day SLA.**\n\n{{chart:heatmap}}\n\nAged queue by approver:\n1. **Hannah Cho** — 4 reports ($8,940), all Q3 kickoff travel\n2. **Ravi Menon** — 3 reports ($2,410)\n3. **Katie O'Brien** — 2 reports ($1,730)\n\nContext: Sales filed **96 reports in July**, their heaviest month this year, so the queue is volume, not negligence. Wednesday's automated nudge went to all 12 approvers; these three haven't cleared since.\n\nEmployees are out-of-pocket an average of 11 days on the aged items — that is what generates the HR noise.\n\n> Recommended: a personal Teams ping to Hannah today; her 4 reports alone clear 68% of the aged dollar value.",
+      "actions": [
+        {
+          "label": "Send reminder to 3 approvers",
+          "toast": "Reminders sent in Teams to Hannah, Ravi and Katie"
+        },
+        {
+          "label": "Export aging list to Excel",
+          "toast": "Aging list exported to Expense_Aging_Aug08.xlsx"
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Deloitte PO call",
+      "triggers": ["deloitte", "approve", "po", "recommend", "should we", "purchase order"],
+      "toolCalls": [
+        {
+          "server": "ariba",
+          "tool": "get_po_details",
+          "args": "po=PO-88214",
+          "result": "$42,000 · Deloitte · ASC 606 memo",
+          "ms": 450
+        },
+        {
+          "server": "netsuite",
+          "tool": "check_budget_line",
+          "args": "line=professional_services&period=Q3 FY26",
+          "result": "$118K remaining of $310K",
+          "ms": 390
+        },
+        {
+          "server": "sap",
+          "tool": "vendor_spend_history",
+          "args": "vendor=Deloitte&period=FY26",
+          "result": "$186K YTD · 4 engagements",
+          "ms": 610
+        }
+      ],
+      "response": "**Approve it.** The Deloitte PO ($42,000, ASC 606 technical memo) clears every check.\n\n1. **Budget**: professional services has $118K remaining of the $310K Q3 envelope — this consumes 36% of what is left, with no other large engagements queued.\n2. **Need**: Grace Liu's rev-rec memo is due Aug 22 and the external auditors expect it in the PBC list for interim fieldwork.\n3. **Vendor**: Deloitte is at $186K YTD across 4 engagements, all delivered on scope; the rate card matches the MSA.\n\nOne flag: combined with the Adobe renewal ($86,400) also in your queue, you would commit $128K this week — still inside your $150K weekly delegation limit, so no CFO escalation is needed.\n\n> Recommended: approve PO-88214 now; Grace needs the engagement letter signed to book Deloitte's week of Aug 17.",
+      "actions": [
+        {
+          "label": "Approve PO-88214",
+          "toast": "PO-88214 approved in Ariba — Grace Liu notified"
+        },
+        {
+          "label": "Draft note to Grace Liu",
+          "toast": "Draft created in Outlook — ready for review"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    "SAP · Period 07 accrual posted for cost center 5130 by Tunde Adeyemi",
+    "Ariba · PO-88214 (Deloitte, $42,000) awaiting your approval",
+    "Workday · July UK payroll posted to GL by Miguel Santos",
+    "Teams · James Whitfield replied in #fpa-cloud-costs",
+    "NetSuite · 13-Week Cash Forecast saved search completed (214 rows)",
+    "SharePoint · Q3 QBR template v3 uploaded by Marcus Webb",
+    "Excel · Forecast Refresher updated Rolling_Forecast_FY26.xlsx"
+  ]
+}

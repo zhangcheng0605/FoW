@@ -1,0 +1,395 @@
+/* ============================================================
+   FoW · chart engine — hand-rolled SVG
+   Specs: 2px lines, r>=4 markers with 2px surface rings, 10%
+   area washes, <=24px bars with 4px rounded data-ends + 2px
+   surface gaps, hairline solid grid, crosshair + shared
+   tooltip, legends for >=2 series, table-view twins.
+   ============================================================ */
+"use strict";
+
+const SURFACE = "#10141f"; /* card surface — rings & gaps are drawn in this */
+const vizTip = () => $("#viztip");
+let liveCharts = []; /* re-render closures, re-run on resize */
+
+function registerChart(container, fn) {
+  fn();
+  liveCharts.push({ container, fn });
+}
+function clearCharts() { liveCharts = []; }
+window.addEventListener("resize", (() => {
+  let t;
+  return () => { clearTimeout(t); t = setTimeout(() => liveCharts.forEach(c => document.contains(c.container) && c.fn()), 160); };
+})());
+
+function tipShow(x, y, title, rows) {
+  const tip = vizTip();
+  tip.textContent = "";
+  if (title) tip.appendChild(el("div", "vt-t", title));
+  rows.forEach(r => {
+    const row = el("div", "vt-row");
+    if (r.color) { const k = el("i", "vt-key"); k.style.borderColor = r.color; row.appendChild(k); }
+    row.appendChild(el("span", "vt-name", r.name));
+    row.appendChild(el("b", "vt-val", r.value));
+    tip.appendChild(row);
+  });
+  tip.hidden = false;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let px = x + 14, py = y + 12;
+  if (px + w > innerWidth - 8) px = x - w - 14;
+  if (py + h > innerHeight - 8) py = y - h - 12;
+  tip.style.left = px + "px"; tip.style.top = py + "px";
+}
+function tipHide() { vizTip().hidden = true; }
+
+function legendRow(series, kind) {
+  const lg = el("div", "legend");
+  series.forEach((s, i) => {
+    const item = el("span", "lg-item");
+    const key = el("i", kind === "rect" ? "lg-rect" : "lg-line");
+    const col = s.color || SERIES[i];
+    if (kind === "rect") key.style.background = col; else key.style.borderColor = col;
+    item.appendChild(key);
+    item.appendChild(document.createTextNode(s.name));
+    lg.appendChild(item);
+  });
+  return lg;
+}
+
+/* ---------- sparkline (stat tile) ---------- */
+function renderSpark(container, points, color, opts) {
+  container.textContent = "";
+  const w = container.clientWidth || 200, h = (opts && opts.h) || 34;
+  const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+  const min = Math.min(...points), max = Math.max(...points);
+  const pad = 4;
+  const X = i => pad + (i / (points.length - 1)) * (w - pad * 2);
+  const Y = v => h - pad - ((v - min) / (max - min || 1)) * (h - pad * 2);
+  const line = points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
+  const area = line + ` L${X(points.length - 1).toFixed(1)} ${h - 1} L${X(0).toFixed(1)} ${h - 1} Z`;
+  svg.appendChild(svgNode("path", { d: area, fill: color, opacity: 0.1 }));
+  svg.appendChild(svgNode("path", { d: line, fill: "none", stroke: color, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+  svg.appendChild(svgNode("circle", { cx: X(points.length - 1), cy: Y(points[points.length - 1]), r: 4, fill: (opts && opts.end) || color, stroke: SURFACE, "stroke-width": 2 }));
+  container.appendChild(svg);
+}
+
+/* ---------- trend: multi-series line/area + crosshair ---------- */
+function renderTrend(container, trend, opts) {
+  const o = opts || {};
+  container.textContent = "";
+  const w = container.clientWidth || 560;
+  const h = o.h || (o.mini ? 150 : 208);
+  const mL = 42, mR = 14, mT = 10, mB = 22;
+  const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+  const pts = trend.series.flatMap(s => s.points);
+  let min = Math.min(...pts), max = Math.max(...pts);
+  const padV = (max - min || Math.abs(max) || 1) * 0.12;
+  min = Math.min(min - padV, min >= 0 && min < max * 0.35 ? 0 : min - padV); max += padV;
+  const ticks = niceTicks(min, max, o.mini ? 3 : 4);
+  min = ticks[0]; max = ticks[ticks.length - 1];
+  const n = trend.series[0].points.length;
+  const X = i => mL + (i / (n - 1)) * (w - mL - mR);
+  const Y = v => mT + (1 - (v - min) / (max - min || 1)) * (h - mT - mB);
+
+  ticks.forEach(t => {
+    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: "rgba(255,255,255,0.055)", "stroke-width": 1 }));
+    const tx = svgNode("text", { x: mL - 7, y: Y(t) + 3, "text-anchor": "end" });
+    tx.textContent = fmtNum(t, trend.unit);
+    svg.appendChild(tx);
+  });
+  const xStep = o.mini ? 3 : (w < 460 ? 2 : 1);
+  MONTHS.slice(0, n).forEach((m, i) => {
+    if (i % xStep) return;
+    const tx = svgNode("text", { x: X(i), y: h - 6, "text-anchor": "middle" });
+    tx.textContent = m;
+    svg.appendChild(tx);
+  });
+
+  /* endpoint label slots — nudge apart when series converge at the right edge */
+  const endYs = trend.series.map(s => Y(s.points[n - 1]) - 9);
+  for (let a = 0; a < endYs.length; a++)
+    for (let b = a + 1; b < endYs.length; b++)
+      if (Math.abs(endYs[a] - endYs[b]) < 13) { if (endYs[b] > endYs[a]) endYs[b] = endYs[a] + 13; else endYs[b] = endYs[a] - 13; }
+
+  trend.series.forEach((s, si) => {
+    const col = SERIES[si];
+    const d = s.points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
+    if (si === 0) {
+      const base = Y(Math.max(min, 0));
+      svg.appendChild(svgNode("path", { d: d + ` L${X(n - 1).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`, fill: col, opacity: 0.1 }));
+    }
+    svg.appendChild(svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    const last = s.points[n - 1];
+    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(last), r: 4, fill: col, stroke: SURFACE, "stroke-width": 2 }));
+    if (!o.mini) {
+      const lb = svgNode("text", { x: X(n - 1) - 6, y: endYs[si], "text-anchor": "end", class: "lbl" });
+      lb.textContent = fmtNum(last, trend.unit);
+      svg.appendChild(lb);
+    }
+  });
+
+  /* crosshair + hover layer */
+  const cross = svgNode("line", { y1: mT, y2: h - mB, stroke: "rgba(255,255,255,0.22)", "stroke-width": 1, visibility: "hidden" });
+  svg.appendChild(cross);
+  const dots = trend.series.map((s, si) => {
+    const c = svgNode("circle", { r: 4.5, fill: SERIES[si], stroke: SURFACE, "stroke-width": 2, visibility: "hidden" });
+    svg.appendChild(c); return c;
+  });
+  const hit = svgNode("rect", { x: mL, y: 0, width: Math.max(1, w - mL - mR), height: h, fill: "transparent" });
+  hit.style.cursor = "crosshair";
+  hit.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect();
+    const i = Math.max(0, Math.min(n - 1, Math.round(((e.clientX - r.left) - mL) / ((w - mL - mR) / (n - 1)))));
+    cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i));
+    cross.setAttribute("visibility", "visible");
+    dots.forEach((d, si) => { d.setAttribute("cx", X(i)); d.setAttribute("cy", Y(trend.series[si].points[i])); d.setAttribute("visibility", "visible"); });
+    tipShow(e.clientX, e.clientY, MONTHS[i] + (i < 4 ? " 2025" : " 2026"),
+      trend.series.map((s, si) => ({ color: SERIES[si], name: s.name, value: fmtNum(s.points[i], trend.unit) })));
+  });
+  hit.addEventListener("pointerleave", () => {
+    cross.setAttribute("visibility", "hidden");
+    dots.forEach(d => d.setAttribute("visibility", "hidden"));
+    tipHide();
+  });
+  svg.appendChild(hit);
+  container.appendChild(svg);
+  if (trend.series.length > 1) container.appendChild(legendRow(trend.series.map((s, i) => ({ name: s.name, color: SERIES[i] })), "line"));
+}
+
+/* ---------- donut ---------- */
+function renderDonut(container, donut, opts) {
+  const o = opts || {};
+  container.textContent = "";
+  const wrap = el("div");
+  wrap.style.cssText = "display:flex;align-items:center;gap:14px;min-width:0";
+  const sz = o.mini ? 128 : 158, R = sz / 2, r0 = R - (o.mini ? 15 : 19), cx = R, cy = R;
+  const svg = svgNode("svg", { class: "viz", width: sz, height: sz, viewBox: `0 0 ${sz} ${sz}`, style: "flex:none;width:" + sz + "px" });
+  const total = donut.segments.reduce((a, s) => a + s.value, 0);
+  let a0 = -Math.PI / 2;
+  const arcs = [];
+  donut.segments.forEach((seg, i) => {
+    const frac = seg.value / total;
+    const a1 = a0 + frac * Math.PI * 2;
+    const large = frac > 0.5 ? 1 : 0;
+    const p0 = [cx + R * Math.cos(a0), cy + R * Math.sin(a0)];
+    const p1 = [cx + R * Math.cos(a1), cy + R * Math.sin(a1)];
+    const q1 = [cx + r0 * Math.cos(a1), cy + r0 * Math.sin(a1)];
+    const q0 = [cx + r0 * Math.cos(a0), cy + r0 * Math.sin(a0)];
+    const d = `M${p0[0].toFixed(2)} ${p0[1].toFixed(2)} A${R} ${R} 0 ${large} 1 ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} L${q1[0].toFixed(2)} ${q1[1].toFixed(2)} A${r0} ${r0} 0 ${large} 0 ${q0[0].toFixed(2)} ${q0[1].toFixed(2)} Z`;
+    /* 2px surface gap between segments via surface-colored stroke */
+    const path = svgNode("path", { d, fill: SERIES[i % SERIES.length], stroke: SURFACE, "stroke-width": 2, "stroke-linejoin": "round" });
+    path.style.transition = "opacity 140ms ease, transform 140ms ease";
+    path.style.transformOrigin = cx + "px " + cy + "px";
+    const mid = (a0 + a1) / 2;
+    path.addEventListener("pointermove", e => {
+      arcs.forEach(a => a.style.opacity = a === path ? 1 : 0.42);
+      path.style.transform = `translate(${Math.cos(mid) * 2.5}px,${Math.sin(mid) * 2.5}px)`;
+      tipShow(e.clientX, e.clientY, donut.title, [{ color: SERIES[i % SERIES.length], name: seg.label, value: fmtNum(seg.value, donut.unit) + " · " + Math.round(frac * 100) + "%" }]);
+    });
+    path.addEventListener("pointerleave", () => {
+      arcs.forEach(a => a.style.opacity = 1); path.style.transform = "none"; tipHide();
+    });
+    svg.appendChild(path); arcs.push(path);
+    a0 = a1;
+  });
+  const ct = svgNode("text", { x: cx, y: cy - 2, "text-anchor": "middle", class: "lbl", style: "font-size:17px;font-weight:700;fill:#eef2fa" });
+  ct.textContent = /%/.test(donut.unit || "") ? "100%" : fmtNum(total, donut.unit);
+  const cs = svgNode("text", { x: cx, y: cy + 14, "text-anchor": "middle" });
+  cs.textContent = "total";
+  svg.appendChild(ct); svg.appendChild(cs);
+  wrap.appendChild(svg);
+
+  const lg = el("div");
+  lg.style.cssText = "display:flex;flex-direction:column;gap:5px;min-width:0;flex:1";
+  donut.segments.forEach((seg, i) => {
+    const row = el("div", "lg-item");
+    row.style.cssText = "display:flex;align-items:center;gap:7px;font-size:11.5px;min-width:0";
+    const k = el("i", "lg-rect"); k.style.background = SERIES[i % SERIES.length]; k.style.flex = "none";
+    const name = el("span", "", seg.label);
+    name.style.cssText = "color:#a6b0c3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0";
+    const val = el("b", "", fmtNum(seg.value, donut.unit));
+    val.style.cssText = "margin-left:auto;font-variant-numeric:tabular-nums;padding-left:8px";
+    row.append(k, name, val);
+    lg.appendChild(row);
+  });
+  wrap.appendChild(lg);
+  container.appendChild(wrap);
+}
+
+/* ---------- bars: grouped columns, negatives = polarity ---------- */
+function renderBars(container, bars, opts) {
+  const o = opts || {};
+  container.textContent = "";
+  const w = container.clientWidth || 420;
+  const h = o.h || (o.mini ? 150 : 196);
+  const mL = 42, mR = 8, mT = 12, mB = 40;
+  const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+  const all = bars.series.flatMap(s => s.values);
+  const hasNeg = Math.min(...all) < 0;
+  let min = Math.min(0, ...all), max = Math.max(0, ...all);
+  const ticks = niceTicks(min, max * 1.08 || 1, o.mini ? 3 : 4);
+  min = ticks[0]; max = ticks[ticks.length - 1];
+  const Y = v => mT + (1 - (v - min) / (max - min || 1)) * (h - mT - mB);
+  const nCat = bars.categories.length, nSer = bars.series.length;
+  const band = (w - mL - mR) / nCat;
+  const barW = Math.min(24, (band * 0.62) / nSer);
+  const gap = 2; /* surface gap between touching bars in a group */
+
+  ticks.forEach(t => {
+    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: t === 0 ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.055)", "stroke-width": 1 }));
+    const tx = svgNode("text", { x: mL - 7, y: Y(t) + 3, "text-anchor": "end" });
+    tx.textContent = fmtNum(t, bars.unit);
+    svg.appendChild(tx);
+  });
+
+  /* find the extreme to direct-label (selective labeling) */
+  let extIdx = 0; all.forEach((v, i) => { if (Math.abs(v) > Math.abs(all[extIdx])) extIdx = i; });
+
+  bars.categories.forEach((cat, ci) => {
+    const groupW = nSer * barW + (nSer - 1) * gap;
+    const gx = mL + band * ci + (band - groupW) / 2;
+    bars.series.forEach((s, si) => {
+      const v = s.values[ci];
+      const col = hasNeg && nSer === 1 ? (v >= 0 ? SERIES[0] : NEG) : SERIES[si];
+      const x = gx + si * (barW + gap);
+      const y0 = Y(0), y1 = Y(v);
+      const top = Math.min(y0, y1), bh = Math.max(2, Math.abs(y0 - y1));
+      const rad = Math.min(4, bh / 2);
+      /* rounded at the data end, square at the baseline */
+      let d;
+      if (v >= 0) d = `M${x} ${top + bh} V${top + rad} Q${x} ${top} ${x + rad} ${top} H${x + barW - rad} Q${x + barW} ${top} ${x + barW} ${top + rad} V${top + bh} Z`;
+      else d = `M${x} ${top} V${top + bh - rad} Q${x} ${top + bh} ${x + rad} ${top + bh} H${x + barW - rad} Q${x + barW} ${top + bh} ${x + barW} ${top + bh - rad} V${top} Z`;
+      const p = svgNode("path", { d, fill: col });
+      p.style.transition = "opacity 120ms ease";
+      const idx = si * nCat + ci;
+      p.addEventListener("pointermove", e => {
+        $$("path", svg).forEach(q => { if (q.__bar) q.style.opacity = q === p ? 1 : 0.45; });
+        tipShow(e.clientX, e.clientY, cat, bars.series.map((ss, ssi) => ({
+          color: hasNeg && nSer === 1 ? (ss.values[ci] >= 0 ? SERIES[0] : NEG) : SERIES[ssi],
+          name: ss.name, value: fmtNum(ss.values[ci], bars.unit),
+        })));
+      });
+      p.addEventListener("pointerleave", () => { $$("path", svg).forEach(q => { if (q.__bar) q.style.opacity = 1; }); tipHide(); });
+      p.__bar = true;
+      svg.appendChild(p);
+      if (!o.mini && si * nCat + ci === extIdx && Math.abs(all[idx]) === Math.abs(all[extIdx])) {
+        const lb = svgNode("text", { x: x + barW / 2, y: v >= 0 ? top - 5 : top + bh + 11, "text-anchor": "middle", class: "lbl" });
+        lb.textContent = fmtNum(v, bars.unit);
+        svg.appendChild(lb);
+      }
+    });
+    /* category label, truncated */
+    const short = cat.length > Math.max(6, band / 6.4) ? cat.slice(0, Math.max(5, band / 6.4 - 1)) + "…" : cat;
+    const tx = svgNode("text", { x: mL + band * ci + band / 2, y: h - 22, "text-anchor": "middle" });
+    tx.textContent = short;
+    tx.__full = cat;
+    svg.appendChild(tx);
+  });
+  container.appendChild(svg);
+  if (nSer > 1) container.appendChild(legendRow(bars.series.map((s, i) => ({ name: s.name, color: SERIES[i] })), "rect"));
+  else if (hasNeg) container.appendChild(legendRow([{ name: "above plan", color: SERIES[0] }, { name: "below plan", color: NEG }], "rect"));
+}
+
+/* ---------- heatmap: single-hue sequential (dim -> bright on dark) ---------- */
+function heatColor(t) {
+  /* blue ramp, monotonic lightness on a dark surface */
+  const stops = [[16, 27, 48], [16, 60, 112], [28, 92, 171], [57, 135, 229], [134, 182, 239], [205, 226, 251]];
+  const x = Math.max(0, Math.min(1, t)) * (stops.length - 1);
+  const i = Math.min(stops.length - 2, Math.floor(x)), f = x - i;
+  const c = stops[i].map((v, k) => Math.round(v + (stops[i + 1][k] - v) * f));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function renderHeatmap(container, hm, opts) {
+  const o = opts || {};
+  container.textContent = "";
+  const w = container.clientWidth || 520;
+  const rows = hm.rows.length, cols = hm.cols.length;
+  const mL = 54, mT = 4, mB = 20, mR = 4;
+  const cellH = o.mini ? 16 : 21;
+  const h = mT + rows * cellH + mB;
+  const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
+  const cellW = (w - mL - mR) / cols;
+  const flat = hm.values.flat();
+  const vMin = Math.min(...flat), vMax = Math.max(...flat);
+  hm.rows.forEach((rl, ri) => {
+    const tx = svgNode("text", { x: mL - 8, y: mT + ri * cellH + cellH / 2 + 3, "text-anchor": "end" });
+    tx.textContent = rl.length > 8 ? rl.slice(0, 7) + "…" : rl;
+    svg.appendChild(tx);
+    hm.cols.forEach((cl, ci) => {
+      const v = hm.values[ri][ci];
+      const t = (v - vMin) / (vMax - vMin || 1);
+      const rect = svgNode("rect", {
+        x: mL + ci * cellW + 1, y: mT + ri * cellH + 1,
+        width: Math.max(1, cellW - 2), height: cellH - 2,
+        rx: 4, fill: heatColor(t),
+      });
+      rect.style.transition = "opacity 120ms";
+      rect.addEventListener("pointermove", e => {
+        $$("rect", svg).forEach(q => q.style.opacity = q === rect ? 1 : 0.55);
+        tipShow(e.clientX, e.clientY, rl + " · " + cl, [{ name: hm.unit || "value", value: fmtNum(v, ""), color: heatColor(t) }]);
+      });
+      rect.addEventListener("pointerleave", () => { $$("rect", svg).forEach(q => q.style.opacity = 1); tipHide(); });
+      svg.appendChild(rect);
+    });
+  });
+  const colStep = Math.ceil(cols / Math.max(4, Math.floor((w - mL) / 52)));
+  hm.cols.forEach((cl, ci) => {
+    if (ci % colStep) return;
+    const tx = svgNode("text", { x: mL + ci * cellW + cellW / 2, y: h - 6, "text-anchor": "middle" });
+    tx.textContent = cl;
+    svg.appendChild(tx);
+  });
+  container.appendChild(svg);
+}
+
+/* ---------- goals: meters ---------- */
+function renderGoals(container, goals) {
+  container.textContent = "";
+  goals.forEach(g => {
+    const d = el("div", "goal");
+    const top = el("div", "goal-top");
+    top.appendChild(el("b", "", g.label));
+    top.appendChild(el("span", "goal-pct", g.pct + "%"));
+    const track = el("div", "goal-track");
+    const fill = el("div", "goal-fill");
+    fill.style.width = "0%";
+    track.appendChild(fill);
+    d.append(top, track, el("div", "goal-detail", g.detail));
+    container.appendChild(d);
+    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = Math.min(100, g.pct) + "%"; }));
+  });
+}
+
+/* ---------- table-view twins ---------- */
+function buildTable(kind, data) {
+  const wrap = el("div", "dtable-wrap");
+  const tb = el("table", "dtable");
+  const thead = el("thead"); const hr = el("tr");
+  const tbody = el("tbody");
+  const addRow = (cells, head) => {
+    const tr = el("tr");
+    cells.forEach(c => tr.appendChild(el(head ? "th" : "td", "", c)));
+    (head ? thead : tbody).appendChild(tr);
+    return tr;
+  };
+  if (kind === "trend") {
+    hr.append(el("th", "", "Month"), ...data.series.map(s => el("th", "", s.name)));
+    thead.appendChild(hr);
+    MONTHS.forEach((m, i) => addRow([m, ...data.series.map(s => fmtNum(s.points[i], data.unit))]));
+  } else if (kind === "bars") {
+    hr.append(el("th", "", "Category"), ...data.series.map(s => el("th", "", s.name)));
+    thead.appendChild(hr);
+    data.categories.forEach((c, i) => addRow([c, ...data.series.map(s => fmtNum(s.values[i], data.unit))]));
+  } else if (kind === "donut") {
+    const total = data.segments.reduce((a, s) => a + s.value, 0);
+    hr.append(el("th", "", "Segment"), el("th", "", "Value"), el("th", "", "Share"));
+    thead.appendChild(hr);
+    data.segments.forEach(s => addRow([s.label, fmtNum(s.value, data.unit), Math.round(s.value / total * 100) + "%"]));
+  } else if (kind === "heatmap") {
+    hr.append(el("th", "", ""), ...data.cols.map(c => el("th", "", c)));
+    thead.appendChild(hr);
+    data.rows.forEach((r, ri) => addRow([r, ...data.values[ri].map(v => String(v))]));
+  }
+  tb.append(thead, tbody);
+  wrap.appendChild(tb);
+  return wrap;
+}

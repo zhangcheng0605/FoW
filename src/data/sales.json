@@ -1,0 +1,541 @@
+{
+  "personaId": "sales",
+  "user": {
+    "name": "Jonas Lindqvist",
+    "role": "Enterprise Sales Manager",
+    "dept": "Sales",
+    "location": "Stockholm",
+    "initials": "JL"
+  },
+  "focus": {
+    "headline": "Turn Nordvik's round-2 redlines today — OPP-4821 ($1.2M) must sign by Aug 21 to keep Q3 on pace.",
+    "sub": "Q3 sits at 48.2% of the $6.8M team quota with $3.4M in August commit; Claire Beaumont's forecast call is at 13:00."
+  },
+  "connections": ["salesforce", "gmail", "gcal", "slack", "zoom", "gdrive", "docusign", "outlook"],
+  "skills": [
+    {
+      "id": "deal-health-scanner",
+      "name": "Deal Health Scanner",
+      "desc": "Scans open Salesforce opps for stalled stages, ghosted threads, and missing next steps",
+      "icon": "🩺",
+      "lastRun": "Today 07:15",
+      "runs": 268
+    },
+    {
+      "id": "forecast-rollup",
+      "name": "Forecast Roll-Up",
+      "desc": "Builds the weekly commit and best-case roll-up from Salesforce and rep submissions",
+      "icon": "📈",
+      "lastRun": "Today 06:50",
+      "runs": 124
+    },
+    {
+      "id": "account-brief-builder",
+      "name": "Account Brief Builder",
+      "desc": "Compiles pre-meeting account briefs from Salesforce history, Gmail threads, and news",
+      "icon": "📋",
+      "lastRun": "Yesterday",
+      "runs": 187
+    }
+  ],
+  "automations": [
+    {
+      "name": "Monday pipeline digest",
+      "schedule": "Mon 08:00",
+      "desc": "Posts stage movements and new pipe from the week to the #sales-emea Slack channel",
+      "lastResult": "Posted to #sales-emea · Mon 08:00"
+    },
+    {
+      "name": "Stalled deal nudge",
+      "schedule": "Daily 07:30",
+      "desc": "Flags opps with no customer activity in 14 days and drafts rep follow-ups in Gmail",
+      "lastResult": "6 opps flagged · Today 07:30"
+    },
+    {
+      "name": "Forecast call prep pack",
+      "schedule": "Fri 06:30",
+      "desc": "Compiles commit changes since last week into a Drive doc ahead of Claire's 13:00 call",
+      "lastResult": "Pack ready in Drive · Today 06:30"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Q3 quota attainment",
+      "value": "48.2%",
+      "delta": "+6.4 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs same point in Q2",
+      "spark": [113, 72, 90, 123, 62, 92, 115, 73, 95, 127, 83, 63],
+      "note": "$3.28M closed of $6.8M; OPP-4821 alone lifts Q3 to 66% — signature targeted Aug 21",
+      "source": "salesforce"
+    },
+    {
+      "id": "k2",
+      "label": "Pipeline coverage (Q3)",
+      "value": "3.1x",
+      "delta": "-0.3x",
+      "deltaDir": "down",
+      "deltaGood": false,
+      "vs": "vs 60 days ago",
+      "spark": [2.6, 2.8, 3.0, 2.9, 3.1, 3.2, 3.3, 3.4, 3.5, 3.4, 3.3, 3.1],
+      "note": "June pull-forward drained stage-2 pipe; need $1.4M new pipeline by Sep 1 to restore 3.5x",
+      "source": "salesforce"
+    },
+    {
+      "id": "k3",
+      "label": "Deals closing in August",
+      "value": "9",
+      "delta": "+2",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs July closes",
+      "spark": [11, 7, 9, 14, 6, 9, 12, 8, 10, 15, 7, 4],
+      "note": "Worth $3.4M; OPP-4821 is $1.2M of it and sits in Legal on the liability cap",
+      "source": "salesforce"
+    },
+    {
+      "id": "k4",
+      "label": "Avg deal size (closed-won)",
+      "value": "$186K",
+      "delta": "+8.3%",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs FY25 trailing avg",
+      "spark": [152, 158, 161, 148, 163, 170, 168, 175, 181, 178, 183, 186],
+      "note": "Enterprise tier is now 61% of closed bookings, up from 52% a year ago",
+      "source": "salesforce"
+    }
+  ],
+  "trend": {
+    "title": "Bookings vs target",
+    "subtitle": "Team bookings against monthly target, last 12 months",
+    "unit": "$K",
+    "series": [
+      {
+        "name": "Bookings",
+        "points": [2380, 1520, 1890, 2760, 1340, 1980, 2540, 1610, 2080, 2910, 1860, 1420]
+      },
+      {
+        "name": "Target",
+        "points": [2100, 2100, 2100, 2250, 2150, 2150, 2200, 2200, 2200, 2300, 2250, 2250]
+      }
+    ],
+    "insight": "Jun closed at 127% on the Nordvik pilot conversion and Caldera expansion; Jul dipped to 83% post-quarter — Aug is already at $1.42M booked",
+    "source": "salesforce"
+  },
+  "donut": {
+    "title": "Pipeline by stage",
+    "unit": "$M",
+    "segments": [
+      {"label": "Discovery", "value": 6.1},
+      {"label": "Evaluation", "value": 4.8},
+      {"label": "Proposal", "value": 3.6},
+      {"label": "Negotiation", "value": 2.7},
+      {"label": "Contracting", "value": 1.4}
+    ],
+    "insight": "Negotiation and Contracting hold $4.1M — 22% of the $18.6M pipe but nearly all of the August commit",
+    "source": "salesforce"
+  },
+  "bars": {
+    "title": "Open pipeline — top accounts",
+    "unit": "$K",
+    "categories": ["Nordvik Energy", "Aventra Health", "Kessler Automotive", "Bluewater Logistics", "Trellis Financial", "Caldera Systems"],
+    "series": [
+      {
+        "name": "Open pipeline",
+        "values": [2450, 1830, 1520, 1290, 1140, 980]
+      }
+    ],
+    "insight": "Top six accounts hold $9.2M — 49% of open pipeline; Nordvik alone is 13%",
+    "source": "salesforce"
+  },
+  "heatmap": {
+    "title": "Rep activity this week",
+    "unit": "calls + meetings",
+    "rows": ["Sofia A.", "Emil N.", "Priya S.", "Tom B.", "Ingrid H.", "Rafael M."],
+    "cols": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "values": [
+      [9, 11, 12, 10, 6],
+      [8, 10, 9, 11, 5],
+      [10, 12, 11, 9, 7],
+      [7, 9, 10, 8, 4],
+      [8, 11, 10, 12, 6],
+      [4, 5, 3, 6, 2]
+    ],
+    "insight": "Rafael logged 20 activities against a team median of 45 — raise it in today's 11:30 review",
+    "source": "salesforce"
+  },
+  "goals": [
+    {"label": "Close $6.8M Q3 bookings", "pct": 48, "detail": "$3.28M closed; $3.4M sits in August commit"},
+    {"label": "Restore pipeline coverage to 3.5x", "pct": 89, "detail": "3.1x today; $1.4M new qualified pipe needed by Sep 1"},
+    {"label": "Sign Nordvik multi-year (OPP-4821)", "pct": 75, "detail": "Round 2 of redlines; signature targeted Aug 21"},
+    {"label": "All reps at 45+ activities/week", "pct": 83, "detail": "5 of 6 reps above the bar; Rafael at 20"}
+  ],
+  "meetings": [
+    {
+      "time": "08:30",
+      "dur": "30m",
+      "title": "Pipeline stand-up — EMEA pod",
+      "platform": "teams",
+      "attendees": ["Sofia Andersson", "Emil Novak", "Priya Shah"],
+      "agenda": "Stage moves since Monday; who owns the Kessler proposal revision"
+    },
+    {
+      "time": "10:00",
+      "dur": "45m",
+      "title": "OPP-4821 redline review — Nordvik Energy",
+      "platform": "zoom",
+      "attendees": ["Henrik Dahl", "Amara Diallo"],
+      "agenda": "Liability cap and SLA credits; hold the Aug 21 signature target"
+    },
+    {
+      "time": "11:30",
+      "dur": "30m",
+      "title": "Pipeline review — Rafael Mendes",
+      "platform": "meet",
+      "attendees": ["Rafael Mendes", "Kenji Watanabe"],
+      "agenda": "Activity at 20 vs 45 median; rebuild his stage-2 pipeline plan"
+    },
+    {
+      "time": "13:00",
+      "dur": "45m",
+      "title": "Weekly forecast call",
+      "platform": "teams",
+      "attendees": ["Claire Beaumont", "Kenji Watanabe", "Ingrid Halvorsen"],
+      "agenda": "Q3 commit $3.4M; scrub slip risk on Bluewater and Helios"
+    },
+    {
+      "time": "15:30",
+      "dur": "30m",
+      "title": "Aventra Health exec sync",
+      "platform": "zoom",
+      "attendees": ["Laura Simmons", "Tom Becker"],
+      "agenda": "Security review status; path to the $840K signature in September"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Henrik Dahl",
+      "source": "gmail",
+      "subject": "Re: Nordvik MSA — round 2 redlines attached",
+      "preview": "Our counsel accepted the data residency clause but pushed back on the liability cap at 2x...",
+      "time": "7:58 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "Salesforce",
+      "source": "salesforce",
+      "subject": "OPP-4956 moved to Proposal — Kessler Automotive",
+      "preview": "Emil Novak updated the stage and pushed close date to Aug 28. Amount unchanged at $460,000...",
+      "time": "7:41 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "Claire Beaumont",
+      "source": "slack",
+      "subject": "#forecast — before the 13:00",
+      "preview": "Can you bring the slip-risk view? Board wants EMEA commit vs best case split out this...",
+      "time": "8:12 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Amara Diallo",
+      "source": "gmail",
+      "subject": "Nordvik liability cap — fallback language v2",
+      "preview": "Drafted two fallback positions on the 2x cap. Option B holds 1.5x and carves SLA credits...",
+      "time": "8:26 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m5",
+      "from": "DocuSign",
+      "source": "docusign",
+      "subject": "Completed: Caldera Systems renewal order form",
+      "preview": "All parties have signed the Caldera Systems renewal ($290,000). A copy has been saved to...",
+      "time": "7:12 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m6",
+      "from": "Kenji Watanabe",
+      "source": "slack",
+      "subject": "Weekly rep activity report is out",
+      "preview": "Activity export is in the Drive folder. Rafael is at 20 again this week — you'll want...",
+      "time": "7:05 AM",
+      "urgent": false,
+      "unread": false
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "Discount",
+      "title": "18.0% discount on OPP-4903 — Trellis Financial",
+      "requester": "Priya Shah",
+      "amount": "$93,600",
+      "meta": "$520,000 TCV over two years, net-60; floor is 15% so it needs your override",
+      "source": "salesforce",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "Contract",
+      "title": "Nordvik Energy MSA — Option B cap language",
+      "requester": "Amara Diallo",
+      "amount": null,
+      "meta": "Approve the 1.5x fallback before the 10:00 redline call",
+      "source": "docusign",
+      "urgency": "high"
+    },
+    {
+      "id": "a3",
+      "type": "PTO",
+      "title": "PTO Aug 24-28 — Emil Novak",
+      "requester": "Emil Novak",
+      "amount": null,
+      "meta": "Overlaps the Kessler close window; Tom Becker will cover",
+      "source": "workday",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Expense",
+      "title": "Nordvik exec dinner — Oslo, Aug 19",
+      "requester": "Sofia Andersson",
+      "amount": "$1,840",
+      "meta": "Eight attendees ahead of the signature window",
+      "source": "workday",
+      "urgency": "low"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "OPP-4821",
+      "title": "Return Nordvik redlines with Option B cap language",
+      "due": "Aug 8",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "salesforce"
+    },
+    {
+      "id": "OPP-4956",
+      "title": "Review Kessler proposal pricing before Emil sends",
+      "due": "Aug 11",
+      "status": "review",
+      "priority": "P2",
+      "source": "salesforce"
+    },
+    {
+      "id": "OPP-4712",
+      "title": "Chase Aventra security questionnaire response",
+      "due": "Aug 12",
+      "status": "blocked",
+      "priority": "P2",
+      "source": "salesforce"
+    },
+    {
+      "id": "REV-118",
+      "title": "Refresh QBR deck with July actuals for Claire",
+      "due": "Aug 13",
+      "status": "todo",
+      "priority": "P3",
+      "source": "gdrive"
+    },
+    {
+      "id": "OPP-4880",
+      "title": "Confirm Bluewater signature path with procurement",
+      "due": "Aug 14",
+      "status": "todo",
+      "priority": "P2",
+      "source": "salesforce"
+    }
+  ],
+  "suggestions": [
+    "How is Q3 tracking against the $6.8M quota?",
+    "Why did pipeline coverage drop below 3.5x?",
+    "Brief me for the 10:00 Nordvik redline call",
+    "Draft a reply to Henrik Dahl on the liability cap",
+    "Which August deals are at risk of slipping?",
+    "Who's behind on activity this week?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "Quota pulse",
+      "triggers": ["quota", "attainment", "q3 tracking", "bookings vs target", "how are we tracking", "forecast"],
+      "toolCalls": [
+        {
+          "server": "salesforce",
+          "tool": "get_forecast_snapshot",
+          "args": "period=Q3 FY26",
+          "result": "$3.28M closed · commit $3.4M · best case $4.6M",
+          "ms": 640
+        },
+        {
+          "server": "salesforce",
+          "tool": "query_opportunities",
+          "args": "stage=closed-won, period=Q3 FY26",
+          "result": "21 deals · avg $156K",
+          "ms": 410
+        },
+        {
+          "server": "gdrive",
+          "tool": "fetch_doc",
+          "args": "name=Forecast prep pack — Aug 8",
+          "result": "Commit up $310K since Aug 1",
+          "ms": 380
+        }
+      ],
+      "response": "## Q3 sits at 48.2% — on pace, but it hinges on Nordvik\n\n$3.28M of the $6.8M team quota is closed across 21 deals. August commit is $3.4M over 9 open deals — landing it takes Q3 to 98% before September even opens.\n\n- **OPP-4821 Nordvik Energy ($1.2M)** is 35% of commit; signature target Aug 21, blocked on the liability cap\n- Slip risk is $0.5M (Bluewater, Helios) — absorbed if Nordvik signs on time\n- July closed at 83% of target, the usual post-quarter dip; August is already at $1.42M booked\n\n{{chart:trend}}\n\n> Recommended: return the Nordvik redlines with Option B today, then re-commit at Claire's 13:00 forecast call.",
+      "actions": [
+        {"label": "Post commit summary to #forecast", "toast": "Summary posted to #forecast in Slack"},
+        {"label": "Add slip-risk view to call notes", "toast": "Slip-risk table added to the 13:00 forecast call notes"}
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Coverage diagnosis",
+      "triggers": ["pipeline coverage", "coverage drop", "why did coverage", "pipeline gap", "new pipeline", "stage 2"],
+      "toolCalls": [
+        {
+          "server": "salesforce",
+          "tool": "pipeline_by_stage",
+          "args": "status=open, close=Q3 FY26",
+          "result": "$10.9M open for Q3 · coverage 3.1x",
+          "ms": 720
+        },
+        {
+          "server": "salesforce",
+          "tool": "stage_movement_report",
+          "args": "window=last 60 days",
+          "result": "$2.3M pulled into Jun closes · new pipe $0.9M",
+          "ms": 540
+        },
+        {
+          "server": "slack",
+          "tool": "search_messages",
+          "args": "channel=#sales-emea, query=outbound blitz",
+          "result": "Kenji proposed a blitz week for Aug 18",
+          "ms": 260
+        }
+      ],
+      "response": "## Coverage fell to 3.1x — two causes, one fix\n\nQ3 open pipeline is $10.9M against $3.5M of remaining quota, down from 3.4x in June.\n\n1. **June pull-forward:** $2.3M of stage-2 pipe was accelerated to beat the Q2 number and never backfilled\n2. **July creation stalled:** only $0.9M of new pipe added — vacation season, plus Rafael Mendes at 20 activities a week against a team median of 45\n\n{{chart:donut}}\n\nYou need $1.4M of new qualified pipeline by Sep 1 to restore 3.5x. Kenji proposed an outbound blitz week for Aug 18 in #sales-emea — six reps at $250K each covers the gap with margin.\n\n> Recommended: approve the blitz and set per-rep targets today, before the forecast call.",
+      "actions": [
+        {"label": "Approve the Aug 18 blitz week", "toast": "Blitz week confirmed — Kenji notified in Slack"},
+        {"label": "Set per-rep pipeline targets", "toast": "$250K new-pipe targets logged in Salesforce for all 6 reps"}
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Nordvik call brief",
+      "triggers": ["nordvik", "redline call", "opp-4821", "brief me", "prep for nordvik", "liability cap"],
+      "toolCalls": [
+        {
+          "server": "salesforce",
+          "tool": "get_opportunity",
+          "args": "id=OPP-4821",
+          "result": "$1.2M · Contracting · close Aug 21",
+          "ms": 430
+        },
+        {
+          "server": "gmail",
+          "tool": "get_thread",
+          "args": "subject=Nordvik MSA round 2",
+          "result": "9 messages · latest from Henrik Dahl 07:58",
+          "ms": 350
+        },
+        {
+          "server": "gdrive",
+          "tool": "fetch_doc",
+          "args": "name=Nordvik fallback language v2",
+          "result": "Options A/B drafted by Amara Diallo",
+          "ms": 290
+        }
+      ],
+      "response": "## Nordvik brief — 10:00 with Henrik Dahl and Amara Diallo\n\nOPP-4821 is $1.2M, in Contracting, close date Aug 21. Round-2 redlines landed from Henrik at 07:58.\n\n|Issue|Their ask|Our position|\n|---|---|---|\n|Liability cap|2x fees|1.5x via Option B, SLA credits carved out|\n|Data residency|EU processing|Agreed — closed in round 2|\n|Payment terms|Net-60|Concede in exchange for the 3-year term|\n\nNordvik is your largest open position at $2.45M of total pipeline, so tone matters beyond this deal.\n\n{{chart:bars}}\n\n> Recommended: open by banking the data-residency agreement, then trade net-60 for Option B on the cap. Amara has both fallbacks drafted.",
+      "actions": [
+        {"label": "Send prep note to Amara Diallo", "toast": "Prep note sent to Amara in Slack"},
+        {"label": "Attach brief to the 10:00 invite", "toast": "Brief attached to the Zoom invite in Calendar"}
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Draft Henrik reply",
+      "triggers": ["draft", "reply to henrik", "follow up nordvik", "email henrik", "cap reply", "write the email"],
+      "toolCalls": [
+        {
+          "server": "gmail",
+          "tool": "get_thread",
+          "args": "from=Henrik Dahl, subject=Nordvik MSA",
+          "result": "Counsel pushed back on the 2x cap at 07:58",
+          "ms": 320
+        },
+        {
+          "server": "gdrive",
+          "tool": "fetch_doc",
+          "args": "name=Nordvik fallback language v2",
+          "result": "Option B: 1.5x cap, SLA credits carved out",
+          "ms": 280
+        }
+      ],
+      "response": "## Draft ready — firm on the cap, generous on terms\n\nHenrik's counsel pushed back on the 2x liability cap this morning. The draft below holds 1.5x using Amara's Option B language.\n\n**To Henrik Dahl — Re: Nordvik MSA, round 2**\n\nThanks for the quick turn, Henrik. Glad we've closed out data residency. On the liability cap: 2x total fees isn't something we can underwrite at this contract size, but Option B gets you real protection — a 1.5x cap with SLA credits carved out entirely, so service failures never erode it. To keep your September rollout on track we'll also hold net-60 across the full 3-year term. Can your counsel review by Wednesday so we sign by Aug 21?\n\n> Recommended: have Amara review the cap wording before it goes out.",
+      "actions": [
+        {"label": "Create draft in Gmail", "toast": "Draft saved to Gmail — ready for your review"},
+        {"label": "Share draft with Amara Diallo", "toast": "Draft shared with Amara in Slack"}
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Slip risk scrub",
+      "triggers": ["slip", "at risk", "closing this month", "august deals", "commit risk", "which deals"],
+      "toolCalls": [
+        {
+          "server": "salesforce",
+          "tool": "query_opportunities",
+          "args": "close=Aug 2026, status=open",
+          "result": "9 opps · $3.4M",
+          "ms": 610
+        },
+        {
+          "server": "salesforce",
+          "tool": "activity_report",
+          "args": "window=14 days, scope=Aug closes",
+          "result": "2 opps with no customer touch in 10+ days",
+          "ms": 470
+        },
+        {
+          "server": "gcal",
+          "tool": "find_meetings",
+          "args": "accounts=Bluewater, Helios · next 14 days",
+          "result": "No meetings on the calendar",
+          "ms": 240
+        }
+      ],
+      "response": "## Two deals should move to September — commit holds at $2.9M\n\nOf 9 August deals worth $3.4M, three show risk; two of those won't make Aug 31.\n\n|Deal|Amount|Risk|Call|\n|---|---|---|---|\n|OPP-4880 Bluewater Logistics|$310K|Procurement silent 12 days, no meeting booked|Re-date to Sep 15|\n|OPP-4765 Helios Manufacturing|$180K|Champion on PTO until Aug 17|Re-date to Sep 15|\n|OPP-4903 Trellis Financial|$520K|18.0% discount approval pending — yours|Hold in August|\n\nRe-dating the two leaves $2.9M in commit, and Nordvik's $1.2M still carries the month. Trellis closes this month if the discount is approved today — Priya's request has been sitting since yesterday.\n\n> Recommended: approve the Trellis discount now and re-date the slips before the 13:00 forecast call.",
+      "actions": [
+        {"label": "Approve Trellis discount at 18%", "toast": "Discount approved in Salesforce — Priya notified"},
+        {"label": "Re-date Bluewater and Helios to Sep", "toast": "Close dates moved to Sep 15 in Salesforce"}
+      ]
+    }
+  ],
+  "activity": [
+    "Salesforce · OPP-4956 moved to Proposal by Emil Novak",
+    "DocuSign · Caldera Systems renewal fully executed — $290,000",
+    "Gmail · Henrik Dahl replied on Nordvik MSA round 2",
+    "Slack · Claire Beaumont posted in #forecast",
+    "Google Calendar · Forecast call confirmed for 13:00 by Kenji Watanabe",
+    "Zoom · Recording ready: Aventra Health technical deep-dive",
+    "Salesforce · Ingrid Halvorsen logged 6 activities on Trellis Financial"
+  ]
+}

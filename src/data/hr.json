@@ -1,0 +1,547 @@
+{
+  "personaId": "hr",
+  "user": {
+    "name": "Maya Chen",
+    "role": "HR Business Partner",
+    "dept": "People & Culture",
+    "location": "Singapore",
+    "initials": "MC"
+  },
+  "focus": {
+    "headline": "Clear the $284K Staff SWE band exception and the 18-deep PTO queue before the 13:00 attrition deep-dive with Priya.",
+    "sub": "Attrition sits at 11.4% (down 0.8 pts on the quarter), 14 of 24 priority roles are filled, and Finance needs the offer decision by 15:00."
+  },
+  "connections": ["workday", "greenhouse", "outlook", "teams", "sharepoint", "slack", "gcal", "docusign"],
+  "skills": [
+    {
+      "id": "attrition-radar",
+      "name": "Attrition Radar",
+      "desc": "Flags teams whose exit risk crossed threshold using Workday exits plus eNPS signals",
+      "icon": "📉",
+      "lastRun": "Today 07:30",
+      "runs": 184
+    },
+    {
+      "id": "pto-conflict-check",
+      "name": "PTO Conflict Check",
+      "desc": "Cross-checks leave requests against release calendars and team coverage before approval",
+      "icon": "🗓️",
+      "lastRun": "Today 08:05",
+      "runs": 262
+    },
+    {
+      "id": "offer-packet-builder",
+      "name": "Offer Packet Builder",
+      "desc": "Assembles offer letter, comp bands and approval chain from Greenhouse in one pass",
+      "icon": "📄",
+      "lastRun": "Yesterday",
+      "runs": 96
+    }
+  ],
+  "automations": [
+    {
+      "name": "Monday people digest",
+      "schedule": "Mon 08:00",
+      "desc": "Headcount, attrition and pipeline snapshot mailed to People leadership",
+      "lastResult": "Sent to 6 people · Mon 08:00"
+    },
+    {
+      "name": "PTO aging nudge",
+      "schedule": "Daily 07:45",
+      "desc": "Escalates leave requests pending more than 3 days to the approving manager",
+      "lastResult": "5 nudges sent · Today 07:45"
+    },
+    {
+      "name": "New-hire week-1 pulse",
+      "schedule": "Fri 09:00",
+      "desc": "Sends a 3-question pulse to first-week hires and files scores to Workday",
+      "lastResult": "9 responses (avg 4.4/5) · Fri 09:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Headcount",
+      "value": "2,412",
+      "delta": "+11",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs last month",
+      "spark": [2298, 2311, 2324, 2318, 2330, 2337, 2349, 2361, 2374, 2386, 2401, 2412],
+      "note": "Net +11 in Aug: 29 starts vs 18 exits, led by Stockholm and Austin engineering",
+      "source": "workday"
+    },
+    {
+      "id": "k2",
+      "label": "Attrition (rolling 12-mo)",
+      "value": "11.4%",
+      "delta": "-0.8 pts",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs last quarter",
+      "spark": [13.2, 13.1, 12.9, 12.7, 13.0, 13.4, 13.1, 12.6, 12.2, 11.9, 11.6, 11.4],
+      "note": "Sixth straight monthly decline since the 13.4% Feb peak after bonus payout",
+      "source": "workday"
+    },
+    {
+      "id": "k3",
+      "label": "Offer acceptance",
+      "value": "87.5%",
+      "delta": "+2.7 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs last quarter",
+      "spark": [81.2, 80.5, 82.1, 79.8, 81.6, 82.4, 83.0, 83.3, 84.8, 85.9, 86.7, 87.5],
+      "note": "May comp-band refresh lifted acceptance; 84 of 96 Q3 offers accepted",
+      "source": "greenhouse"
+    },
+    {
+      "id": "k4",
+      "label": "Time-to-fill",
+      "value": "38 days",
+      "delta": "-5 days",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs last quarter",
+      "spark": [52, 51, 49, 54, 50, 48, 46, 44, 43, 41, 39, 38],
+      "note": "Structured panels and scorecard SLAs cut 5 days off the quarter",
+      "source": "greenhouse"
+    }
+  ],
+  "trend": {
+    "title": "Attrition, rolling 12 months",
+    "subtitle": "Company vs Engineering · Sep 2025 - Aug 2026",
+    "unit": "%",
+    "series": [
+      {
+        "name": "Company",
+        "points": [13.2, 13.1, 12.9, 12.7, 13.0, 13.4, 13.1, 12.6, 12.2, 11.9, 11.6, 11.4]
+      },
+      {
+        "name": "Engineering",
+        "points": [15.1, 14.8, 14.5, 14.2, 14.9, 15.6, 15.0, 14.1, 13.4, 12.8, 12.3, 11.9]
+      }
+    ],
+    "insight": "Feb peaked at 13.4% (Engineering 15.6%) after bonus payout; stay interviews and the May comp-band refresh brought August down to 11.4%.",
+    "source": "workday"
+  },
+  "donut": {
+    "title": "Attrition reasons, FY26 exits",
+    "unit": "%",
+    "segments": [
+      {"label": "Compensation", "value": 34},
+      {"label": "Career growth", "value": 27},
+      {"label": "Manager relationship", "value": 15},
+      {"label": "Relocation", "value": 12},
+      {"label": "Burnout / workload", "value": 8},
+      {"label": "Other", "value": 4}
+    ],
+    "insight": "Compensation drives 34% of FY26 exits, concentrated in Engineering L4-L5 — the Sep 1 comp review targets that cohort.",
+    "source": "workday"
+  },
+  "bars": {
+    "title": "Hiring funnel by stage",
+    "unit": "candidates",
+    "categories": ["Applied", "Screen", "Interview", "Panel", "Offer", "Accepted"],
+    "series": [
+      {"name": "Q3 FY26", "values": [4310, 862, 341, 168, 96, 84]},
+      {"name": "Q2 FY26", "values": [3980, 795, 298, 141, 78, 66]}
+    ],
+    "insight": "Offer-to-accept hit 87.5% (84 of 96), up from 84.6% in Q2 after the May comp-band refresh.",
+    "source": "greenhouse"
+  },
+  "heatmap": {
+    "title": "eNPS by team",
+    "unit": "eNPS",
+    "rows": ["Engineering", "Product", "Sales", "Marketing", "Support", "G&A"],
+    "cols": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [
+      [31, 28, 26, 30, 34, 38, 41, 44],
+      [42, 40, 41, 44, 45, 47, 46, 48],
+      [35, 33, 30, 28, 27, 31, 33, 36],
+      [39, 41, 40, 42, 43, 42, 44, 45],
+      [25, 24, 22, 21, 24, 26, 28, 29],
+      [44, 43, 45, 44, 46, 45, 47, 48]
+    ],
+    "insight": "Support has trailed every team for 8 straight months (low of 21 in Apr); the +6 heads landing in Sep target a 35 by Q4.",
+    "source": "workday"
+  },
+  "goals": [
+    {"label": "Fill 24 priority roles", "pct": 58, "detail": "14 of 24 roles filled · 10 open"},
+    {"label": "Engineering attrition below 12%", "pct": 90, "detail": "11.9% in Aug, down from 15.6% Feb peak"},
+    {"label": "Manager enablement program", "pct": 75, "detail": "3 of 4 cohorts complete · 112 managers trained"},
+    {"label": "Lift Support eNPS to 35", "pct": 57, "detail": "29 in Aug, up from 21 in Apr"}
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "APAC people ops stand-up",
+      "platform": "teams",
+      "attendees": ["Wei Lin Tan", "Sofia Marchetti"],
+      "agenda": "Onboarding load for the 12 Sep 14 starts; PTO queue triage."
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "Engineering hiring sync",
+      "platform": "zoom",
+      "attendees": ["Daniel Okafor", "Tomas Rivera", "Ingrid Larsson"],
+      "agenda": "Pipeline for the 6 open Stockholm platform reqs; panel interviewer shortage."
+    },
+    {
+      "time": "13:00",
+      "dur": "1h",
+      "title": "Q3 attrition deep-dive",
+      "platform": "teams",
+      "attendees": ["Priya Nair", "Aisha Bello"],
+      "agenda": "Feb exit-cohort analysis and stay-interview results; comp review pre-read."
+    },
+    {
+      "time": "15:00",
+      "dur": "30m",
+      "title": "Offer approval — Staff SWE",
+      "platform": "zoom",
+      "attendees": ["Daniel Okafor", "James Whitfield"],
+      "agenda": "L6 band exception at $284,000 TC; Finance sign-off and precedent guard."
+    },
+    {
+      "time": "16:30",
+      "dur": "45m",
+      "title": "Support eNPS action plan",
+      "platform": "teams",
+      "attendees": ["Lucia Fernandez", "Sofia Marchetti"],
+      "agenda": "Sep staffing +6 heads; workload survey results and rebalance options."
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Greenhouse",
+      "source": "greenhouse",
+      "subject": "Offer accepted: Emma Sørensen — Senior Product Designer",
+      "preview": "Emma Sørensen accepted the Senior Product Designer offer in Stockholm. Start date Sep 14, package as...",
+      "time": "8:42 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "Priya Nair",
+      "source": "outlook",
+      "subject": "Pre-read for 13:00 — attrition deep-dive",
+      "preview": "Maya — board slide on the Feb exit cohort attached. Can you add the stay-interview stats before...",
+      "time": "8:15 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "Workday",
+      "source": "workday",
+      "subject": "18 PTO requests pending your approval",
+      "preview": "You have 18 time-off requests awaiting action; 5 are older than 3 days, including Rahul Menon...",
+      "time": "7:58 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "Daniel Okafor",
+      "source": "slack",
+      "subject": "Band exception for the Staff SWE offer",
+      "preview": "Before the 15:00 — James wants context on the $284K TC. It is 6% above band mid but...",
+      "time": "8:05 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m5",
+      "from": "Sofia Marchetti",
+      "source": "teams",
+      "subject": "Sep 14 onboarding cohort — logistics",
+      "preview": "12 starts confirmed for Sep 14. Laptops must be ordered by Aug 22 and buddy assignments...",
+      "time": "Yesterday 4:12 PM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m6",
+      "from": "Aisha Bello",
+      "source": "outlook",
+      "subject": "July people dashboard is live",
+      "preview": "July dashboard refreshed: attrition 11.6%, time-to-fill 39 days, Support eNPS 28. Full regression cuts inside...",
+      "time": "Yesterday 9:20 AM",
+      "urgent": false,
+      "unread": false
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "Offer",
+      "title": "Band exception — Staff SWE offer at $284,000 TC",
+      "requester": "Tomas Rivera",
+      "amount": "$284,000",
+      "meta": "6.0% above L6 Austin band mid; competing offer expires Monday; Finance note attached",
+      "source": "greenhouse",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "PTO",
+      "title": "PTO: Rahul Menon — Aug 17-28 (8 days)",
+      "requester": "Rahul Menon",
+      "amount": null,
+      "meta": "Overlaps Sprint 42 release on Aug 25; Daniel Okafor has confirmed coverage",
+      "source": "workday",
+      "urgency": "med"
+    },
+    {
+      "id": "a3",
+      "type": "Contract",
+      "title": "Deloitte engagement letter — comp benchmarking study",
+      "requester": "Priya Nair",
+      "amount": "$48,500",
+      "meta": "Supports the Q3 comp review; signature due Aug 15",
+      "source": "docusign",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Access",
+      "title": "Greenhouse admin access — Wei Lin Tan",
+      "requester": "Wei Lin Tan",
+      "amount": null,
+      "meta": "Needs offer-letter template edit rights ahead of the Sep 14 cohort",
+      "source": "servicenow",
+      "urgency": "low"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "HR-482",
+      "title": "Finalize Sep 14 onboarding cohort schedule (12 starts)",
+      "due": "Aug 12",
+      "status": "inprogress",
+      "priority": "P2",
+      "source": "sharepoint"
+    },
+    {
+      "id": "HR-475",
+      "title": "Q3 comp review comms for Sep 1 launch",
+      "due": "Aug 15",
+      "status": "review",
+      "priority": "P1",
+      "source": "outlook"
+    },
+    {
+      "id": "HR-491",
+      "title": "Stay interviews — 6 remaining Engineering L5s",
+      "due": "Aug 21",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "workday"
+    },
+    {
+      "id": "HR-468",
+      "title": "Open 6 Support reqs in Greenhouse per staffing plan",
+      "due": "Aug 13",
+      "status": "todo",
+      "priority": "P2",
+      "source": "greenhouse"
+    },
+    {
+      "id": "HR-459",
+      "title": "Update Stockholm relocation policy page",
+      "due": "Aug 28",
+      "status": "blocked",
+      "priority": "P3",
+      "source": "sharepoint"
+    }
+  ],
+  "suggestions": [
+    "Why is attrition down to 11.4% and will it hold?",
+    "Brief me for the 10:30 Engineering hiring sync",
+    "Draft the Sep 1 comp review announcement",
+    "Who's pending in my PTO queue and what's at risk?",
+    "Should I approve the $284K Staff SWE band exception?",
+    "Which teams are lowest on eNPS this quarter?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "Attrition pulse",
+      "triggers": ["attrition", "turnover", "exits", "retention", "why is attrition", "11.4"],
+      "toolCalls": [
+        {
+          "server": "workday",
+          "tool": "get_termination_report",
+          "args": "period=Sep FY26-Aug FY26, rolling",
+          "result": "212 exits · rolling attrition 11.4%",
+          "ms": 640
+        },
+        {
+          "server": "workday",
+          "tool": "summarize_exit_reasons",
+          "args": "fy=FY26",
+          "result": "Comp 34% · Growth 27% · Manager 15%",
+          "ms": 380
+        },
+        {
+          "server": "workday",
+          "tool": "get_stay_interview_stats",
+          "args": "cohort=Eng L4-L5",
+          "result": "41 of 47 complete · 9 risk flags",
+          "ms": 290
+        }
+      ],
+      "response": "**Attrition is 11.4% — down 0.8 pts on the quarter and the lowest in the 12-month window.** It has fallen every month since the 13.4% February peak that followed bonus payout.\n\n{{chart:trend}}\n\n- Engineering drove the recovery: 15.6% in Feb to 11.9% in Aug, after 41 of 47 L4-L5 stay interviews\n- Compensation still drives 34% of exits — the Sep 1 comp review targets exactly that cohort\n- August was net +11 heads: 29 starts against 18 exits\n\n> Watch item: Support eNPS is 29 and has trailed every team for 8 months; engagement usually leads attrition by about two quarters.\n\n**Next step:** land the comp review on Sep 1, and take the Feb exit-cohort slide into the 13:00 with Priya Nair.",
+      "actions": [
+        {"label": "Brief Priya before 13:00", "toast": "Summary sent to Priya Nair in Teams"},
+        {"label": "Open stay-interview tracker", "toast": "Tracker opened in Workday"}
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Pipeline brief",
+      "triggers": ["hiring pipeline", "funnel", "open roles", "recruiting", "engineering sync", "pipeline"],
+      "toolCalls": [
+        {
+          "server": "greenhouse",
+          "tool": "get_pipeline_snapshot",
+          "args": "quarter=Q3 FY26",
+          "result": "4,310 applied · 96 offers · 84 accepts",
+          "ms": 720
+        },
+        {
+          "server": "greenhouse",
+          "tool": "list_open_reqs",
+          "args": "priority=P1",
+          "result": "24 priority reqs · 14 filled · 10 open",
+          "ms": 410
+        },
+        {
+          "server": "gcal",
+          "tool": "get_panel_availability",
+          "args": "week=Aug 10",
+          "result": "Stockholm short 4 interviewers",
+          "ms": 260
+        }
+      ],
+      "response": "## Brief for the 10:30 Engineering hiring sync\n**14 of 24 priority roles are filled, and the Q3 funnel converts better than Q2 at every stage.**\n\n{{chart:bars}}\n\n- Offer-accept is 87.5% (84 of 96), up from 84.6% in Q2 — the May comp-band refresh is paying for itself\n- Time-to-fill is 38 days, down 5 on the quarter\n- Risk: the 6 Stockholm platform reqs have only 11 candidates at panel stage, and Ingrid Larsson is short 4 interviewers\n\n|Open area|Reqs|At panel|\n|---|---|---|\n|Platform (Stockholm)|6|11|\n|ML Infra (Austin)|4|9|\n|Security (London)|3|6|\n\n**Next step:** ask Daniel Okafor for two panel volunteers and fast-track the three Staff-level onsites this week.",
+      "actions": [
+        {"label": "Send brief to Daniel and Ingrid", "toast": "Brief posted to the hiring sync chat in Teams"},
+        {"label": "Request 2 panel volunteers", "toast": "Request sent to #eng-interviews in Slack"}
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Comp comms draft",
+      "triggers": ["draft", "comp review", "announcement", "comms", "sep 1"],
+      "toolCalls": [
+        {
+          "server": "sharepoint",
+          "tool": "get_document",
+          "args": "doc=Q3 comp review framework v4",
+          "result": "Approved Jul 30 by Priya Nair",
+          "ms": 350
+        },
+        {
+          "server": "workday",
+          "tool": "get_comp_cycle",
+          "args": "cycle=FY26 focal",
+          "result": "2,412 eligible · 4.5% merit budget",
+          "ms": 560
+        },
+        {
+          "server": "outlook",
+          "tool": "create_draft",
+          "args": "audience=all-staff, embargo=Sep 1",
+          "result": "Draft saved · 214 words",
+          "ms": 480
+        }
+      ],
+      "response": "## Draft: FY26 comp review announcement\n**Ready for Priya's review — aligned to the approved v4 framework, embargoed until Sep 1, 07:00 SGT.**\n\nSubject: Your FY26 comp review — what to expect\n\n- All 2,412 eligible employees reviewed against refreshed market bands (Radford plus the Deloitte benchmarking study)\n- Merit budget of 4.5% of base, weighted to top performers and hot-skill roles\n- Managers deliver outcomes in 1:1s between Sep 8-12; letters follow in Workday\n\n> Embargo: nothing to managers before the Sep 1 all-staff note.\n\n**Next step:** send to Priya Nair today and lock manager talking points by Aug 20 — compensation drives 34% of our exits, so tone matters as much as the numbers.",
+      "actions": [
+        {"label": "Send draft to Priya for review", "toast": "Draft shared with Priya Nair in Outlook"},
+        {"label": "Schedule send for Sep 1 07:00", "toast": "Send scheduled in Outlook for Sep 1, 07:00 SGT"}
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "PTO queue",
+      "triggers": ["pto", "leave", "pending approvals", "time off", "leave queue", "who's pending"],
+      "toolCalls": [
+        {
+          "server": "workday",
+          "tool": "list_pending_pto",
+          "args": "approver=mchen",
+          "result": "18 pending · 5 aging over 3 days",
+          "ms": 520
+        },
+        {
+          "server": "gcal",
+          "tool": "check_release_calendar",
+          "args": "range=Aug 15-Sep 5",
+          "result": "Sprint 42 release lands Aug 25",
+          "ms": 240
+        },
+        {
+          "server": "teams",
+          "tool": "get_coverage_confirmations",
+          "args": "team=Platform",
+          "result": "Daniel Okafor confirmed cover",
+          "ms": 310
+        }
+      ],
+      "response": "**18 PTO requests are pending; 13 are conflict-free and can be approved now.** Five have aged past 3 days and two carry coverage risk.\n\n|Requester|Dates|Days|Risk|\n|---|---|---|---|\n|Rahul Menon|Aug 17-28|8|Sprint 42 release Aug 25|\n|Ingrid Larsson|Aug 31-Sep 4|5|Overlaps 3 Stockholm onsites|\n|Sofia Marchetti|Aug 24-26|3|Onboarding prep — low|\n|Noah Kim|Sep 1-5|5|None|\n|Wei Lin Tan|Aug 20-22|3|None|\n\n- Daniel Okafor has already confirmed coverage for Rahul's sprint window\n- Tomas Rivera can absorb Ingrid's panel slots if she is approved by Aug 12\n\n**Next step:** approve the 13 clean requests in one batch, then message Rahul to confirm handover notes before Aug 15.",
+      "actions": [
+        {"label": "Approve 13 no-conflict requests", "toast": "13 requests approved in Workday"},
+        {"label": "Message Rahul about handover", "toast": "Teams message sent to Rahul Menon"}
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "Offer call",
+      "triggers": ["band exception", "staff swe", "approve offer", "284", "offer decision", "recommend"],
+      "toolCalls": [
+        {
+          "server": "greenhouse",
+          "tool": "get_offer_details",
+          "args": "req=ENG-1187",
+          "result": "$284,000 TC · req open 74 days",
+          "ms": 430
+        },
+        {
+          "server": "workday",
+          "tool": "get_comp_band",
+          "args": "level=L6, geo=Austin",
+          "result": "mid $268K · max $290K",
+          "ms": 370
+        },
+        {
+          "server": "slack",
+          "tool": "search_messages",
+          "args": "from=James Whitfield, band exception",
+          "result": "CFO note attached · Finance clear",
+          "ms": 290
+        }
+      ],
+      "response": "**Recommendation: approve the $284,000 Staff SWE offer.** It sits 6.0% above the L6 Austin mid ($268K) but under the $290K band max, and the alternative is worse.\n\n1. Candidate holds a competing offer at $295K expiring Monday\n2. Req ENG-1187 has been open 74 days — nearly twice our 38-day average\n3. James Whitfield cleared it with a CFO note; only your sign-off remains\n\n{{chart:donut}}\n\nCompensation already drives 34% of our exits — losing a closed candidate over 6% sends the wrong signal mid comp-cycle.\n\n> Precedent guard: log it as a one-off exception tied to the competing offer, not a new floor.\n\n**Next step:** approve in Greenhouse before the 15:00 sync so Tomas Rivera can verbally confirm today.",
+      "actions": [
+        {"label": "Approve offer in Greenhouse", "toast": "Offer approved — Tomas Rivera notified"},
+        {"label": "Log band exception memo", "toast": "Exception memo filed to SharePoint"}
+      ]
+    }
+  ],
+  "activity": [
+    "Greenhouse · Offer accepted by Emma Sørensen — Senior Product Designer, Stockholm",
+    "Workday · 3 new PTO requests entered Maya's approval queue",
+    "Greenhouse · Interview scorecard submitted by Ingrid Larsson for ENG-1187",
+    "Teams · Priya Nair shared 'Feb exit cohort — board slide v3'",
+    "SharePoint · Q3 comp review framework v4 viewed by James Whitfield",
+    "Workday · Week-1 pulse filed: 9 responses, avg 4.4/5",
+    "Slack · #people-ops: 4 policy questions triaged by Wei Lin Tan"
+  ]
+}
