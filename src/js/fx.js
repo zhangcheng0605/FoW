@@ -109,22 +109,6 @@ function fxSnapChip(chip, fromX, fromY, onLand) {
   };
 }
 
-/* ---------------- cursor-tracked card glow ---------------- */
-(function cardGlow() {
-  let raf = null;
-  document.addEventListener("pointermove", e => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => {
-      raf = null;
-      const c = e.target.closest ? e.target.closest(".card") : null;
-      if (!c) return;
-      const r = c.getBoundingClientRect();
-      c.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      c.style.setProperty("--my", (e.clientY - r.top) + "px");
-    });
-  }, { passive: true });
-})();
-
 /* ---------------- KPI count-up ---------------- */
 function countUp(elm, str, ms) {
   const m = String(str).match(/^([^0-9\-]*)(-?[\d,]+(?:\.\d+)?)(.*)$/);

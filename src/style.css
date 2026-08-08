@@ -848,17 +848,8 @@ body.dragging-chip #chatdock {
 /* springier user bubble */
 .msg.user .bubble { animation: bubblePop 340ms cubic-bezier(.2,.9,.3,1.4) both; }
 @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
-/* cursor-tracked card glow */
-.card::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -30%), var(--acc-soft), transparent 72%);
-  opacity: 0; transition: opacity 350ms ease;
-}
-.card:hover::before { opacity: 0.9; }
-.hero::before { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .cd-send.fly svg, body.dragging-chip #chatdock { animation: none; }
-  .card::before { display: none; }
 }
 
 /* ============================== Emmi, the pet */
