@@ -1,0 +1,60 @@
+{
+  "personaId": "sales",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the Aventra security questionnaire",
+      "detail": "Track down OPP-4712's blocked security review, nudge the owner, and set a firm return date",
+      "steps": [
+        {"server": "salesforce", "tool": "get_opportunity", "args": "id=OPP-4712", "result": "Blocked 11 days on security questionnaire", "ms": 520},
+        {"server": "gmail", "tool": "send_followup", "args": "to=Laura Simmons, thread=Aventra security review", "result": "Nudge sent, cc Tom Becker", "ms": 780},
+        {"server": "gcal", "tool": "create_event", "args": "title=Aventra questionnaire walkthrough, week=Aug 11", "result": "30m slot booked Tue Aug 11", "ms": 460}
+      ],
+      "result": "Laura Simmons committed to returning the questionnaire by Aug 12, keeping the $840K September signature path intact",
+      "artifact": null
+    },
+    {
+      "id": "d2",
+      "label": "Build the slip-risk pack",
+      "detail": "Scrub all 9 August closes for stall signals and compile the commit-vs-best-case view Claire asked for",
+      "steps": [
+        {"server": "salesforce", "tool": "query_opportunities", "args": "close=Aug 2026, status=open", "result": "9 opps totaling $3.4M", "ms": 640},
+        {"server": "salesforce", "tool": "activity_report", "args": "window=14 days, scope=Aug closes", "result": "Bluewater and Helios flagged, $490K", "ms": 510},
+        {"server": "gdrive", "tool": "create_sheet", "args": "folder=Forecast/Q3, name=Slip-risk view Aug 8", "result": "Sheet shared with Claire Beaumont", "ms": 890}
+      ],
+      "result": "Slip-risk pack delivered before the 13:00 call: $2.9M solid commit, $490K flagged across Bluewater and Helios",
+      "artifact": "Slip-risk view — Aug 8.xlsx"
+    },
+    {
+      "id": "d3",
+      "label": "Sweep CRM hygiene before forecast",
+      "detail": "Fix stale close dates, missing next steps, and unlogged activity across the EMEA pod's open pipeline",
+      "steps": [
+        {"server": "salesforce", "tool": "audit_pipeline_fields", "args": "team=EMEA pod, status=open", "result": "14 opps with missing next steps", "ms": 1120},
+        {"server": "salesforce", "tool": "update_records", "args": "fix=close dates in the past", "result": "6 close dates rolled forward", "ms": 730},
+        {"server": "slack", "tool": "post_message", "args": "channel=#sales-emea, summary=hygiene fixes", "result": "Owners tagged on 8 remaining items", "ms": 340}
+      ],
+      "result": "Cleared 20 of 28 hygiene flags; the 8 remaining were assigned to reps in #sales-emea with a Monday deadline",
+      "artifact": "EMEA pipeline hygiene — Aug 8.xlsx"
+    }
+  ],
+  "week": {
+    "meetingHours": 17.5,
+    "focusHours": 9.5,
+    "meetingCost": "$11,300",
+    "deepBlocks": 3,
+    "contextSwitches": 68,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [3.5, 4.0, 3.0, 3.5, 3.5],
+    "focus": [2.0, 1.5, 2.5, 1.5, 2.0],
+    "insight": "Tuesday carries 4 meeting hours and only 1.5 of focus — move the pipeline stand-up to async in Slack and you win back a deep block for Nordvik prep"
+  },
+  "files": [
+    {"name": "Nordvik MSA — round 2 redlines.docx", "source": "gdrive", "kind": "doc", "modified": "2h ago", "by": "Amara Diallo"},
+    {"name": "Forecast prep pack — Aug 8.xlsx", "source": "gdrive", "kind": "sheet", "modified": "Today 06:30", "by": "Kenji Watanabe"},
+    {"name": "Kessler Automotive proposal v3.pptx", "source": "sharepoint", "kind": "deck", "modified": "Yesterday", "by": "Emil Novak"},
+    {"name": "Caldera Systems renewal — executed.pdf", "source": "docusign", "kind": "pdf", "modified": "Today 07:12", "by": "Sofia Andersson"},
+    {"name": "Q3 QBR deck — draft.pptx", "source": "gdrive", "kind": "deck", "modified": "Aug 6", "by": "Claire Beaumont"},
+    {"name": "Rep activity export — week 32.xlsx", "source": "gdrive", "kind": "sheet", "modified": "Today 07:05", "by": "Kenji Watanabe"}
+  ]
+}

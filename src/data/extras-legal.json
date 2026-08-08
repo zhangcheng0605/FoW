@@ -1,0 +1,150 @@
+{
+  "personaId": "legal",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the 3 vendor DPAs",
+      "detail": "Send DPA templates to the 3 Ariba vendor renewals Elena flagged and chase signatures until executed",
+      "steps": [
+        {
+          "server": "ariba",
+          "tool": "get_renewal_vendors",
+          "args": "flag=missing_dpa",
+          "result": "3 vendors renewing in Sep",
+          "ms": 620
+        },
+        {
+          "server": "docusign",
+          "tool": "send_envelope",
+          "args": "template=Standard DPA v3.1, recipients=3",
+          "result": "3 envelopes sent, reminders set at 3 days",
+          "ms": 1480
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "to=Elena Vasquez",
+          "result": "Status posted; 1 vendor already signed",
+          "ms": 410
+        }
+      ],
+      "result": "All 3 DPAs out for signature; 1 executed same day, Elena Vasquez notified before the September renewals",
+      "artifact": "Ariba vendor DPA tracker.xlsx"
+    },
+    {
+      "id": "d2",
+      "label": "Compile the Q3 litigation summary",
+      "detail": "Pull open matters and outside counsel updates into the board pack draft for Priya by Aug 12",
+      "steps": [
+        {
+          "server": "sharepoint",
+          "tool": "query_matter_list",
+          "args": "status=open, period=Q3 FY26",
+          "result": "54 matters pulled, 9 employment",
+          "ms": 780
+        },
+        {
+          "server": "outlook",
+          "tool": "search_mail",
+          "args": "folder=Outside Counsel, since=Jul 1",
+          "result": "Latham update found, $18,400 June fees",
+          "ms": 540
+        },
+        {
+          "server": "sharepoint",
+          "tool": "save_document",
+          "args": "folder=Board Pack Q3 FY26",
+          "result": "6-page draft saved in board format",
+          "ms": 1120
+        }
+      ],
+      "result": "Drafted the Q3 litigation summary covering all 54 open matters and shared it with Priya Raghavan 4 days ahead of the Aug 12 deadline",
+      "artifact": "Q3 FY26 litigation summary — board pack.docx"
+    },
+    {
+      "id": "d3",
+      "label": "Sweep stale DocuSign envelopes",
+      "detail": "Find envelopes idle over 5 days, nudge counterparties, and escalate the unresponsive ones to owners",
+      "steps": [
+        {
+          "server": "docusign",
+          "tool": "list_envelopes",
+          "args": "status=sent, idle>5d",
+          "result": "12 stale envelopes found",
+          "ms": 690
+        },
+        {
+          "server": "outlook",
+          "tool": "send_mail",
+          "args": "template=signature_nudge, count=12",
+          "result": "12 nudges sent, 4 signed within hours",
+          "ms": 1350
+        },
+        {
+          "server": "slack",
+          "tool": "post_message",
+          "args": "channel=#legal-intake",
+          "result": "8 remaining escalated to owners",
+          "ms": 380
+        }
+      ],
+      "result": "Cleared 4 of 12 stale envelopes same day and escalated the remaining 8 to their contract owners in #legal-intake",
+      "artifact": null
+    }
+  ],
+  "week": {
+    "meetingHours": 16.5,
+    "focusHours": 11.0,
+    "meetingCost": "$9,900 (~$180/person-hour x avg 3.3 attendees)",
+    "deepBlocks": 4,
+    "contextSwitches": 62,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [2.5, 4.0, 3.0, 3.5, 3.5],
+    "focus": [3.0, 1.5, 2.5, 2.0, 2.0],
+    "insight": "Tuesday carries 4.0 meeting hours and just 1.5 of focus — move the NDA triage to async in #legal-intake to reclaim a redline block before the board pack deadline"
+  },
+  "files": [
+    {
+      "name": "Orion Systems MSA v4 — redline.docx",
+      "source": "sharepoint",
+      "kind": "doc",
+      "modified": "2h ago",
+      "by": "Marcus Webb"
+    },
+    {
+      "name": "Q3 FY26 litigation summary — board pack.docx",
+      "source": "sharepoint",
+      "kind": "doc",
+      "modified": "Yesterday",
+      "by": "Chloe Dubois"
+    },
+    {
+      "name": "Commercial playbook v3.2.pdf",
+      "source": "gdrive",
+      "kind": "pdf",
+      "modified": "Aug 6",
+      "by": "Jonathan Park"
+    },
+    {
+      "name": "Obligation register — renewal dates.xlsx",
+      "source": "excel",
+      "kind": "sheet",
+      "modified": "Aug 6",
+      "by": "Chloe Dubois"
+    },
+    {
+      "name": "Stockholm sub-processor inventory.xlsx",
+      "source": "gdrive",
+      "kind": "sheet",
+      "modified": "Yesterday",
+      "by": "Aisha Bello"
+    },
+    {
+      "name": "Legal ops weekly — Aug 8.pptx",
+      "source": "sharepoint",
+      "kind": "deck",
+      "modified": "3h ago",
+      "by": "Priya Raghavan"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "personaId": "hr",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the Deloitte engagement letter",
+      "detail": "Track the $48,500 comp benchmarking engagement letter through DocuSign and nudge signers before the Aug 15 deadline",
+      "steps": [
+        {"server": "docusign", "tool": "get_envelope_status", "args": "envelope=Deloitte comp benchmarking", "result": "1 of 3 signatures complete", "ms": 620},
+        {"server": "outlook", "tool": "send_reminder", "args": "to=Priya Nair, James Whitfield", "result": "2 reminders sent with Aug 15 deadline", "ms": 840},
+        {"server": "gcal", "tool": "create_followup", "args": "date=Aug 12, 09:00", "result": "Follow-up check scheduled for Aug 12", "ms": 460}
+      ],
+      "result": "Priya Nair signed within 2 hours; only James Whitfield's counter-signature remains before the Aug 15 due date",
+      "artifact": "Deloitte engagement — signature tracker.pdf"
+    },
+    {
+      "id": "d2",
+      "label": "Screen the Support req pipeline",
+      "detail": "Pre-screen applicants against the 6 new Support reqs and queue top candidates for recruiter review",
+      "steps": [
+        {"server": "greenhouse", "tool": "open_requisitions", "args": "dept=Support, count=6", "result": "6 reqs opened per staffing plan (HR-468)", "ms": 1180},
+        {"server": "greenhouse", "tool": "screen_applicants", "args": "criteria=Support scorecard v2", "result": "137 applicants screened, 24 advanced", "ms": 2100},
+        {"server": "slack", "tool": "post_message", "args": "channel=#recruiting-support", "result": "Shortlist of 24 posted for review", "ms": 380}
+      ],
+      "result": "Opened all 6 Support reqs and advanced 24 of 137 applicants to recruiter screen, closing task HR-468 two days early",
+      "artifact": "Support reqs — screening shortlist.xlsx"
+    },
+    {
+      "id": "d3",
+      "label": "Compile the attrition pre-read",
+      "detail": "Assemble the Feb exit-cohort analysis and stay-interview stats into Priya's board slide before the 13:00 deep-dive",
+      "steps": [
+        {"server": "workday", "tool": "get_stay_interview_stats", "args": "cohort=Eng L4-L5", "result": "41 of 47 complete, 9 risk flags", "ms": 720},
+        {"server": "workday", "tool": "pull_exit_cohort", "args": "cohort=Feb FY26", "result": "31 exits analyzed, comp cited in 34%", "ms": 980},
+        {"server": "sharepoint", "tool": "update_document", "args": "doc=Feb exit cohort — board slide v3", "result": "Slide v4 saved with 3 new charts", "ms": 1350}
+      ],
+      "result": "Board slide v4 with stay-interview stats (41 of 47 complete, 9 risk flags) shared with Priya Nair 90 minutes before the 13:00",
+      "artifact": "Feb exit cohort — board slide v4.pptx"
+    }
+  ],
+  "week": {
+    "meetingHours": 16.5,
+    "focusHours": 11.0,
+    "meetingCost": "$9,400 (~$180/person-hour x avg 3.2 attendees)",
+    "deepBlocks": 4,
+    "contextSwitches": 62,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [3.5, 4.5, 2.5, 2.0, 4.0],
+    "focus": [2.0, 1.0, 3.5, 3.0, 1.5],
+    "insight": "Tuesday carries 4.5 meeting hours and just 1 focus hour — move the hiring sync to Wednesday to protect a second deep block before the Sep 1 comp comms deadline."
+  },
+  "files": [
+    {"name": "Q3 comp review framework v4.docx", "source": "sharepoint", "kind": "doc", "modified": "2h ago", "by": "Priya Nair"},
+    {"name": "Feb exit cohort — board slide v3.pptx", "source": "sharepoint", "kind": "deck", "modified": "Yesterday", "by": "Priya Nair"},
+    {"name": "Sep 14 onboarding cohort — logistics.xlsx", "source": "excel", "kind": "sheet", "modified": "Yesterday", "by": "Sofia Marchetti"},
+    {"name": "Stay-interview tracker — Eng L4-L5.xlsx", "source": "excel", "kind": "sheet", "modified": "Aug 6", "by": "Aisha Bello"},
+    {"name": "Deloitte comp benchmarking — engagement letter.pdf", "source": "sharepoint", "kind": "pdf", "modified": "Aug 5", "by": "Priya Nair"},
+    {"name": "Support staffing plan — +6 heads Sep.docx", "source": "confluence", "kind": "doc", "modified": "Aug 4", "by": "Lucia Fernandez"}
+  ]
+}

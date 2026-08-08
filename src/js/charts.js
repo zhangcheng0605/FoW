@@ -1,5 +1,5 @@
 /* ============================================================
-   FoW · chart engine — hand-rolled SVG
+   FoW · chart engine — hand-rolled SVG, theme-aware via VIZ()
    Specs: 2px lines, r>=4 markers with 2px surface rings, 10%
    area washes, <=24px bars with 4px rounded data-ends + 2px
    surface gaps, hairline solid grid, crosshair + shared
@@ -7,18 +7,18 @@
    ============================================================ */
 "use strict";
 
-const SURFACE = "#10141f"; /* card surface — rings & gaps are drawn in this */
 const vizTip = () => $("#viztip");
-let liveCharts = []; /* re-render closures, re-run on resize */
+let liveCharts = []; /* re-render closures, re-run on resize + theme change */
 
 function registerChart(container, fn) {
   fn();
   liveCharts.push({ container, fn });
 }
 function clearCharts() { liveCharts = []; }
+function rerenderCharts() { liveCharts = liveCharts.filter(c => document.contains(c.container)); liveCharts.forEach(c => c.fn()); }
 window.addEventListener("resize", (() => {
   let t;
-  return () => { clearTimeout(t); t = setTimeout(() => liveCharts.forEach(c => document.contains(c.container) && c.fn()), 160); };
+  return () => { clearTimeout(t); t = setTimeout(rerenderCharts, 160); };
 })());
 
 function tipShow(x, y, title, rows) {
@@ -46,7 +46,7 @@ function legendRow(series, kind) {
   series.forEach((s, i) => {
     const item = el("span", "lg-item");
     const key = el("i", kind === "rect" ? "lg-rect" : "lg-line");
-    const col = s.color || SERIES[i];
+    const col = s.color || VIZ().series[i];
     if (kind === "rect") key.style.background = col; else key.style.borderColor = col;
     item.appendChild(key);
     item.appendChild(document.createTextNode(s.name));
@@ -58,6 +58,8 @@ function legendRow(series, kind) {
 /* ---------- sparkline (stat tile) ---------- */
 function renderSpark(container, points, color, opts) {
   container.textContent = "";
+  const V = VIZ();
+  const col = color || V.sparkDim;
   const w = container.clientWidth || 200, h = (opts && opts.h) || 34;
   const svg = svgNode("svg", { class: "viz", width: w, height: h, viewBox: `0 0 ${w} ${h}` });
   const min = Math.min(...points), max = Math.max(...points);
@@ -66,9 +68,9 @@ function renderSpark(container, points, color, opts) {
   const Y = v => h - pad - ((v - min) / (max - min || 1)) * (h - pad * 2);
   const line = points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
   const area = line + ` L${X(points.length - 1).toFixed(1)} ${h - 1} L${X(0).toFixed(1)} ${h - 1} Z`;
-  svg.appendChild(svgNode("path", { d: area, fill: color, opacity: 0.1 }));
-  svg.appendChild(svgNode("path", { d: line, fill: "none", stroke: color, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
-  svg.appendChild(svgNode("circle", { cx: X(points.length - 1), cy: Y(points[points.length - 1]), r: 4, fill: (opts && opts.end) || color, stroke: SURFACE, "stroke-width": 2 }));
+  svg.appendChild(svgNode("path", { d: area, fill: col, opacity: 0.1 }));
+  svg.appendChild(svgNode("path", { d: line, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+  svg.appendChild(svgNode("circle", { cx: X(points.length - 1), cy: Y(points[points.length - 1]), r: 4, fill: (opts && opts.end) || V.sparkEnd, stroke: V.surface, "stroke-width": 2 }));
   container.appendChild(svg);
 }
 
@@ -76,6 +78,7 @@ function renderSpark(container, points, color, opts) {
 function renderTrend(container, trend, opts) {
   const o = opts || {};
   container.textContent = "";
+  const V = VIZ();
   const w = container.clientWidth || 560;
   const h = o.h || (o.mini ? 150 : 208);
   const mL = 42, mR = 14, mT = 10, mB = 22;
@@ -91,7 +94,7 @@ function renderTrend(container, trend, opts) {
   const Y = v => mT + (1 - (v - min) / (max - min || 1)) * (h - mT - mB);
 
   ticks.forEach(t => {
-    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: "rgba(255,255,255,0.055)", "stroke-width": 1 }));
+    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: V.grid, "stroke-width": 1 }));
     const tx = svgNode("text", { x: mL - 7, y: Y(t) + 3, "text-anchor": "end" });
     tx.textContent = fmtNum(t, trend.unit);
     svg.appendChild(tx);
@@ -111,7 +114,7 @@ function renderTrend(container, trend, opts) {
       if (Math.abs(endYs[a] - endYs[b]) < 13) { if (endYs[b] > endYs[a]) endYs[b] = endYs[a] + 13; else endYs[b] = endYs[a] - 13; }
 
   trend.series.forEach((s, si) => {
-    const col = SERIES[si];
+    const col = V.series[si];
     const d = s.points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
     if (si === 0) {
       const base = Y(Math.max(min, 0));
@@ -119,7 +122,7 @@ function renderTrend(container, trend, opts) {
     }
     svg.appendChild(svgNode("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
     const last = s.points[n - 1];
-    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(last), r: 4, fill: col, stroke: SURFACE, "stroke-width": 2 }));
+    svg.appendChild(svgNode("circle", { cx: X(n - 1), cy: Y(last), r: 4, fill: col, stroke: V.surface, "stroke-width": 2 }));
     if (!o.mini) {
       const lb = svgNode("text", { x: X(n - 1) - 6, y: endYs[si], "text-anchor": "end", class: "lbl" });
       lb.textContent = fmtNum(last, trend.unit);
@@ -127,11 +130,10 @@ function renderTrend(container, trend, opts) {
     }
   });
 
-  /* crosshair + hover layer */
-  const cross = svgNode("line", { y1: mT, y2: h - mB, stroke: "rgba(255,255,255,0.22)", "stroke-width": 1, visibility: "hidden" });
+  const cross = svgNode("line", { y1: mT, y2: h - mB, stroke: V.cross, "stroke-width": 1, visibility: "hidden" });
   svg.appendChild(cross);
   const dots = trend.series.map((s, si) => {
-    const c = svgNode("circle", { r: 4.5, fill: SERIES[si], stroke: SURFACE, "stroke-width": 2, visibility: "hidden" });
+    const c = svgNode("circle", { r: 4.5, fill: V.series[si], stroke: V.surface, "stroke-width": 2, visibility: "hidden" });
     svg.appendChild(c); return c;
   });
   const hit = svgNode("rect", { x: mL, y: 0, width: Math.max(1, w - mL - mR), height: h, fill: "transparent" });
@@ -143,7 +145,7 @@ function renderTrend(container, trend, opts) {
     cross.setAttribute("visibility", "visible");
     dots.forEach((d, si) => { d.setAttribute("cx", X(i)); d.setAttribute("cy", Y(trend.series[si].points[i])); d.setAttribute("visibility", "visible"); });
     tipShow(e.clientX, e.clientY, MONTHS[i] + (i < 4 ? " 2025" : " 2026"),
-      trend.series.map((s, si) => ({ color: SERIES[si], name: s.name, value: fmtNum(s.points[i], trend.unit) })));
+      trend.series.map((s, si) => ({ color: V.series[si], name: s.name, value: fmtNum(s.points[i], trend.unit) })));
   });
   hit.addEventListener("pointerleave", () => {
     cross.setAttribute("visibility", "hidden");
@@ -152,13 +154,14 @@ function renderTrend(container, trend, opts) {
   });
   svg.appendChild(hit);
   container.appendChild(svg);
-  if (trend.series.length > 1) container.appendChild(legendRow(trend.series.map((s, i) => ({ name: s.name, color: SERIES[i] })), "line"));
+  if (trend.series.length > 1) container.appendChild(legendRow(trend.series.map((s, i) => ({ name: s.name, color: V.series[i] })), "line"));
 }
 
 /* ---------- donut ---------- */
 function renderDonut(container, donut, opts) {
   const o = opts || {};
   container.textContent = "";
+  const V = VIZ();
   const wrap = el("div");
   wrap.style.cssText = "display:flex;align-items:center;gap:14px;min-width:0";
   const sz = o.mini ? 128 : 158, R = sz / 2, r0 = R - (o.mini ? 15 : 19), cx = R, cy = R;
@@ -176,14 +179,14 @@ function renderDonut(container, donut, opts) {
     const q0 = [cx + r0 * Math.cos(a0), cy + r0 * Math.sin(a0)];
     const d = `M${p0[0].toFixed(2)} ${p0[1].toFixed(2)} A${R} ${R} 0 ${large} 1 ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} L${q1[0].toFixed(2)} ${q1[1].toFixed(2)} A${r0} ${r0} 0 ${large} 0 ${q0[0].toFixed(2)} ${q0[1].toFixed(2)} Z`;
     /* 2px surface gap between segments via surface-colored stroke */
-    const path = svgNode("path", { d, fill: SERIES[i % SERIES.length], stroke: SURFACE, "stroke-width": 2, "stroke-linejoin": "round" });
+    const path = svgNode("path", { d, fill: V.series[i % V.series.length], stroke: V.surface, "stroke-width": 2, "stroke-linejoin": "round" });
     path.style.transition = "opacity 140ms ease, transform 140ms ease";
     path.style.transformOrigin = cx + "px " + cy + "px";
     const mid = (a0 + a1) / 2;
     path.addEventListener("pointermove", e => {
       arcs.forEach(a => a.style.opacity = a === path ? 1 : 0.42);
       path.style.transform = `translate(${Math.cos(mid) * 2.5}px,${Math.sin(mid) * 2.5}px)`;
-      tipShow(e.clientX, e.clientY, donut.title, [{ color: SERIES[i % SERIES.length], name: seg.label, value: fmtNum(seg.value, donut.unit) + " · " + Math.round(frac * 100) + "%" }]);
+      tipShow(e.clientX, e.clientY, donut.title, [{ color: V.series[i % V.series.length], name: seg.label, value: fmtNum(seg.value, donut.unit) + " · " + Math.round(frac * 100) + "%" }]);
     });
     path.addEventListener("pointerleave", () => {
       arcs.forEach(a => a.style.opacity = 1); path.style.transform = "none"; tipHide();
@@ -191,7 +194,7 @@ function renderDonut(container, donut, opts) {
     svg.appendChild(path); arcs.push(path);
     a0 = a1;
   });
-  const ct = svgNode("text", { x: cx, y: cy - 2, "text-anchor": "middle", class: "lbl", style: "font-size:17px;font-weight:700;fill:#eef2fa" });
+  const ct = svgNode("text", { x: cx, y: cy - 2, "text-anchor": "middle", class: "lbl-strong" });
   ct.textContent = /%/.test(donut.unit || "") ? "100%" : fmtNum(total, donut.unit);
   const cs = svgNode("text", { x: cx, y: cy + 14, "text-anchor": "middle" });
   cs.textContent = "total";
@@ -203,9 +206,9 @@ function renderDonut(container, donut, opts) {
   donut.segments.forEach((seg, i) => {
     const row = el("div", "lg-item");
     row.style.cssText = "display:flex;align-items:center;gap:7px;font-size:11.5px;min-width:0";
-    const k = el("i", "lg-rect"); k.style.background = SERIES[i % SERIES.length]; k.style.flex = "none";
+    const k = el("i", "lg-rect"); k.style.background = V.series[i % V.series.length]; k.style.flex = "none";
     const name = el("span", "", seg.label);
-    name.style.cssText = "color:#a6b0c3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0";
+    name.style.cssText = "color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0";
     const val = el("b", "", fmtNum(seg.value, donut.unit));
     val.style.cssText = "margin-left:auto;font-variant-numeric:tabular-nums;padding-left:8px";
     row.append(k, name, val);
@@ -219,6 +222,7 @@ function renderDonut(container, donut, opts) {
 function renderBars(container, bars, opts) {
   const o = opts || {};
   container.textContent = "";
+  const V = VIZ();
   const w = container.clientWidth || 420;
   const h = o.h || (o.mini ? 150 : 196);
   const mL = 42, mR = 8, mT = 12, mB = 40;
@@ -235,13 +239,12 @@ function renderBars(container, bars, opts) {
   const gap = 2; /* surface gap between touching bars in a group */
 
   ticks.forEach(t => {
-    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: t === 0 ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.055)", "stroke-width": 1 }));
+    svg.appendChild(svgNode("line", { x1: mL, x2: w - mR, y1: Y(t), y2: Y(t), stroke: t === 0 ? V.zero : V.grid, "stroke-width": 1 }));
     const tx = svgNode("text", { x: mL - 7, y: Y(t) + 3, "text-anchor": "end" });
     tx.textContent = fmtNum(t, bars.unit);
     svg.appendChild(tx);
   });
 
-  /* find the extreme to direct-label (selective labeling) */
   let extIdx = 0; all.forEach((v, i) => { if (Math.abs(v) > Math.abs(all[extIdx])) extIdx = i; });
 
   bars.categories.forEach((cat, ci) => {
@@ -249,7 +252,7 @@ function renderBars(container, bars, opts) {
     const gx = mL + band * ci + (band - groupW) / 2;
     bars.series.forEach((s, si) => {
       const v = s.values[ci];
-      const col = hasNeg && nSer === 1 ? (v >= 0 ? SERIES[0] : NEG) : SERIES[si];
+      const col = hasNeg && nSer === 1 ? (v >= 0 ? V.series[0] : V.neg) : V.series[si];
       const x = gx + si * (barW + gap);
       const y0 = Y(0), y1 = Y(v);
       const top = Math.min(y0, y1), bh = Math.max(2, Math.abs(y0 - y1));
@@ -264,7 +267,7 @@ function renderBars(container, bars, opts) {
       p.addEventListener("pointermove", e => {
         $$("path", svg).forEach(q => { if (q.__bar) q.style.opacity = q === p ? 1 : 0.45; });
         tipShow(e.clientX, e.clientY, cat, bars.series.map((ss, ssi) => ({
-          color: hasNeg && nSer === 1 ? (ss.values[ci] >= 0 ? SERIES[0] : NEG) : SERIES[ssi],
+          color: hasNeg && nSer === 1 ? (ss.values[ci] >= 0 ? V.series[0] : V.neg) : V.series[ssi],
           name: ss.name, value: fmtNum(ss.values[ci], bars.unit),
         })));
       });
@@ -277,22 +280,19 @@ function renderBars(container, bars, opts) {
         svg.appendChild(lb);
       }
     });
-    /* category label, truncated */
     const short = cat.length > Math.max(6, band / 6.4) ? cat.slice(0, Math.max(5, band / 6.4 - 1)) + "…" : cat;
     const tx = svgNode("text", { x: mL + band * ci + band / 2, y: h - 22, "text-anchor": "middle" });
     tx.textContent = short;
-    tx.__full = cat;
     svg.appendChild(tx);
   });
   container.appendChild(svg);
-  if (nSer > 1) container.appendChild(legendRow(bars.series.map((s, i) => ({ name: s.name, color: SERIES[i] })), "rect"));
-  else if (hasNeg) container.appendChild(legendRow([{ name: "above plan", color: SERIES[0] }, { name: "below plan", color: NEG }], "rect"));
+  if (nSer > 1) container.appendChild(legendRow(bars.series.map((s, i) => ({ name: s.name, color: V.series[i] })), "rect"));
+  else if (hasNeg) container.appendChild(legendRow([{ name: "above plan", color: V.series[0] }, { name: "below plan", color: V.neg }], "rect"));
 }
 
-/* ---------- heatmap: single-hue sequential (dim -> bright on dark) ---------- */
+/* ---------- heatmap: single-hue sequential, theme-aware ramp ---------- */
 function heatColor(t) {
-  /* blue ramp, monotonic lightness on a dark surface */
-  const stops = [[16, 27, 48], [16, 60, 112], [28, 92, 171], [57, 135, 229], [134, 182, 239], [205, 226, 251]];
+  const stops = VIZ().heat;
   const x = Math.max(0, Math.min(1, t)) * (stops.length - 1);
   const i = Math.min(stops.length - 2, Math.floor(x)), f = x - i;
   const c = stops[i].map((v, k) => Math.round(v + (stops[i + 1][k] - v) * f));

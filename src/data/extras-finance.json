@@ -1,0 +1,60 @@
+{
+  "personaId": "finance",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the open accruals",
+      "detail": "Nudge cost-center owners 4210/4270/5130 until the ~$310K in July accruals post, then confirm in SAP",
+      "steps": [
+        {"server": "sap", "tool": "get_journal_status", "args": "period=Jul FY26&type=accrual", "result": "3 accruals open · ~$310K", "ms": 620},
+        {"server": "teams", "tool": "send_message", "args": "to=James Whitfield, Ravi Menon, Tunde Adeyemi", "result": "3 nudges sent with journal links", "ms": 840},
+        {"server": "sap", "tool": "verify_postings", "args": "cost_centers=4210,4270,5130", "result": "2 of 3 posted within 90 min", "ms": 1480}
+      ],
+      "result": "Posted 2 of 3 accruals ($228K); escalated cost center 4270 to Ravi Menon with a 12:00 deadline",
+      "artifact": null
+    },
+    {
+      "id": "d2",
+      "label": "Compile the July variance bridge",
+      "detail": "Pull SAP actuals and NetSuite budget, rebuild the bridge workbook and stage the QBR pre-read for Priya",
+      "steps": [
+        {"server": "sap", "tool": "get_cost_center_actuals", "args": "period=Jul FY26", "result": "14 cost centers · $21.34M actual", "ms": 710},
+        {"server": "excel", "tool": "update_workbook", "args": "file=Variance_Bridge_Jul.xlsx", "result": "bridge reconciles to +$1,440K", "ms": 980},
+        {"server": "outlook", "tool": "create_draft", "args": "to=priya.raghavan@meridianlabs.com", "result": "draft saved · 1 attachment", "ms": 540}
+      ],
+      "result": "Delivered the one-page bridge reconciling to +$1,440K, with the $862K AWS true-up broken out, to Priya's inbox by 11:40",
+      "artifact": "Variance_Bridge_Jul.xlsx"
+    },
+    {
+      "id": "d3",
+      "label": "Sweep aged expense approvals",
+      "detail": "Pull the 9 reports past the 5-day SLA, map approver chains and send personal reminders",
+      "steps": [
+        {"server": "sap", "tool": "list_pending_approvals", "args": "queue=expense&aging=gt5d", "result": "9 aged reports · $13,080", "ms": 560},
+        {"server": "workday", "tool": "lookup_approver_chain", "args": "reports=aged_9", "result": "3 approvers hold all 9", "ms": 720},
+        {"server": "teams", "tool": "send_message", "args": "to=Hannah Cho, Ravi Menon, Katie O'Brien", "result": "3 personal reminders delivered", "ms": 480}
+      ],
+      "result": "Cleared 6 of 9 aged reports by end of day; Hannah Cho approved all 4 of hers ($8,940) within the hour",
+      "artifact": "Expense_Aging_Aug08.xlsx"
+    }
+  ],
+  "week": {
+    "meetingHours": 16.5,
+    "focusHours": 12.0,
+    "meetingCost": "$9,400",
+    "deepBlocks": 4,
+    "contextSwitches": 62,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [2.5, 4.0, 3.0, 3.5, 3.5],
+    "focus": [3.5, 1.5, 2.5, 2.0, 2.5],
+    "insight": "Tuesday burned 4.0 hours in close-status meetings for 1.5 hours of focus — move the stand-up async during close week and reclaim a deep block."
+  },
+  "files": [
+    {"name": "Variance_Bridge_Jul.xlsx", "source": "excel", "kind": "sheet", "modified": "2h ago", "by": "Daniel Okafor"},
+    {"name": "Q3_QBR_Template.pptx", "source": "sharepoint", "kind": "deck", "modified": "Yesterday", "by": "Marcus Webb"},
+    {"name": "Rolling_Forecast_FY26.xlsx", "source": "excel", "kind": "sheet", "modified": "Today 06:45", "by": "Sofia Lindqvist"},
+    {"name": "Q4_Reforecast_Assumptions.xlsx", "source": "sharepoint", "kind": "sheet", "modified": "Yesterday", "by": "Marcus Webb"},
+    {"name": "DSO_Dunning_Workflow_Audit.docx", "source": "sharepoint", "kind": "doc", "modified": "Aug 6", "by": "Aisha Bello"},
+    {"name": "Deloitte_ASC606_Engagement_Letter.pdf", "source": "sharepoint", "kind": "pdf", "modified": "Aug 5", "by": "Grace Liu"}
+  ]
+}

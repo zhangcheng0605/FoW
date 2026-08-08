@@ -1,0 +1,60 @@
+{
+  "personaId": "it",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the Dell PO",
+      "detail": "Push the Latitude 7460 refresh PO through Ariba before the quote expires Aug 15",
+      "steps": [
+        {"server": "ariba", "tool": "get_purchase_order", "args": "Dell Latitude 7460 x 120", "result": "$142,800 · pending 2 approvals", "ms": 640},
+        {"server": "outlook", "tool": "send_reminder", "args": "to=approval chain · quote expiry Aug 15", "result": "2 approvers nudged", "ms": 480},
+        {"server": "teams", "tool": "post_message", "args": "Hannah Cho · Dell logistics thread", "result": "Ship-split Austin/NY confirmed", "ms": 390}
+      ],
+      "result": "Both approvals landed; $142,800 PO released to Dell 4 days before the Aug 15 quote expiry",
+      "artifact": "Dell wave-3 PO status.pdf"
+    },
+    {
+      "id": "d2",
+      "label": "Build Austin access packs",
+      "detail": "Generate and route the 12 new-hire access bundles Aisha Bello needs for Monday's cohort",
+      "steps": [
+        {"server": "workday", "tool": "list_new_hires", "args": "cohort=Austin Aug 11", "result": "12 hires · 5 distinct roles", "ms": 720},
+        {"server": "servicenow", "tool": "create_access_requests", "args": "role-based bundles · sponsor chain", "result": "12 RITMs opened and routed", "ms": 1350},
+        {"server": "outlook", "tool": "send_summary", "args": "to=Aisha Bello · pack manifest", "result": "Manifest delivered 14:10", "ms": 410}
+      ],
+      "result": "All 12 access packs approved and provisioned by Friday 16:00, two full days before the 08:00 Monday start",
+      "artifact": "Austin cohort access manifest.xlsx"
+    },
+    {
+      "id": "d3",
+      "label": "Sweep offline CVE stragglers",
+      "detail": "Track down the 31 laptops offline 7+ days still exposed to CVE-2026-31842 and get owners to restart",
+      "steps": [
+        {"server": "servicenow", "tool": "query_cmdb", "args": "vuln=CVE-2026-31842 · last_seen>7d", "result": "31 devices · 28 owners mapped", "ms": 860},
+        {"server": "slack", "tool": "send_dm_batch", "args": "restart instructions + deadline Aug 12", "result": "28 DMs sent · 19 acknowledged", "ms": 540},
+        {"server": "jira", "tool": "update_issue", "args": "key=ITOPS-2853 · straggler sub-list", "result": "Checklist added · Rahul Menon tagged", "ms": 430}
+      ],
+      "result": "22 of 31 offline laptops patched within 24h; the last 9 escalated to Hannah Cho with loaner swaps booked",
+      "artifact": "CVE-2026-31842 straggler tracker.xlsx"
+    }
+  ],
+  "week": {
+    "meetingHours": 16.5,
+    "focusHours": 11,
+    "meetingCost": "$11,880 (~$180/person-hour x avg 4 attendees)",
+    "deepBlocks": 4,
+    "contextSwitches": 68,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [4.5, 3, 2.5, 3, 3.5],
+    "focus": [1, 2.5, 3.5, 2.5, 1.5],
+    "insight": "Monday stacks 4.5 meeting hours on top of the 34-ticket morning spike — move the ops standup review async and reclaim the 08:00-10:00 block."
+  },
+  "files": [
+    {"name": "GlobalProtect RCA draft v7.docx", "source": "confluence", "kind": "doc", "modified": "2h ago", "by": "Ingrid Larsson"},
+    {"name": "CVE-2026-31842 sweep results.xlsx", "source": "sharepoint", "kind": "sheet", "modified": "Today 06:10", "by": "Rahul Menon"},
+    {"name": "Board slide — uptime & patching.pptx", "source": "sharepoint", "kind": "deck", "modified": "Yesterday", "by": "Priya Raghavan"},
+    {"name": "AWS true-up infra growth view.xlsx", "source": "excel", "kind": "sheet", "modified": "Yesterday", "by": "Daniel Okafor"},
+    {"name": "Dell Latitude 7460 quote — wave 3.pdf", "source": "sharepoint", "kind": "pdf", "modified": "Aug 6", "by": "Hannah Cho"},
+    {"name": "Zoom Rooms renewal terms FY27.pdf", "source": "docusign", "kind": "pdf", "modified": "Aug 5", "by": "Grace Liu"}
+  ]
+}

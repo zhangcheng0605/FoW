@@ -285,6 +285,9 @@ function routeMessage(text, chips) {
   const p = FOW.data();
   const m = (text || "").toLowerCase();
 
+  /* 0 — the recap button must always win */
+  if (/(end.of.week|week recap|weekly recap|eod report|end of day recap|weekly report|status report)/.test(m)) return recapFlow();
+
   /* 1 — persona-authored flows */
   let best = null, bestScore = 2;
   (p.chatFlows || []).forEach(f => {
@@ -426,6 +429,49 @@ function tasksFlow() {
     actions: [{ label: "Nudge the blocker's owner", toast: "Nudge sent with context attached" }],
   };
 }
+function recapFlow() {
+  const p = FOW.data();
+  const cal = srvPick(p, ["outlook", "gcal"], "gcal");
+  const mail = srvPick(p, ["outlook", "gmail"], "gmail");
+  const wins = p.kpis.filter(k => k.deltaGood).map(k => "- **" + k.label + "**: " + k.value + " (" + k.delta + " " + (k.vs || "") + ")");
+  const risks = p.kpis.filter(k => !k.deltaGood).map(k => "- **" + k.label + "**: " + k.value + " (" + k.delta + ") — " + k.note);
+  const blocked = p.tasks.filter(t => t.status === "blocked");
+  const delDone = Object.keys(state.delegated[state.personaId] || {}).length;
+  const cleared = (state.approved[state.personaId] || new Set()).size;
+  const goal = (p.goals || []).slice().sort((a, b) => a.pct - b.pct)[0];
+  const text =
+    "## Week recap — w/e Friday, Aug 8\n" +
+    p.focus.headline + "\n" +
+    "## Wins\n" + (wins.join("\n") || "- Steady week — no fires") + "\n" +
+    (delDone || cleared ? "- Cleared **" + cleared + " approval" + (cleared === 1 ? "" : "s") + "**" + (delDone ? " and delegated **" + delDone + " task" + (delDone > 1 ? "s" : "") + "** to Flow" : "") + "\n" : "") +
+    "## Watch-outs\n" + (risks.join("\n") || "- Nothing red this week") + "\n" +
+    (blocked.length ? "- **" + blocked[0].id + "** still blocked — escalation is out\n" : "") +
+    "## Next week\n" +
+    (goal ? "- Push **" + goal.label + "** (" + goal.pct + "% — " + goal.detail + ")\n" : "") +
+    "- " + (p.week ? "Rebalance the calendar: " + p.week.insight : "Protect two deep-work blocks early in the week.") + "\n" +
+    "> Formatted and ready — send it as-is or tell me what to reframe.";
+  return {
+    thinkMs: 900,
+    tools: [
+      { server: cal, tool: "get_calendar", args: "range=Aug 3–8", result: (p.week ? p.week.meetingHours + "h of meetings" : p.meetings.length + " meetings"), ms: 430 },
+      { server: p.trend.source || "excel", tool: "run_query", args: "period=week 32", result: "KPIs refreshed", ms: 520 },
+      { server: mail, tool: SERVERS[mail].tools[0], args: "sent=this week", result: "threads handled: 38", ms: 390 },
+    ],
+    text,
+    actions: [
+      {
+        label: "Copy recap",
+        run: btn => {
+          const plain = text.replace(/[#*>{}]/g, "").replace(/\n{2,}/g, "\n");
+          const done = () => { btn.classList.add("done"); btn.textContent = "✓ Copied"; toast("Recap copied to clipboard"); };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(plain).then(done, done); else done();
+        },
+      },
+      { label: "Email it to my manager", toast: "Draft addressed to your manager — in your outbox" },
+      { label: "Post to my team channel", toast: "Posted to your team channel with a thread for questions" },
+    ],
+  };
+}
 function capabilitiesFlow() {
   const p = FOW.data();
   const conns = (p.connections || []).map(c => "- **" + (SERVERS[c] ? SERVERS[c].name : c) + "** — `" + (SERVERS[c] ? SERVERS[c].tools.slice(0, 2).join("` `") : "") + "`").join("\n");
@@ -439,7 +485,7 @@ function capabilitiesFlow() {
 
 /* ---------------- chip responders ---------------- */
 function chipIcon(type) {
-  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person" }[type] || "spark";
+  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person", week: "clockIco", file: "file" }[type] || "spark";
 }
 function chipFlow(chips, text) {
   const p = FOW.data();
@@ -559,6 +605,35 @@ function chipFlow(chips, text) {
           { label: "Pause schedule", toast: d.name + " paused — resume anytime" },
         ],
       };
+    case "week": {
+      const rows = d.days.map((day, i) => "|" + day + "|" + d.meetings[i] + "h|" + d.focus[i] + "h|").join("\n");
+      return {
+        thinkMs: 720,
+        tools: [{ server: srvPick(p, ["outlook", "gcal"], "gcal"), tool: "list_events", args: "range=this week", result: d.meetingHours + "h across meetings", ms: 480 }],
+        text: "Your week: **" + d.meetingHours + "h in meetings** against **" + d.focusHours + "h of focus** — that meeting load cost roughly **" + d.meetingCost + "** in people-time.\n" +
+          "|Day|Meetings|Focus|\n" + rows + "\n" + d.insight +
+          "\n> Rule of thumb: under 40% meeting load keeps a maker's week productive. Want me to defend some blocks?",
+        actions: [
+          { label: "Protect 2 focus blocks next week", toast: "Two 90-min blocks held Tue + Thu mornings" },
+          { label: "Flag low-value recurring meetings", toast: "3 candidates flagged — review them in chat anytime" },
+        ],
+      };
+    }
+    case "file": {
+      const kindName = { doc: "document", sheet: "spreadsheet", deck: "deck", pdf: "PDF" }[d.kind] || "file";
+      return {
+        thinkMs: 700,
+        tools: [{ server: d.source || "gdrive", tool: "get_file", args: "name=" + d.name, result: "parsed " + kindName, ms: 540 }],
+        text: "**" + d.name + "** — " + kindName + ", updated " + String(d.modified).toLowerCase() + " by **" + d.by + "**.\n" +
+          "- The numbers align with what's on your canvas — no surprises vs the " + (p.trend ? p.trend.title.toLowerCase() : "latest data") + "\n" +
+          "- One section is waiting on input from you; " + String(d.by).split(" ")[0] + " left a comment there yesterday\n" +
+          "> Suggested: send " + String(d.by).split(" ")[0] + " your two comments before EOD so it ships Monday.",
+        actions: [
+          { label: "Open in " + (SERVERS[d.source] ? SERVERS[d.source].name : "source"), toast: "Opening " + d.name },
+          { label: "Draft my comments", toast: "Two comments drafted — review before they post" },
+        ],
+      };
+    }
     case "server": {
       const s = SERVERS[d.id] || {};
       return {

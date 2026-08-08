@@ -27,17 +27,35 @@ const SERVERS = {
 };
 
 const PERSONAS = [
-  { id: "hr",          name: "Maya Chen",       role: "HR Business Partner",   dept: "People & Culture", tag: "People, engagement & talent",    accent: "#f472a6", initials: "MC", loc: "Singapore" },
-  { id: "finance",     name: "Daniel Okafor",   role: "FP&A Manager",          dept: "Finance",          tag: "Plan, spend & forecast",         accent: "#34d399", initials: "DO", loc: "London" },
-  { id: "procurement", name: "Priya Nair",      role: "Procurement Lead",      dept: "Procurement",      tag: "Vendors, POs & savings",         accent: "#f6a623", initials: "PN", loc: "Austin" },
-  { id: "it",          name: "Marcus Webb",     role: "IT Operations Manager", dept: "IT",               tag: "Incidents, uptime & access",     accent: "#2fc8ea", initials: "MW", loc: "Singapore" },
-  { id: "legal",       name: "Sofia Reyes",     role: "Senior Legal Counsel",  dept: "Legal",            tag: "Contracts, matters & risk",      accent: "#a685fa", initials: "SR", loc: "New York" },
-  { id: "sales",       name: "Jonas Lindqvist", role: "Enterprise Sales Mgr",  dept: "Sales",            tag: "Pipeline, quota & accounts",     accent: "#5aa2f7", initials: "JL", loc: "Stockholm" },
+  { id: "hr",          name: "Maya Chen",       role: "HR Business Partner",   dept: "People & Culture", tag: "People, engagement & talent",    accent: "#d6336c", initials: "MC", loc: "Singapore" },
+  { id: "finance",     name: "Daniel Okafor",   role: "FP&A Manager",          dept: "Finance",          tag: "Plan, spend & forecast",         accent: "#0e9f6e", initials: "DO", loc: "London" },
+  { id: "procurement", name: "Priya Nair",      role: "Procurement Lead",      dept: "Procurement",      tag: "Vendors, POs & savings",         accent: "#d97706", initials: "PN", loc: "Austin" },
+  { id: "it",          name: "Marcus Webb",     role: "IT Operations Manager", dept: "IT",               tag: "Incidents, uptime & access",     accent: "#0891b2", initials: "MW", loc: "Singapore" },
+  { id: "legal",       name: "Sofia Reyes",     role: "Senior Legal Counsel",  dept: "Legal",            tag: "Contracts, matters & risk",      accent: "#7c3aed", initials: "SR", loc: "New York" },
+  { id: "sales",       name: "Jonas Lindqvist", role: "Enterprise Sales Mgr",  dept: "Sales",            tag: "Pipeline, quota & accounts",     accent: "#2563eb", initials: "JL", loc: "Stockholm" },
 ];
 
-/* chart series colors — validated (dark surface #10141f) */
-const SERIES = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181"];
-const NEG = "#e66767";
+/* theme + chart tokens — both palettes CVD-validated on their surfaces */
+const THEME = { dark: false };
+const VIZ_LIGHT = {
+  surface: "#ffffff",
+  series: ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"],
+  neg: "#e34948",
+  grid: "#eef0f4", zero: "#d3d8e2", cross: "rgba(27,37,64,0.3)",
+  sparkDim: "#a9bbd6", sparkEnd: "#2a78d6", ink: "#1b2540",
+  /* sequential blue, low -> high = light -> dark on a light surface */
+  heat: [[236, 244, 253], [196, 219, 247], [158, 197, 244], [109, 167, 236], [57, 135, 229], [28, 92, 171], [13, 54, 107]],
+};
+const VIZ_DARK = {
+  surface: "#10141f",
+  series: ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181"],
+  neg: "#e66767",
+  grid: "rgba(255,255,255,0.055)", zero: "rgba(255,255,255,0.14)", cross: "rgba(255,255,255,0.22)",
+  sparkDim: "#3e577e", sparkEnd: "#3987e5", ink: "#eef2fa",
+  /* on a dark surface the ramp inverts: low -> high = dim -> bright */
+  heat: [[16, 27, 48], [16, 60, 112], [28, 92, 171], [57, 135, 229], [134, 182, 239], [205, 226, 251]],
+};
+function VIZ() { return THEME.dark ? VIZ_DARK : VIZ_LIGHT; }
 const MONTHS = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
 
 /* tiny inline icon set (stroke = currentColor) */
@@ -60,6 +78,10 @@ const ICONS = {
   grip:     '<svg viewBox="0 0 16 16" width="12" height="12"><circle cx="5.5" cy="4" r="1.2" fill="currentColor"/><circle cx="10.5" cy="4" r="1.2" fill="currentColor"/><circle cx="5.5" cy="8" r="1.2" fill="currentColor"/><circle cx="10.5" cy="8" r="1.2" fill="currentColor"/><circle cx="5.5" cy="12" r="1.2" fill="currentColor"/><circle cx="10.5" cy="12" r="1.2" fill="currentColor"/></svg>',
   clockIco: '<svg viewBox="0 0 16 16" width="13" height="13"><circle cx="8" cy="8" r="5.8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.8V8l2.3 1.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   person:   '<svg viewBox="0 0 16 16" width="13" height="13"><circle cx="8" cy="5.2" r="2.7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 13.6a5.4 5.4 0 0 1 10.4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  file:     '<svg viewBox="0 0 16 16" width="13" height="13"><path d="M4 1.8h5.2L12.8 5.4V14a.8.8 0 0 1-.8.8H4a.8.8 0 0 1-.8-.8V2.6a.8.8 0 0 1 .8-.8Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 2v3.6h3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
+  sun:      '<svg viewBox="0 0 16 16" width="15" height="15"><circle cx="8" cy="8" r="3.1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.4v1.8M8 12.8v1.8M1.4 8h1.8M12.8 8h1.8M3.3 3.3l1.3 1.3M11.4 11.4l1.3 1.3M12.7 3.3l-1.3 1.3M4.6 11.4l-1.3 1.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  moon:     '<svg viewBox="0 0 16 16" width="14" height="14"><path d="M13.4 9.6A5.8 5.8 0 0 1 6.4 2.6a5.8 5.8 0 1 0 7 7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  robot:    '<svg viewBox="0 0 16 16" width="13" height="13"><rect x="2.6" y="5" width="10.8" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 5V2.6M6.6 2.6h2.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="5.8" cy="8.6" r="1" fill="currentColor"/><circle cx="10.2" cy="8.6" r="1" fill="currentColor"/><path d="M6 11h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
 };
 
 /* ---------- DOM helpers ---------- */

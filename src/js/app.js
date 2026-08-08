@@ -6,6 +6,8 @@
 const state = {
   personaId: null,
   approved: {},        /* personaId -> Set of approval ids */
+  delegated: {},       /* personaId -> { delegationId: "done" } */
+  autopilot: {},       /* personaId -> bool */
   cardIndex: 0,
 };
 
@@ -194,6 +196,31 @@ function renderCanvas() {
   mkStat("check", FOW.pendingApprovals().length, "approvals waiting", () => sendMessage("What's pending my approval?"));
   mkStat("mail", p.inbox.filter(i => i.unread).length, "unread that matter", () => sendMessage("Triage my inbox"));
   mkStat("task", p.tasks.length, "open tasks", () => sendMessage("Show my open tasks"));
+  const recap = el("button", "hstat primary");
+  const rIco = el("span", "hs-ico"); rIco.appendChild(ico("spark"));
+  recap.append(rIco, el("span", "", "Draft my week recap"));
+  recap.addEventListener("click", () => sendMessage("Draft my end-of-week recap"));
+  stats.appendChild(recap);
+  /* pulse check-in */
+  const pulse = el("div", "pulse-row");
+  pulse.appendChild(el("span", "", "Energy check:"));
+  [["😄", "great"], ["🙂", "good"], ["😐", "flat"], ["😴", "running low"]].forEach(([emo, mood]) => {
+    const b = el("button", "", emo);
+    b.title = "Log: feeling " + mood;
+    b.addEventListener("click", () => {
+      $$("button", pulse).forEach(x => x.classList.remove("picked"));
+      b.classList.add("picked");
+      toast("Energy logged — visible only to you", "info");
+      agentReply({
+        thinkMs: 350,
+        text: mood === "running low" || mood === "flat"
+          ? "Noted. You have **" + p.meetings.length + " meetings** today — want me to find 45 minutes to decline or shorten? Protecting one block usually pays for itself."
+          : "Love it. I'll queue the harder work — like **" + (p.tasks[0] || {}).id + "** — while the energy's there.",
+      });
+    });
+    pulse.appendChild(b);
+  });
+  stats.appendChild(pulse);
   hero.appendChild(stats);
   cv.appendChild(hero);
 
@@ -214,7 +241,7 @@ function renderCanvas() {
         const sp = el("div", "kpi-spark");
         b.appendChild(sp);
         /* de-emphasis hue for the path, series accent on the current period */
-        registerChart(sp, () => renderSpark(sp, k.spark, "#3e577e", { end: "#3987e5" }));
+        registerChart(sp, () => renderSpark(sp, k.spark));
         b.appendChild(el("div", "kpi-note", k.note));
       },
     }));
@@ -312,7 +339,7 @@ function renderCanvas() {
   }));
 
   /* approvals */
-  cv.appendChild(card(4, {
+  const apCard = card(4, {
     icon: "check", title: "Approvals", sub: FOW.pendingApprovals().length + " pending",
     body: b => {
       p.approvals.forEach(a => {
@@ -339,7 +366,94 @@ function renderCanvas() {
       });
     },
     foot: "✕ sends it to Flow for a recommendation first",
-  }));
+  });
+  /* autopilot: Flow clears low-risk approvals on its own */
+  const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
+  auto.title = "When on, Flow auto-clears low-risk approvals within policy";
+  auto.append(el("span", "", "Autopilot"), el("span", "sw"));
+  auto.addEventListener("click", () => {
+    const on = !state.autopilot[state.personaId];
+    state.autopilot[state.personaId] = on;
+    auto.classList.toggle("on", on);
+    if (!on) { toast("Autopilot off — everything waits for you again", "info"); return; }
+    const low = FOW.pendingApprovals().filter(a => a.urgency === "low");
+    if (!low.length) { toast("Autopilot on — nothing low-risk in the queue right now", "info"); return; }
+    low.forEach((a, i) => setTimeout(() => {
+      FOW.approve(a.id, i === low.length - 1);
+      if (i === low.length - 1) toast("Autopilot cleared " + low.length + " low-risk approval" + (low.length > 1 ? "s" : "") + " — requesters notified");
+    }, 700 + i * 450));
+    agentReply({
+      thinkMs: 400,
+      text: "**Autopilot is on.** I'll clear approvals that are within policy, from requesters with clean history, under your delegation limit — and leave anything unusual for you. Starting with **" + low.length + " low-risk item" + (low.length > 1 ? "s" : "") + "** in the queue now.",
+    });
+  });
+  const apHead = $(".card-h", apCard);
+  apHead.insertBefore(auto, $(".ch-acts", apHead));
+  cv.appendChild(apCard);
+
+  /* delegations — hand work to Flow, watch it run */
+  if (p.delegations && p.delegations.length) {
+    cv.appendChild(card(6, {
+      icon: "robot", title: "Delegated to Flow", sub: "agent work queue · runs in the background",
+      body: b => {
+        p.delegations.forEach(d => {
+          const doneAlready = (state.delegated[state.personaId] || {})[d.id];
+          const it = el("div", "dg-item");
+          const orb = el("span", "orb mini dg-orb"); orb.appendChild(el("i"));
+          it.appendChild(orb);
+          const bd = el("div", "dg-body");
+          bd.appendChild(el("div", "dg-label", d.label));
+          const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
+          bd.appendChild(sub);
+          const prog = el("div", "dg-prog"); prog.hidden = true;
+          const fill = el("i"); prog.appendChild(fill);
+          bd.appendChild(prog);
+          if (doneAlready && d.artifact) {
+            const a = el("span", "dg-artifact");
+            a.appendChild(ico("file")); a.appendChild(el("span", "", d.artifact));
+            bd.appendChild(a);
+          }
+          it.appendChild(bd);
+          const stateBox = el("span", "dg-state");
+          if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
+          else {
+            const btn = el("button", "dg-btn", "▶ Delegate");
+            btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill, stateBox, btn, bd }));
+            stateBox.appendChild(btn);
+          }
+          it.appendChild(stateBox);
+          b.appendChild(it);
+        });
+      },
+      foot: "Flow works these while you do something better with your time",
+    }));
+  }
+
+  /* week in numbers */
+  if (p.week) {
+    const wk = p.week;
+    cv.appendChild(card(6, {
+      icon: "clockIco", title: "Your week in numbers", sub: "meetings vs focus · w/e Aug 8", badge: srvFor(p, ["outlook", "gcal"]),
+      chip: { type: "week", label: "My week in numbers", data: wk },
+      body: b => {
+        const grid = el("div", "wk-stats");
+        [["Meeting hours", wk.meetingHours + "h"], ["Focus hours", wk.focusHours + "h"], ["Meeting cost", wk.meetingCost], ["Deep-work blocks", String(wk.deepBlocks)]].forEach(([l, v]) => {
+          const t = el("div", "wk");
+          t.appendChild(el("div", "l", l));
+          t.appendChild(el("div", "v", v));
+          grid.appendChild(t);
+        });
+        b.appendChild(grid);
+        const ch = el("div");
+        b.appendChild(ch);
+        registerChart(ch, () => renderBars(ch, {
+          title: "Meetings vs focus", unit: "h", categories: wk.days,
+          series: [{ name: "Meetings", values: wk.meetings }, { name: "Focus", values: wk.focus }],
+        }, { mini: true, h: 132 }));
+      },
+      foot: wk.insight,
+    }));
+  }
 
   /* tasks */
   cv.appendChild(card(6, {
@@ -423,6 +537,62 @@ function renderCanvas() {
   updateBadges();
 }
 function srvFor(p, wanted) { return (p.connections || []).find(c => wanted.includes(c)) || wanted[0]; }
+
+/* ---------------- delegation runner ---------------- */
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function runDelegation(d, ui) {
+  const set = state.delegated[state.personaId] || (state.delegated[state.personaId] = {});
+  ui.btn.remove();
+  const pill = el("span", "dg-pill queued", "queued");
+  ui.stateBox.appendChild(pill);
+  ui.orb.classList.add("think");
+  await wait(550);
+  pill.className = "dg-pill working"; pill.textContent = "working";
+  ui.prog.hidden = false;
+  for (let i = 0; i < d.steps.length; i++) {
+    const s = d.steps[i];
+    ui.sub.textContent = "";
+    const stepSpan = el("span", "step",
+      (SERVERS[s.server] ? SERVERS[s.server].name.toLowerCase().replace(/[^a-z0-9]+/g, "_") : s.server) + "." + s.tool + "(" + (s.args || "") + ")");
+    ui.sub.appendChild(stepSpan);
+    await wait(Math.min(s.ms || 800, 1600) * 0.8);
+    ui.fill.style.width = Math.round(((i + 1) / d.steps.length) * 100) + "%";
+    ui.sub.textContent = s.result;
+    await wait(260);
+  }
+  pill.className = "dg-pill done"; pill.textContent = "done";
+  ui.orb.classList.remove("think");
+  ui.prog.hidden = true;
+  ui.sub.textContent = d.result;
+  if (d.artifact) {
+    const a = el("span", "dg-artifact");
+    a.appendChild(ico("file")); a.appendChild(el("span", "", d.artifact));
+    ui.bd.appendChild(a);
+  }
+  set[d.id] = "done";
+  toast("Flow finished: " + d.label);
+  agentReply({
+    thinkMs: 250,
+    text: "**" + d.label + "** — done. " + d.result + (d.artifact ? "\n> Saved as **" + d.artifact + "**" : ""),
+    actions: [{
+      label: "Show me the steps",
+      run: btn => {
+        btn.classList.add("done"); btn.textContent = "✓ Shown";
+        agentReply({ thinkMs: 300, tools: d.steps, text: "That's the full trail — every call is logged to your workspace audit log." });
+      },
+    }],
+  });
+}
+
+/* ---------------- theme ---------------- */
+function applyTheme(dark) {
+  THEME.dark = dark;
+  if (dark) document.body.dataset.theme = "dark"; else delete document.body.dataset.theme;
+  const t = $("#themeIco");
+  t.textContent = "";
+  t.appendChild(ico(dark ? "sun" : "moon"));
+  rerenderCharts();
+}
 function platformName(x) { return { teams: "Teams", zoom: "Zoom", meet: "Meet" }[x] || x; }
 function updateBadges() {
   const p = FOW.data(); if (!p) return;
@@ -552,9 +722,22 @@ function ckBuild(query) {
       items.push({ sect: "Jump to", label: t, icon: "▦", sub: "widget", run: () => flashCard(t) }));
     (p.connections || []).forEach(cid => { const s = SERVERS[cid]; if (s) items.push({ sect: "MCP servers", label: s.name, icon: s.glyph, sub: s.tools.length + " tools", run: () => { attachChip({ type: "server", label: s.name + " (MCP)", data: { id: cid } }); sendMessage("What can you do with this?"); } }); });
   }
-  const filtered = q ? items.filter(i => i.label.toLowerCase().includes(q) || i.sect.toLowerCase().includes(q)) : items;
+  let filtered = q ? items.filter(i => i.label.toLowerCase().includes(q) || i.sect.toLowerCase().includes(q)) : items;
+  /* federated search across the (simulated) connected tools */
+  if (q && q.length > 1 && p) {
+    const hits = [];
+    p.inbox.filter(m => (m.from + " " + m.subject).toLowerCase().includes(q)).slice(0, 3).forEach(m =>
+      hits.push({ sect: "Emails & messages", label: m.from + " — " + m.subject, icon: "✉", sub: SERVERS[m.source] ? SERVERS[m.source].name : m.source, run: () => { attachChip({ type: "mail", label: m.from + ": " + m.subject, data: m }); sendMessage("Summarize this and draft a reply"); } }));
+    p.tasks.filter(t => (t.id + " " + t.title).toLowerCase().includes(q)).slice(0, 3).forEach(t =>
+      hits.push({ sect: "Tasks & tickets", label: t.id + " · " + t.title, icon: "☑", sub: t.status, run: () => { attachChip({ type: "task", label: t.id + " " + t.title, data: t }); sendMessage("What's the status here?"); } }));
+    p.meetings.filter(m => m.title.toLowerCase().includes(q)).slice(0, 2).forEach(m =>
+      hits.push({ sect: "Meetings", label: m.time + " · " + m.title, icon: "▦", sub: m.dur, run: () => { attachChip({ type: "meeting", label: m.time + " · " + m.title, data: m }); sendMessage("Prep me for this meeting"); } }));
+    (p.files || []).filter(f => (f.name + " " + f.by).toLowerCase().includes(q)).slice(0, 3).forEach(f =>
+      hits.push({ sect: "Files", label: f.name, icon: "▤", sub: f.by + " · " + f.modified, run: () => { attachChip({ type: "file", label: f.name, data: f }); sendMessage("Summarize this document for me"); } }));
+    filtered = filtered.concat(hits);
+  }
   if (q && !filtered.some(i => i.sect === "Ask Flow")) filtered.unshift({ sect: "Ask Flow", label: "Ask: “" + query + "”", icon: "✦", sub: "send to chat", run: () => sendMessage(query) });
-  return filtered.slice(0, 14);
+  return filtered.slice(0, 16);
 }
 function ckRender() {
   const list = $("#ckList");
@@ -564,7 +747,7 @@ function ckRender() {
     if (it.sect !== lastSect) { list.appendChild(el("div", "ck-sect", it.sect)); lastSect = it.sect; }
     const b = el("button", "ck-item" + (i === ckState.sel ? " sel" : ""));
     b.appendChild(el("span", "ck-ico", it.icon));
-    b.appendChild(el("span", "", it.label));
+    b.appendChild(el("span", "ck-lab", it.label));
     b.appendChild(el("span", "ck-sub", it.sub));
     b.addEventListener("click", () => { ckClose(); it.run(); });
     list.appendChild(b);
@@ -592,6 +775,11 @@ function init() {
   renderOnboarding();
   wireDropzone();
   startClock();
+  applyTheme(false);
+  $("#themeBtn").addEventListener("click", () => {
+    applyTheme(!THEME.dark);
+    toast(THEME.dark ? "Dark mode — for the late shift" : "Light mode — bright and crisp", "info");
+  });
 
   $("#personaPill").addEventListener("click", e => {
     e.stopPropagation();

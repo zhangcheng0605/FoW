@@ -20,16 +20,23 @@ self-contained file (no server, no build step needed to run).
 2. **Drag anything into the chat** — a KPI tile, a chart, a meeting, an email, an
    approval, a Jira task, even an MCP server. Flow analyzes it in place, showing
    the (simulated) MCP tool calls it makes along the way.
-3. **Click the suggestion chips** — each persona has scripted "hero" questions
+3. **Delegate to Flow** — the agent work queue: hand a task to Flow and watch it
+   run tool calls in the background, produce an artifact, and report back in chat.
+4. **Approvals autopilot** — flip the switch and Flow clears low-risk approvals
+   within policy on its own (and says exactly what it will and won't touch).
+5. **Draft my week recap** — the green button in the hero: Flow compiles wins,
+   watch-outs and next week from live canvas data; copy it or "send" it onward.
+6. **Your week in numbers** — meeting load vs focus time, meeting cost, and
+   deep-work blocks, with a day-by-day chart (drag it into chat for advice).
+7. **⌘K / Ctrl-K** — command palette with federated search: emails, tickets,
+   meetings and files from every connected tool in one box, plus ask-anything.
+8. **Click the suggestion chips** — each persona has scripted "hero" questions
    with rich answers: tables, callouts, and live charts embedded in chat.
-4. **Approve things** — from the Approvals card or from chat. The ✕ button asks
-   Flow for a recommendation first; approving fires confetti.
-5. **⌘K / Ctrl-K** — command palette: ask anything, switch persona, jump to a
-   widget, inspect an MCP server.
-6. **BI everywhere** — trend lines with crosshair tooltips, donut, bar and
+9. **BI everywhere** — trend lines with crosshair tooltips, donut, bar and
    heatmap charts, sparklines, goal meters — every chart has a table-view twin
    (the ⊞ button) and full hover tooltips.
-7. **Double-click** an inbox thread (Flow drafts the reply) or a skill (Flow runs it).
+10. **Double-click** an inbox thread (Flow drafts the reply) or a skill (Flow
+    runs it). Log an energy check-in in the hero. Toggle light/dark (moon icon).
 
 ## Project layout
 
@@ -54,10 +61,13 @@ python3 build.py
 
 ## Design notes
 
-- Dark-committed "mission control" look: persona-tinted aurora over deep navy,
-  glass cards, one accent per role.
-- Chart colors are a CVD-validated categorical palette (checked against the
-  card surface `#10141f`); status colors are reserved and never reused as series.
+- Light-first, professional: cool off-white ground, white cards, hairline
+  borders, soft elevation, one deep accent per role. Dark mode stays one
+  click away (topbar moon/sun) for late shifts and dim rooms.
+- Chart colors are CVD-validated categorical palettes — one set per theme,
+  checked against each theme's card surface; status colors are reserved and
+  never reused as series. The heatmap ramp inverts per theme so "more" always
+  reads as "more".
 - Charts follow quiet-chart rules: 2px lines, ≤24px bars with rounded data-ends,
   surface gaps between marks, hairline grids, selective direct labels, legends
   for ≥2 series, crosshair + shared tooltips, and a table twin for every chart.

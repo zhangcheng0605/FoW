@@ -1,0 +1,150 @@
+{
+  "personaId": "procurement",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Chase the Dell invoice fix",
+      "detail": "Resolve the $214,380 price-mismatch block on PO-77812 by reconciling Amendment 3 pricing and requesting a corrected invoice",
+      "steps": [
+        {
+          "server": "sap",
+          "tool": "get_blocked_invoice",
+          "args": "invoice=5601-88274&po=PO-77812",
+          "result": "$214,380 blocked · unit price 4.1% over contract",
+          "ms": 640
+        },
+        {
+          "server": "docusign",
+          "tool": "get_agreement_terms",
+          "args": "agreement=Dell MPA Amendment 3",
+          "result": "FY27 Latitude pricing extracted · 14 SKUs",
+          "ms": 890
+        },
+        {
+          "server": "outlook",
+          "tool": "send_email",
+          "args": "to=ap@dell.com&cc=anna.kowalski",
+          "result": "corrected invoice requested · Aug 15 deadline set",
+          "ms": 520
+        }
+      ],
+      "result": "Dell committed a corrected invoice by Aug 15 — $8,790 overcharge reversed against Amendment 3 pricing",
+      "artifact": "PO-77812 price reconciliation.xlsx"
+    },
+    {
+      "id": "d2",
+      "label": "Sweep the aged PO queue",
+      "detail": "Work the 18-item Ariba approval queue: verify budget status, nudge requesters on the 4 aged items, tee up approvals",
+      "steps": [
+        {
+          "server": "ariba",
+          "tool": "list_pending_approvals",
+          "args": "queue=priya.nair&sort=aging",
+          "result": "18 POs · $486,300 · 4 aged past 3 days",
+          "ms": 570
+        },
+        {
+          "server": "sap",
+          "tool": "check_budget_status",
+          "args": "cost_centers=all&items=18",
+          "result": "16 within budget · 2 need requester detail",
+          "ms": 1240
+        },
+        {
+          "server": "slack",
+          "tool": "send_message",
+          "args": "to=requesters&template=po_detail_request",
+          "result": "4 nudges sent · 2 replies within the hour",
+          "ms": 480
+        }
+      ],
+      "result": "Queue cut from 18 to 2 items — 16 POs worth $412,700 cleared for one-click approval, all 4 aged items unstuck",
+      "artifact": null
+    },
+    {
+      "id": "d3",
+      "label": "Compile contingent labor RFP scores",
+      "detail": "Merge scoring sheets from all 3 evaluators across the 5 bids, normalize weights, and rank finalists for the 16:30 review",
+      "steps": [
+        {
+          "server": "excel",
+          "tool": "read_workbook",
+          "args": "files=RFP_Scores_*.xlsx (3 evaluators)",
+          "result": "5 bids x 3 scorers · 90 line scores merged",
+          "ms": 760
+        },
+        {
+          "server": "ariba",
+          "tool": "get_sourcing_event",
+          "args": "event=contingent-labor-rfp&fields=pricing",
+          "result": "bid rates spread 18% low to high",
+          "ms": 610
+        },
+        {
+          "server": "sharepoint",
+          "tool": "upload_file",
+          "args": "folder=/Sourcing/RFP-ContingentLabor",
+          "result": "ranked matrix posted · 3 finalists flagged",
+          "ms": 430
+        }
+      ],
+      "result": "Consolidated matrix ranked all 5 bids — TalentBridge Staffing scored highest at 84.6, shortlist of 3 ready for the 16:30 scoring session",
+      "artifact": "Contingent labor RFP scoring matrix.xlsx"
+    }
+  ],
+  "week": {
+    "meetingHours": 16.5,
+    "focusHours": 11.0,
+    "meetingCost": "$9,200",
+    "deepBlocks": 4,
+    "contextSwitches": 62,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [2.5, 4.0, 3.0, 3.5, 3.5],
+    "focus": [3.0, 1.5, 2.5, 2.0, 2.0],
+    "insight": "Tuesday carries 4.0 meeting hours and just 1.5 of focus — move the vendor check-ins to async scorecard comments and reclaim a deep block for the AWS EA model."
+  },
+  "files": [
+    {
+      "name": "AWS_EA_Model.xlsx",
+      "source": "excel",
+      "kind": "sheet",
+      "modified": "2h ago",
+      "by": "Mei-Ling Chen"
+    },
+    {
+      "name": "Vendor_Scorecards_Q3.xlsx",
+      "source": "sharepoint",
+      "kind": "sheet",
+      "modified": "Today 06:00",
+      "by": "Diego Ramírez"
+    },
+    {
+      "name": "Adobe_Renewal_Redlines_v4.docx",
+      "source": "sharepoint",
+      "kind": "doc",
+      "modified": "Yesterday",
+      "by": "Sarah Kim"
+    },
+    {
+      "name": "Dell_QBR_Q3.pdf",
+      "source": "sharepoint",
+      "kind": "pdf",
+      "modified": "Yesterday",
+      "by": "Anna Kowalski"
+    },
+    {
+      "name": "Renewal_Pipeline_FY26.xlsx",
+      "source": "excel",
+      "kind": "sheet",
+      "modified": "Aug 6",
+      "by": "Oluwaseun Adebayo"
+    },
+    {
+      "name": "Contingent_Labor_RFP_Bid_Summary.pptx",
+      "source": "sharepoint",
+      "kind": "deck",
+      "modified": "Aug 5",
+      "by": "Oluwaseun Adebayo"
+    }
+  ]
+}
