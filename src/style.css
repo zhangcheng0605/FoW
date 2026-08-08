@@ -877,6 +877,112 @@ body:not([data-theme="dark"]) .joined-card {
 .ins-panel:hover .ins-go { text-decoration: underline; }
 @media (max-width: 860px) { .ins-grid { grid-template-columns: 1fr; } }
 
+/* ============================== Studio view — the no-cards paradigm */
+#canvas.studio { display: flex; flex-direction: column; gap: 40px; padding: 22px 30px 60px; }
+.st-sec { animation: cardIn 560ms calc(var(--i, 0) * 90ms) cubic-bezier(.2,.9,.25,1) both; min-width: 0; }
+.st-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--hairline); padding-bottom: 10px; margin-bottom: 18px; }
+.st-num { font-size: 30px; font-weight: 780; letter-spacing: -0.03em; color: var(--acc); opacity: 0.35; font-variant-numeric: tabular-nums; line-height: 1; }
+.st-label { font-size: 17px; font-weight: 730; letter-spacing: -0.015em; }
+.st-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 1px; }
+.st-head .autopilot { margin-left: auto; align-self: center; }
+
+/* marquee */
+.st-marquee { display: flex; gap: 40px; align-items: center; padding: 8px 4px 0; }
+.mq-left { flex: 1; min-width: 0; }
+.mq-kicker { margin-top: 14px; font-size: 10.5px; font-weight: 790; letter-spacing: 0.2em; text-transform: uppercase; color: var(--acc-ink); }
+.mq-title { margin: 4px 0 0; font-size: clamp(30px, 3.4vw, 46px); font-weight: 780; letter-spacing: -0.032em; line-height: 1.05;
+  background: linear-gradient(100deg, var(--ink) 40%, var(--acc-ink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.mq-lede { margin-top: 10px; font-size: 15.5px; font-weight: 560; color: var(--ink); max-width: 62ch; line-height: 1.5; text-wrap: balance; }
+.mq-sub { margin-top: 5px; font-size: 12.5px; color: var(--ink-2); max-width: 66ch; }
+.mq-chain { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.mq-signer { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--hairline); background: var(--card); border-radius: 999px; padding: 5px 12px 5px 6px; font-size: 11px; }
+.mq-signer b { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--acc-soft); color: var(--acc-ink); font-size: 9.5px; font-weight: 760; }
+.mq-signer-t { display: flex; flex-direction: column; line-height: 1.2; }
+.mq-signer-t i { font-style: normal; font-weight: 650; }
+.mq-signer-t em { font-style: normal; color: var(--ink-3); font-size: 9.5px; }
+.mq-check { font-weight: 800; color: var(--ink-3); }
+.mq-signer.done .mq-check { color: var(--good-ink); }
+.mq-signer:not(.done) { border-color: var(--acc-line); box-shadow: 0 0 0 3px var(--acc-soft); }
+.mq-acts { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.mq-acts .hstat.primary { border-radius: 999px; padding: 11px 20px; font-size: 13px; font-weight: 650; }
+.mq-right { flex: none; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.mq-ring { position: relative; width: 150px; height: 150px; }
+.mq-ring svg { width: 100%; height: 100%; }
+.mq-ring-in { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+.mq-ring-in b { font-size: 23px; font-weight: 760; letter-spacing: -0.02em; }
+.mq-ring-in span { font-size: 10px; color: var(--ink-3); }
+.mq-count { text-align: center; }
+.mq-count b { display: block; font-family: var(--font-mono); font-size: 27px; font-weight: 700; color: var(--acc-ink); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.mq-count span { font-size: 10.5px; color: var(--ink-3); }
+
+/* naked stat strip */
+.st-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+#canvas.studio .st-stat { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 4px 26px 4px 0; border-right: 1px solid var(--hairline); }
+#canvas.studio .st-stat:last-child { border-right: 0; }
+#canvas.studio .st-stat:not(:first-child) { padding-left: 26px; }
+#canvas.studio .st-stat .kpi-value { font-size: 34px; }
+#canvas.studio .st-stat:hover { transform: none; }
+
+/* rhythm line */
+.st-rhythm { position: relative; height: 108px; margin: 6px 8px 0; }
+.st-line { position: absolute; left: 0; right: 0; top: 54px; height: 2px; background: var(--hairline); border-radius: 1px; }
+.st-tick { position: absolute; top: 58px; transform: translateX(-50%); }
+.st-tick i { font-style: normal; font-family: var(--font-mono); font-size: 9px; color: var(--ink-3); }
+.st-node { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; width: 96px; cursor: pointer; }
+.st-node b { width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 3px solid var(--acc); margin-top: 42px; order: 2; transition: transform 150ms; }
+.st-node span { order: 1; font-size: 10px; font-weight: 620; color: var(--ink-2); text-align: center; line-height: 1.25; }
+.st-node:hover b { transform: scale(1.35); }
+.st-milestone { position: absolute; top: 70px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.st-milestone b { color: var(--acc-ink); font-size: 12px; }
+.st-milestone span { font-size: 9px; font-weight: 780; letter-spacing: 0.1em; color: var(--acc-ink); }
+.st-milestone.big b { font-size: 15px; }
+.st-now { position: absolute; top: 30px; bottom: 12px; transform: translateX(-50%); pointer-events: none; }
+.st-now i { display: block; width: 2px; height: 100%; background: var(--crit); border-radius: 1px; box-shadow: 0 0 8px rgba(208,59,59,0.5); }
+.st-now em { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 8.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--crit); }
+
+/* studio sections reuse */
+#canvas.studio .joined-card { background: none; border: 0; box-shadow: none; }
+.st-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+.st-3col { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 34px; }
+.st-col { min-width: 0; }
+
+/* the approval deck */
+.st-deck-wrap { position: relative; min-height: 240px; }
+.st-deck { position: relative; height: 230px; }
+.st-deck-card {
+  position: absolute; inset: 0 auto auto 0; width: min(430px, 100%);
+  background: var(--card); border: 1px solid var(--hairline); border-radius: 18px;
+  box-shadow: var(--shadow-card); padding: 16px 18px; display: flex; gap: 12px;
+  transform: translateY(calc(var(--d) * 12px)) scale(calc(1 - var(--d) * 0.045));
+  z-index: calc(10 - var(--d));
+  opacity: calc(1 - var(--d) * 0.22);
+  transition: transform 350ms cubic-bezier(.2,.8,.3,1.1), opacity 300ms;
+  flex-direction: column;
+}
+.st-deck-card .ap-urg { position: absolute; left: 0; top: 14px; bottom: 14px; width: 4px; border-radius: 0 3px 3px 0; }
+.st-deck-card.fly { transform: translateX(120%) rotate(9deg) !important; opacity: 0 !important; }
+.st-deck-type { font-size: 10.5px; font-weight: 780; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc-ink); }
+.st-deck-title { font-size: 16.5px; font-weight: 700; letter-spacing: -0.015em; margin-top: 5px; line-height: 1.35; }
+.st-deck-meta { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; }
+.st-deck-acts { display: flex; gap: 9px; margin-top: 14px; }
+.st-deck-acts .lb-enter { padding: 8px 18px; font-size: 12.5px; }
+.st-deck-acts .lb-play { padding: 8px 15px; font-size: 12px; }
+.st-deck-empty { display: grid; place-content: center; text-align: center; gap: 4px; min-height: 200px; color: var(--ink-3); }
+.st-deck-empty b { font-size: 17px; color: var(--ink-2); }
+.st-ins { display: flex; flex-direction: column; gap: 12px; }
+
+/* wired-into strip */
+.st-wired-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; border-top: 1px solid var(--hairline); padding-top: 16px; }
+.st-wired-row .rail-more { margin: 0 0 0 auto; padding: 6px 14px; border-radius: 999px; }
+@media (max-width: 1100px) {
+  .st-marquee { flex-direction: column; align-items: flex-start; }
+  .st-strip { grid-template-columns: 1fr 1fr; }
+  #canvas.studio .st-stat { border-right: 0; padding-left: 0 !important; }
+  .st-2col, .st-3col { grid-template-columns: 1fr; }
+  .st-rhythm { display: none; }
+  .st-rhythm-sec .st-head { margin-bottom: 0; }
+}
+
 /* ============================== fx — the motion identity */
 #fxlayer { position: fixed; inset: 0; z-index: 140; pointer-events: none; }
 .fx-p { position: fixed; line-height: 1; will-change: transform, opacity; }
