@@ -750,6 +750,32 @@ body[data-theme="dark"] .orb::after {
   .wk-stats { grid-template-columns: 1fr 1fr; }
 }
 
+/* ============================== cross-system insights strip */
+.ins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ins-panel {
+  position: relative; text-align: left; border: 1px solid var(--hairline); border-radius: 13px;
+  padding: 12px 14px 12px 17px; overflow: hidden; min-width: 0; cursor: pointer;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--acc) 5%, var(--card)), var(--card));
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.ins-panel::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3.5px;
+  background: linear-gradient(180deg, var(--acc), #8b5cf6);
+}
+.ins-panel:hover { transform: translateY(-2px); border-color: var(--acc-line); box-shadow: var(--shadow-pop); }
+.ins-top { display: flex; align-items: center; gap: 5px; }
+.ins-top .srv-glyph { width: 17px; height: 17px; border-radius: 5px; font-size: 7px; }
+.ins-top .plus { color: var(--ink-3); font-size: 10px; font-weight: 700; }
+.ins-tag { margin-left: auto; flex: none; font-size: 9px; font-weight: 770; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc-ink); }
+.ins-h { font-size: 13.5px; font-weight: 690; letter-spacing: -0.012em; margin-top: 8px; line-height: 1.4; }
+.ins-d {
+  font-size: 11.5px; color: var(--ink-2); margin-top: 5px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ins-go { margin-top: 9px; font-size: 11px; font-weight: 680; color: var(--acc-ink); }
+.ins-panel:hover .ins-go { text-decoration: underline; }
+@media (max-width: 860px) { .ins-grid { grid-template-columns: 1fr; } }
+
 /* ============================== Emmi, the pet */
 #pet {
   position: fixed; left: 12px; bottom: 38px; z-index: 36;

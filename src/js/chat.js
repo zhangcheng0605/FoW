@@ -884,7 +884,7 @@ function chatWelcome() {
   const p = FOW.data();
   msgsEl().textContent = "";
   chat.chips = []; renderChips();
-  suggPool = (p.suggestions || []).slice();
+  suggPool = ((p.chains || []).length ? ["What insights can you see across my systems?"] : []).concat((p.suggestions || []));
   refreshSuggestions();
   const pending = FOW.pendingApprovals().length;
   const urgent = p.inbox.filter(i => i.unread).length;

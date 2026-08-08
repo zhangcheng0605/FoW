@@ -283,6 +283,52 @@ function renderCanvas() {
     body: b => renderGoals(b, p.goals),
   }));
 
+  /* cross-system insights — the joins, surfaced up front */
+  if (p.chains && p.chains.some(c => c.insight)) {
+    cv.appendChild(card(12, {
+      cls: "ins-card",
+      icon: "bolt", title: "What your systems only see together",
+      sub: "live joins across your MCP servers — askMElah reads them side by side; no single tool could",
+      body: b => {
+        const grid = el("div", "ins-grid");
+        p.chains.filter(c => c.insight).forEach(c => {
+          const ins = c.insight;
+          const panel = el("button", "ins-panel");
+          const top = el("div", "ins-top");
+          (ins.sources || []).forEach((s, i) => {
+            if (i) top.appendChild(el("span", "plus", "+"));
+            top.appendChild(srvGlyph(s, 17));
+          });
+          top.appendChild(el("span", "ins-tag", "⚡ joined insight"));
+          panel.appendChild(top);
+          panel.appendChild(el("div", "ins-h", ins.headline));
+          panel.appendChild(el("div", "ins-d", ins.detail));
+          panel.appendChild(el("div", "ins-go", "Explore in chat →"));
+          panel.addEventListener("click", () => {
+            addUserMsg("Explore this cross-system insight");
+            agentReply({
+              thinkMs: 650,
+              tools: (ins.sources || []).slice(0, 3).map((s, i) => ({
+                server: s, tool: SERVERS[s] ? SERVERS[s].tools[0] : "read", args: "period=Q3 FY26",
+                result: i === 0 ? "baseline pulled" : "joined on shared keys", ms: 360 + i * 150,
+              })),
+              text: "Here's the full picture — each of these systems is blind to the others, so this only exists in the join:",
+              insight: ins,
+              actions: [{
+                label: "Run the workflow behind it",
+                run: btn => { btn.classList.add("done"); btn.textContent = "✓ Running"; runChain(c); },
+              }],
+            });
+          });
+          makeDraggable(panel, { type: "chain", label: "Workflow: " + c.name, data: c });
+          grid.appendChild(panel);
+        });
+        b.appendChild(grid);
+      },
+      foot: "click an insight for the evidence trail, or ask “what insights can you see across my systems?”",
+    }));
+  }
+
   /* schedule */
   cv.appendChild(card(4, {
     icon: "cal", title: "Today", sub: "Friday, August 8", badge: srvFor(p, ["outlook", "gcal"]),

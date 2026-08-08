@@ -757,6 +757,32 @@ body[data-theme="dark"] .orb::after {
   .wk-stats { grid-template-columns: 1fr 1fr; }
 }
 
+/* ============================== cross-system insights strip */
+.ins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ins-panel {
+  position: relative; text-align: left; border: 1px solid var(--hairline); border-radius: 13px;
+  padding: 12px 14px 12px 17px; overflow: hidden; min-width: 0; cursor: pointer;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--acc) 5%, var(--card)), var(--card));
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.ins-panel::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3.5px;
+  background: linear-gradient(180deg, var(--acc), #8b5cf6);
+}
+.ins-panel:hover { transform: translateY(-2px); border-color: var(--acc-line); box-shadow: var(--shadow-pop); }
+.ins-top { display: flex; align-items: center; gap: 5px; }
+.ins-top .srv-glyph { width: 17px; height: 17px; border-radius: 5px; font-size: 7px; }
+.ins-top .plus { color: var(--ink-3); font-size: 10px; font-weight: 700; }
+.ins-tag { margin-left: auto; flex: none; font-size: 9px; font-weight: 770; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc-ink); }
+.ins-h { font-size: 13.5px; font-weight: 690; letter-spacing: -0.012em; margin-top: 8px; line-height: 1.4; }
+.ins-d {
+  font-size: 11.5px; color: var(--ink-2); margin-top: 5px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ins-go { margin-top: 9px; font-size: 11px; font-weight: 680; color: var(--acc-ink); }
+.ins-panel:hover .ins-go { text-decoration: underline; }
+@media (max-width: 860px) { .ins-grid { grid-template-columns: 1fr; } }
+
 /* ============================== Emmi, the pet */
 #pet {
   position: fixed; left: 12px; bottom: 38px; z-index: 36;
@@ -2606,7 +2632,7 @@ function chatWelcome() {
   const p = FOW.data();
   msgsEl().textContent = "";
   chat.chips = []; renderChips();
-  suggPool = (p.suggestions || []).slice();
+  suggPool = ((p.chains || []).length ? ["What insights can you see across my systems?"] : []).concat((p.suggestions || []));
   refreshSuggestions();
   const pending = FOW.pendingApprovals().length;
   const urgent = p.inbox.filter(i => i.unread).length;
@@ -2906,6 +2932,52 @@ function renderCanvas() {
     chip: { type: "goals", label: "Q3 goals", data: {} },
     body: b => renderGoals(b, p.goals),
   }));
+
+  /* cross-system insights — the joins, surfaced up front */
+  if (p.chains && p.chains.some(c => c.insight)) {
+    cv.appendChild(card(12, {
+      cls: "ins-card",
+      icon: "bolt", title: "What your systems only see together",
+      sub: "live joins across your MCP servers — askMElah reads them side by side; no single tool could",
+      body: b => {
+        const grid = el("div", "ins-grid");
+        p.chains.filter(c => c.insight).forEach(c => {
+          const ins = c.insight;
+          const panel = el("button", "ins-panel");
+          const top = el("div", "ins-top");
+          (ins.sources || []).forEach((s, i) => {
+            if (i) top.appendChild(el("span", "plus", "+"));
+            top.appendChild(srvGlyph(s, 17));
+          });
+          top.appendChild(el("span", "ins-tag", "⚡ joined insight"));
+          panel.appendChild(top);
+          panel.appendChild(el("div", "ins-h", ins.headline));
+          panel.appendChild(el("div", "ins-d", ins.detail));
+          panel.appendChild(el("div", "ins-go", "Explore in chat →"));
+          panel.addEventListener("click", () => {
+            addUserMsg("Explore this cross-system insight");
+            agentReply({
+              thinkMs: 650,
+              tools: (ins.sources || []).slice(0, 3).map((s, i) => ({
+                server: s, tool: SERVERS[s] ? SERVERS[s].tools[0] : "read", args: "period=Q3 FY26",
+                result: i === 0 ? "baseline pulled" : "joined on shared keys", ms: 360 + i * 150,
+              })),
+              text: "Here's the full picture — each of these systems is blind to the others, so this only exists in the join:",
+              insight: ins,
+              actions: [{
+                label: "Run the workflow behind it",
+                run: btn => { btn.classList.add("done"); btn.textContent = "✓ Running"; runChain(c); },
+              }],
+            });
+          });
+          makeDraggable(panel, { type: "chain", label: "Workflow: " + c.name, data: c });
+          grid.appendChild(panel);
+        });
+        b.appendChild(grid);
+      },
+      foot: "click an insight for the evidence trail, or ask “what insights can you see across my systems?”",
+    }));
+  }
 
   /* schedule */
   cv.appendChild(card(4, {
