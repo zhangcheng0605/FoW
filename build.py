@@ -54,6 +54,10 @@ def load_data() -> str:
 
 def build() -> None:
     style = read(SRC / "style.css")
+    css_dir = SRC / "css"
+    if css_dir.exists():
+        for extra in sorted(css_dir.glob("*.css")):
+            style += "\n\n/* == " + extra.name + " == */\n" + read(extra)
     body = read(SRC / "body.html")
     script_names = [
         "logos.js", "logos-custom.js", "avatars.js",  # brand marks + avatars load first
@@ -64,6 +68,9 @@ def build() -> None:
         for name in script_names
         if (SRC / "js" / name).exists()
     )
+    # per-persona studio renderers (studio-<id>.js) load after the core
+    for extra in sorted((SRC / "js").glob("studio-*.js")):
+        scripts += "\n" + read(extra)
     data = load_data()
     news_file = SRC / "data" / "news.json"
     if news_file.exists():

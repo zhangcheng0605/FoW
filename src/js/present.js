@@ -201,9 +201,9 @@ function prScript() {
     await psleep(4600);
   });
 
-  /* 1 · hero */
+  /* 1 · hero (grid) or marquee/signature hero (studio) */
   add(async () => {
-    const hero = $(".hero");
+    const hero = $(".hero") || $(".st-marquee") || $(".st-hero") || $(".st-sec");
     await prScrollTo(hero);
     prSpotlight(hero);
     showBeat("hero");
@@ -227,9 +227,9 @@ function prScript() {
     await psleep(5800);
   });
 
-  /* 3 · trend chart + crosshair sweep */
+  /* 3 · trend chart (grid) or the joined chapter (studio) + crosshair sweep */
   add(async () => {
-    const card = $$(".card").find(c => c.dataset.span === "8");
+    const card = $$(".card").find(c => c.dataset.span === "8") || $(".st-join") || $(".joined-card");
     if (!card) return;
     await prScrollTo(card);
     prSpotlight(card);

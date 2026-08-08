@@ -519,9 +519,14 @@ function greeting() {
 function renderCanvas() {
   const p = FOW.data();
   const cv = $("#canvas");
-  const studio = !!(p && p.personaId === "marketing");
-  cv.classList.toggle("studio", studio);
-  if (studio) { renderStudio(p, cv); return; }
+  /* per-persona studio renderers: marketing is built in; others load from studio-<id>.js */
+  let studioFn = null;
+  if (p) {
+    if (p.personaId === "marketing") studioFn = renderStudio;
+    else { try { studioFn = window["renderStudio_" + p.personaId] || null; } catch (_) { } }
+  }
+  cv.className = studioFn ? "studio studio-" + p.personaId : "";
+  if (studioFn) { studioFn(p, cv); updateBadges(); return; }
   clearCharts();
   state.cardIndex = 0;
   cv.textContent = "";

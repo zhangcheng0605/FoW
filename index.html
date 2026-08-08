@@ -3688,9 +3688,14 @@ function greeting() {
 function renderCanvas() {
   const p = FOW.data();
   const cv = $("#canvas");
-  const studio = !!(p && p.personaId === "marketing");
-  cv.classList.toggle("studio", studio);
-  if (studio) { renderStudio(p, cv); return; }
+  /* per-persona studio renderers: marketing is built in; others load from studio-<id>.js */
+  let studioFn = null;
+  if (p) {
+    if (p.personaId === "marketing") studioFn = renderStudio;
+    else { try { studioFn = window["renderStudio_" + p.personaId] || null; } catch (_) { } }
+  }
+  cv.className = studioFn ? "studio studio-" + p.personaId : "";
+  if (studioFn) { studioFn(p, cv); updateBadges(); return; }
   clearCharts();
   state.cardIndex = 0;
   cv.textContent = "";
@@ -5042,9 +5047,9 @@ function prScript() {
     await psleep(4600);
   });
 
-  /* 1 · hero */
+  /* 1 · hero (grid) or marquee/signature hero (studio) */
   add(async () => {
-    const hero = $(".hero");
+    const hero = $(".hero") || $(".st-marquee") || $(".st-hero") || $(".st-sec");
     await prScrollTo(hero);
     prSpotlight(hero);
     showBeat("hero");
@@ -5068,9 +5073,9 @@ function prScript() {
     await psleep(5800);
   });
 
-  /* 3 · trend chart + crosshair sweep */
+  /* 3 · trend chart (grid) or the joined chapter (studio) + crosshair sweep */
   add(async () => {
-    const card = $$(".card").find(c => c.dataset.span === "8");
+    const card = $$(".card").find(c => c.dataset.span === "8") || $(".st-join") || $(".joined-card");
     if (!card) return;
     await prScrollTo(card);
     prSpotlight(card);
