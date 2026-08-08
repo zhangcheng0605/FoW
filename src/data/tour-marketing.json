@@ -1,0 +1,46 @@
+{
+  "personaId": "marketing",
+  "question": "Generate 3 hero concepts for the National Day teaser",
+  "beats": {
+    "intro": {
+      "title": "Meet Chloe Tan",
+      "text": "Creative & Marketing Lead, Mediacorp. National Day eve, 42 assets shipping this weekend, and every tool she owns — Monday, Higgsfield, Adobe — awake in one workspace."
+    },
+    "hero": {
+      "title": "The day, pre-briefed",
+      "text": "Hero film locks at 16:30, the mewatch premiere is fixed at 18:00, and 24 overnight Higgsfield concepts wait for a shortlist. The workspace leads with what matters."
+    },
+    "kpis": {
+      "title": "Four numbers, live",
+      "text": "Reach 38.6M, up 15%. Velocity 142 assets a week — 4.1x. Cost per asset S$166, down 79%. Engagement 4.8%. Straight from Salesforce and Monday."
+    },
+    "chart": {
+      "title": "Output up, cost down",
+      "text": "Assets shipped versus production cost, month by month. Output 4x since September; cost per asset from S$797 to S$166 once Higgsfield batching went live."
+    },
+    "ask": {
+      "title": "Ask for three concepts",
+      "text": "Chloe types the brief. Higgsfield renders three on-brand hero concepts in 41 seconds — palette, type lockup, 16:9 masters, all against the NDP26 kit."
+    },
+    "delegate": {
+      "title": "Delegate the shot-list",
+      "text": "One click: assemble the teaser shortlist. It reads the Monday board, batches Higgsfield renders, and hands Farah three picks before the 10:30 review."
+    },
+    "autopilot": {
+      "title": "Approvals on autopilot",
+      "text": "Flip the switch. In-policy items like Farah's S$6,800 Adobe Stock top-up clear themselves; the S$126,500 Wunderfolk SOW still waits for Chloe."
+    },
+    "mcp": {
+      "title": "Plugged into everything",
+      "text": "Under the hood: live connections to Monday, Higgsfield, Adobe, Salesforce and more. Every render and every number traces back to a real system call."
+    },
+    "recap": {
+      "title": "Friday, in one click",
+      "text": "The week recap writes itself — shortlist delivered, 42 assets queued, channel brief drafted for Grace. The wrap-up stops being a Friday-night job."
+    },
+    "outro": {
+      "title": "More craft, less chasing",
+      "text": "Chloe walks into the 16:30 sign-off with everything locked by lunch. That's the point: the copilot batches and chases, she directs."
+    }
+  }
+}

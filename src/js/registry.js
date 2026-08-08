@@ -24,6 +24,10 @@ const SERVERS = {
   github:     { name: "GitHub",          color: "#8b949e", glyph: "GH", tools: ["list_prs", "get_actions_status", "search_code"] },
   zoom:       { name: "Zoom",            color: "#2d8cff", glyph: "Z",  tools: ["list_recordings", "get_transcript", "schedule_meeting"] },
   greenhouse: { name: "Greenhouse",      color: "#3ab549", glyph: "GR", tools: ["list_candidates", "pipeline_report", "schedule_interview"] },
+  monday:     { name: "Monday.com",      color: "#ff3d57", glyph: "M",  tools: ["get_boards", "get_items", "update_item", "create_item"] },
+  higgsfield: { name: "Higgsfield",      color: "#8b5cf6", glyph: "HF", tools: ["generate_image_batch", "generate_video_batch", "jobs_wait", "show_generations"] },
+  adobe:      { name: "Adobe CC",        color: "#fa0f00", glyph: "Cc", tools: ["search_assets", "export_render", "sync_library"] },
+  cna:        { name: "CNA Newsroom",    color: "#c0161d", glyph: "CNA", tools: ["top_stories", "search_articles", "get_article"] },
 };
 
 const PERSONAS = [
@@ -33,6 +37,7 @@ const PERSONAS = [
   { id: "it",          name: "Marcus Webb",     role: "IT Operations Manager", dept: "IT",               tag: "Incidents, uptime & access",     accent: "#0891b2", initials: "MW", loc: "Singapore" },
   { id: "legal",       name: "Sofia Reyes",     role: "Senior Legal Counsel",  dept: "Legal",            tag: "Contracts, matters & risk",      accent: "#7c3aed", initials: "SR", loc: "New York" },
   { id: "sales",       name: "Jonas Lindqvist", role: "Enterprise Sales Mgr",  dept: "Sales",            tag: "Pipeline, quota & accounts",     accent: "#2563eb", initials: "JL", loc: "Stockholm" },
+  { id: "marketing",   name: "Chloe Tan",       role: "Creative & Mktg Lead",  dept: "Brand & Creative", tag: "Campaigns, content & creative",  accent: "#c026d3", initials: "CT", loc: "Singapore" },
 ];
 
 /* Mediacorp mark — folded-ribbon M, approximated inline (POC) */

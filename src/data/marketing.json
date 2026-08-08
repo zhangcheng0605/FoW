@@ -1,0 +1,568 @@
+{
+  "personaId": "marketing",
+  "user": {
+    "name": "Chloe Tan",
+    "role": "Creative & Marketing Lead",
+    "dept": "Brand & Creative",
+    "location": "Singapore",
+    "initials": "CT"
+  },
+  "focus": {
+    "headline": "National Day hero film locks today — Grace Yeo signs off at 16:30 and the mewatch premiere slot is fixed at 18:00.",
+    "sub": "42 assets ship across 5 platforms this weekend; Higgsfield batch #1284 delivered 24 teaser concepts overnight, shortlist due to Farah by 10:30."
+  },
+  "connections": ["monday", "higgsfield", "adobe", "gdrive", "gmail", "gcal", "slack", "salesforce"],
+  "skills": [
+    {
+      "id": "concept-batcher",
+      "name": "Concept Batcher",
+      "desc": "Turns Monday campaign briefs into Higgsfield image and video batches",
+      "icon": "🎨",
+      "lastRun": "Today 06:40",
+      "runs": 183
+    },
+    {
+      "id": "campaign-pulse",
+      "name": "Campaign Pulse",
+      "desc": "Pulls reach, engagement and spend pacing across channels from Salesforce",
+      "icon": "📈",
+      "lastRun": "Today 07:15",
+      "runs": 241
+    },
+    {
+      "id": "asset-librarian",
+      "name": "Asset Librarian",
+      "desc": "Tags fresh renders with campaign metadata and files them to Drive and Adobe CC",
+      "icon": "🗂️",
+      "lastRun": "Today 06:55",
+      "runs": 328
+    }
+  ],
+  "automations": [
+    {
+      "name": "Overnight concept batch",
+      "schedule": "Daily 02:00",
+      "desc": "Runs Higgsfield image batches from the day's Monday briefs and files renders to Drive",
+      "lastResult": "24 images rendered · Today 06:42"
+    },
+    {
+      "name": "Content calendar digest",
+      "schedule": "Mon 08:00",
+      "desc": "Posts the week's publishing calendar and asset owners to #brand-creative in Slack",
+      "lastResult": "Posted to #brand-creative · Mon 08:00"
+    },
+    {
+      "name": "Boosted spend pacing alert",
+      "schedule": "Daily 09:00",
+      "desc": "Flags campaigns pacing behind reach target in Salesforce and emails the media planner",
+      "lastResult": "1 alert: EPL launch at 96% · Yesterday 09:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "k1",
+      "label": "Campaign reach (monthly)",
+      "value": "38.6M",
+      "delta": "+15%",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs July",
+      "spark": [21.4, 22.1, 23.5, 26.8, 22.9, 23.4, 24.8, 25.6, 27.2, 29.8, 33.5, 38.6],
+      "note": "National Day weekend still to land — 40M monthly target is in reach for the first time",
+      "source": "salesforce"
+    },
+    {
+      "id": "k2",
+      "label": "Content velocity",
+      "value": "142 /wk",
+      "delta": "+4.1x",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs Sep FY26",
+      "spark": [35, 39, 45, 41, 56, 69, 81, 95, 108, 122, 135, 142],
+      "note": "68% of assets now genAI-assisted via Higgsfield; craft work stays in Adobe CC",
+      "source": "monday"
+    },
+    {
+      "id": "k3",
+      "label": "Cost per asset",
+      "value": "S$166",
+      "delta": "-79%",
+      "deltaDir": "down",
+      "deltaGood": true,
+      "vs": "vs Sep FY26",
+      "spark": [797, 733, 656, 593, 492, 389, 319, 266, 230, 198, 187, 166],
+      "note": "Concept and cutdown work moved to Higgsfield batches; agency spend held for hero films only",
+      "source": "higgsfield"
+    },
+    {
+      "id": "k4",
+      "label": "Engagement rate",
+      "value": "4.8%",
+      "delta": "+0.6 pts",
+      "deltaDir": "up",
+      "deltaGood": true,
+      "vs": "vs Q2 avg",
+      "spark": [3.1, 3.2, 3.4, 3.6, 3.5, 3.7, 3.9, 4.0, 4.2, 4.4, 4.6, 4.8],
+      "note": "TikTok-first cutdowns lifted the blend; ND teaser is running at 6.2%",
+      "source": "salesforce"
+    }
+  ],
+  "trend": {
+    "title": "Content output vs production cost",
+    "subtitle": "Assets shipped and total production cost, Sep FY26 to date",
+    "unit": "assets / S$K",
+    "series": [
+      {
+        "name": "Assets shipped",
+        "points": [148, 165, 189, 172, 236, 288, 342, 398, 452, 511, 568, 590]
+      },
+      {
+        "name": "Production cost (S$K)",
+        "points": [118, 121, 124, 102, 116, 112, 109, 106, 104, 101, 106, 98]
+      }
+    ],
+    "insight": "Output is up 4x since September while total production cost fell 17% — cost per asset dropped from S$797 to S$166 after Higgsfield batching went live in January.",
+    "source": "monday"
+  },
+  "donut": {
+    "title": "Media spend by channel (Jul)",
+    "unit": "%",
+    "segments": [
+      {"label": "Social (IG & TikTok)", "value": 28},
+      {"label": "Digital video (YouTube)", "value": 22},
+      {"label": "mewatch & CNA O&O", "value": 18},
+      {"label": "Search & display", "value": 14},
+      {"label": "Broadcast cross-promo", "value": 11},
+      {"label": "OOH & events", "value": 7}
+    ],
+    "insight": "Social crossed a quarter of paid spend for the first time; O&O inventory on mewatch and CNA keeps blended CPM 22% under market.",
+    "source": "salesforce"
+  },
+  "bars": {
+    "title": "Q3 campaign reach vs target",
+    "unit": "M",
+    "categories": ["National Day — Majulah Weekend", "mewatch EPL season launch", "CNA Insight refresh", "Channel 5 'Kin' finale", "mewatch Originals Q3 slate", "Class 95 Drive Home refresh"],
+    "series": [
+      {
+        "name": "Reach",
+        "values": [12.4, 8.6, 5.2, 4.8, 6.4, 3.1]
+      },
+      {
+        "name": "Target",
+        "values": [10.0, 9.0, 4.5, 4.0, 6.0, 3.0]
+      }
+    ],
+    "insight": "National Day is at 124% of target with the long weekend still to come; EPL launch trails at 96% — Daniel's S$48K boosted top-up closes the gap if approved today.",
+    "source": "salesforce"
+  },
+  "heatmap": {
+    "title": "Publishing calendar — assets shipped by platform",
+    "unit": "assets",
+    "rows": ["mewatch", "CNA digital", "Instagram", "TikTok", "YouTube"],
+    "cols": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [
+      [22, 24, 26, 30, 25, 27, 31, 34, 38, 42, 47, 52],
+      [48, 52, 55, 50, 54, 58, 62, 66, 71, 75, 82, 88],
+      [34, 38, 42, 46, 44, 52, 61, 72, 84, 95, 108, 121],
+      [18, 22, 28, 33, 38, 47, 58, 71, 86, 99, 114, 132],
+      [12, 13, 15, 17, 14, 16, 19, 22, 25, 28, 31, 36]
+    ],
+    "insight": "TikTok output is up 7.3x since September on genAI cutdowns; August is front-loaded with the National Day weekend drop.",
+    "source": "monday"
+  },
+  "goals": [
+    {"label": "Hit 40M monthly campaign reach", "pct": 96, "detail": "38.6M in August to date with the ND weekend still to land"},
+    {"label": "Sustain 150 assets/week velocity", "pct": 95, "detail": "142/week trailing 4 weeks, up from 35 in September"},
+    {"label": "Cut cost per asset below S$150", "pct": 80, "detail": "S$166 August to date, down from S$797 in September"},
+    {"label": "Migrate 60K assets to the new Drive taxonomy", "pct": 70, "detail": "41,800 of 60,000 assets tagged and moved"}
+  ],
+  "meetings": [
+    {
+      "time": "09:00",
+      "dur": "30m",
+      "title": "Creative stand-up — ND weekend run-through",
+      "platform": "zoom",
+      "attendees": ["Priya Nair", "Farah Rahman", "Jason Ng"],
+      "agenda": "Final checklist for the 42-asset National Day drop; publishing owners per platform"
+    },
+    {
+      "time": "10:30",
+      "dur": "45m",
+      "title": "Higgsfield concept review — ND teaser refresh",
+      "platform": "zoom",
+      "attendees": ["Farah Rahman", "Nurul Huda"],
+      "agenda": "Shortlist 3 of 24 overnight concepts from batch #1284 for tonight's premiere slot"
+    },
+    {
+      "time": "12:30",
+      "dur": "30m",
+      "title": "Media pacing check with Daniel",
+      "platform": "zoom",
+      "attendees": ["Daniel Koh"],
+      "agenda": "EPL launch trailing at 96% of reach target; boosted top-up decision"
+    },
+    {
+      "time": "14:30",
+      "dur": "45m",
+      "title": "mewatch EPL season launch war room",
+      "platform": "teams",
+      "attendees": ["Aravind Menon", "Daniel Koh", "Samantha D'Cruz"],
+      "agenda": "Wunderfolk launch films status, SOW countersign, paid plan for opening weekend"
+    },
+    {
+      "time": "16:30",
+      "dur": "30m",
+      "title": "ND hero film sign-off with Grace",
+      "platform": "zoom",
+      "attendees": ["Grace Yeo", "Marcus Lim"],
+      "agenda": "Final cut approval before the 18:00 mewatch premiere lock"
+    }
+  ],
+  "inbox": [
+    {
+      "id": "m1",
+      "from": "Grace Yeo",
+      "source": "gmail",
+      "subject": "Hero film — final comments before 16:30",
+      "preview": "Chloe — two notes on the closing montage: the Marina Bay drone shot runs a beat long and...",
+      "time": "8:05 AM",
+      "urgent": true,
+      "unread": true
+    },
+    {
+      "id": "m2",
+      "from": "Higgsfield",
+      "source": "higgsfield",
+      "subject": "Batch #1284 complete: 24 of 24 images rendered",
+      "preview": "Your batch 'ND teaser refresh v3' finished overnight — 24 concepts are ready for review in...",
+      "time": "6:42 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m3",
+      "from": "Priya Nair",
+      "source": "slack",
+      "subject": "TikTok teaser hit 812K views in 14 hours",
+      "preview": "The kampung-to-skyline transition cut is outperforming the hero cut 3:1 — want me to swap...",
+      "time": "8:27 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m4",
+      "from": "monday.com",
+      "source": "monday",
+      "subject": "NDP26 board: 6 items due before Saturday",
+      "preview": "Board 'NDP26 — Majulah Weekend' has 6 items due Aug 9: hero film QC, IG carousel, TikTok...",
+      "time": "7:30 AM",
+      "urgent": false,
+      "unread": false
+    },
+    {
+      "id": "m5",
+      "from": "Daniel Koh",
+      "source": "gmail",
+      "subject": "EPL boosted top-up — need your call today",
+      "preview": "We're pacing 96% to the reach target. S$48K across IG and TikTok closes the gap if it's live by...",
+      "time": "8:39 AM",
+      "urgent": false,
+      "unread": true
+    },
+    {
+      "id": "m6",
+      "from": "Wei Ling Chua",
+      "source": "gmail",
+      "subject": "Class 95 presenter usage renewal expires Aug 31",
+      "preview": "The OOH bus-sides come down unless we renew the talent usage terms — the DocuSign is with...",
+      "time": "7:52 AM",
+      "urgent": false,
+      "unread": false
+    }
+  ],
+  "approvals": [
+    {
+      "id": "a1",
+      "type": "Media spend",
+      "title": "EPL launch boosted-media top-up — IG & TikTok",
+      "requester": "Daniel Koh",
+      "amount": "S$48,000",
+      "meta": "Closes the 4% reach gap · must be live by Aug 10 for opening weekend",
+      "source": "monday",
+      "urgency": "high"
+    },
+    {
+      "id": "a2",
+      "type": "Agency SOW",
+      "title": "Wunderfolk Studio — EPL launch films (3 × 30s)",
+      "requester": "Samantha D'Cruz",
+      "amount": "S$126,500",
+      "meta": "Fixed fee · delivery Aug 21 · MSA rate card applies",
+      "source": "docusign",
+      "urgency": "med"
+    },
+    {
+      "id": "a3",
+      "type": "Usage rights",
+      "title": "Class 95 presenter talent renewal — OOH bus-sides",
+      "requester": "Wei Ling Chua",
+      "amount": "S$21,600",
+      "meta": "12-month extension · current term ends Aug 31",
+      "source": "docusign",
+      "urgency": "med"
+    },
+    {
+      "id": "a4",
+      "type": "Budget",
+      "title": "Adobe Stock credit top-up — 5,000 credits",
+      "requester": "Farah Rahman",
+      "amount": "S$6,800",
+      "meta": "Craft assets genAI doesn't cover · ~2 quarters at current burn",
+      "source": "adobe",
+      "urgency": "low"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "BRND-412",
+      "title": "QC and schedule the 42-asset National Day weekend drop",
+      "due": "Aug 8",
+      "status": "inprogress",
+      "priority": "P1",
+      "source": "monday"
+    },
+    {
+      "id": "BRND-418",
+      "title": "Shortlist 3 of 24 Higgsfield teaser concepts for Farah",
+      "due": "Aug 8",
+      "status": "todo",
+      "priority": "P1",
+      "source": "higgsfield"
+    },
+    {
+      "id": "BRND-403",
+      "title": "Class 95 talent renewal — clear legal redlines with Wei Ling",
+      "due": "Aug 11",
+      "status": "blocked",
+      "priority": "P2",
+      "source": "docusign"
+    },
+    {
+      "id": "BRND-396",
+      "title": "Draft August channel performance brief for Grace",
+      "due": "Aug 13",
+      "status": "review",
+      "priority": "P2",
+      "source": "gdrive"
+    },
+    {
+      "id": "BRND-407",
+      "title": "Tag July hero assets into the new Drive taxonomy",
+      "due": "Aug 14",
+      "status": "inprogress",
+      "priority": "P3",
+      "source": "gdrive"
+    }
+  ],
+  "suggestions": [
+    "How is the National Day campaign pacing?",
+    "Generate 3 hero concepts for the National Day teaser",
+    "Summarize channel performance for Grace",
+    "What ships this weekend across our channels?",
+    "How much has genAI cut our cost per asset?",
+    "Should I approve the EPL boosted-media top-up?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1",
+      "label": "ND campaign pulse",
+      "triggers": ["national day", "majulah", "pacing", "how is the", "campaign", "ndp"],
+      "toolCalls": [
+        {
+          "server": "monday",
+          "tool": "get_board_items",
+          "args": "board=NDP26 — Majulah Weekend",
+          "result": "38 items · 6 due Aug 9",
+          "ms": 520
+        },
+        {
+          "server": "salesforce",
+          "tool": "get_campaign_metrics",
+          "args": "campaign=NDP26&period=QTD",
+          "result": "12.4M reach · 124% of target",
+          "ms": 640
+        },
+        {
+          "server": "gdrive",
+          "tool": "get_file",
+          "args": "file=NDP26_Media_Plan_v4.gsheet",
+          "result": "plan v4 · 42 weekend assets",
+          "ms": 310
+        }
+      ],
+      "response": "The National Day campaign is your strongest of the year — **12.4M reach against a 10.0M target (124%)**, and the long weekend hasn't even landed yet.\n\n{{chart:bars}}\n\n- **Engagement is running at 6.2%** on ND content vs your 4.8% blend — the kampung-to-skyline TikTok teaser did **812K views in 14 hours** and is beating the hero cut 3:1.\n- **42 assets are queued for the weekend drop**: 12 TikTok, 10 IG, 8 mewatch, 7 YouTube, 5 CNA digital.\n- **6 Monday items are still due before Saturday**, including hero film QC — that clears once Grace signs off at 16:30.\n- No extra paid spend needed; organic momentum is carrying it.\n\n> Recommended: take Priya's suggestion and swap the transition cut into the paid rotation tonight — it is outperforming at zero incremental cost.",
+      "actions": [
+        {
+          "label": "Swap teaser in paid rotation",
+          "toast": "Change request sent to Daniel Koh in Slack"
+        },
+        {
+          "label": "Post pacing update to #brand-creative",
+          "toast": "Pacing summary posted to #brand-creative in Slack"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "label": "Generate hero concepts",
+      "triggers": ["generate", "hero concepts", "teaser concepts", "create images", "concepts for", "higgsfield"],
+      "toolCalls": [
+        {
+          "server": "higgsfield",
+          "tool": "generate_image_batch",
+          "args": "prompts=3 × ND teaser hero · style=NDP26 brand kit · ar=16:9",
+          "result": "batch #1291 queued · 3 jobs",
+          "ms": 860
+        },
+        {
+          "server": "higgsfield",
+          "tool": "jobs_wait",
+          "args": "batch=#1291",
+          "result": "3 of 3 rendered · 41s",
+          "ms": 41200
+        }
+      ],
+      "response": "## 3 hero concepts — National Day teaser\nRendered against the NDP26 brand kit (red/white palette, Majulah type lockup, 16:9 masters).\n\n{{gen:images}}\n\n1. **\"Dawn over the Bay\"** — drone pullback from a HDB corridor flag line to the full skyline at first light; warmest fit with the hero film's closing montage.\n2. **\"Every Voice\"** — split-frame mosaic of faces mid-song, kampung archival texture blended with present-day crowd shots.\n3. **\"Red Thread\"** — a single red ribbon travelling through playgrounds, hawker centres and the Padang, tying into the parade finale.\n\nAll three are on-palette and safe for the 18:00 premiere slot; concept 1 matches the drone shot Grace flagged this morning, so it doubles as cover if the montage gets trimmed.\n\n> Recommended: send 1 and 3 to Farah for motion passes before your 10:30 — 2 needs archival clearance that won't land today.",
+      "actions": [
+        {
+          "label": "Send shortlist to Farah",
+          "toast": "Concepts 1 and 3 shared with Farah Rahman in Slack"
+        },
+        {
+          "label": "Save batch to Drive",
+          "toast": "3 masters filed to Drive › NDP26 › Teaser_Concepts"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "label": "Channel performance brief",
+      "triggers": ["channel performance", "summarize", "brief for grace", "engagement", "performance brief", "channels"],
+      "toolCalls": [
+        {
+          "server": "salesforce",
+          "tool": "get_campaign_report",
+          "args": "report=channel_performance&period=Aug MTD",
+          "result": "38.6M reach · 4.8% engagement",
+          "ms": 680
+        },
+        {
+          "server": "monday",
+          "tool": "get_board_summary",
+          "args": "board=FY26 Publishing Calendar",
+          "result": "429 assets shipped MTD pace",
+          "ms": 450
+        },
+        {
+          "server": "gmail",
+          "tool": "create_draft",
+          "args": "to=grace.yeo@mediacorp.com.sg",
+          "result": "draft saved with 1 attachment",
+          "ms": 540
+        }
+      ],
+      "response": "## August channel brief — drafted for Grace\nReach is at **38.6M month-to-date, +15% on July**, and the 40M monthly goal should fall over the ND weekend.\n\n{{kpis}}\n\n|Channel|Reach|Engagement|\n|---|---|---|\n|TikTok|11.2M|6.1%|\n|Instagram|9.4M|5.2%|\n|mewatch|7.8M|4.4%|\n|YouTube|6.1M|3.9%|\n|CNA digital|4.1M|3.4%|\n\n{{chart:donut}}\n\n- Social is now **28% of paid spend** and returns the top two engagement rates.\n- O&O inventory on mewatch and CNA keeps blended CPM **22% under market** — worth a line in the brief.\n- The one soft spot is the EPL launch at 96% of target; the brief flags Daniel's S$48K top-up as the fix.\n\n> Recommended: send before your 16:30 so Grace reads the numbers ahead of the hero film sign-off.",
+      "actions": [
+        {
+          "label": "Open draft in Gmail",
+          "toast": "Draft opened in Gmail — channel report attached"
+        },
+        {
+          "label": "File brief to Drive",
+          "toast": "Brief saved to Drive › Brand & Creative › Monthly briefs"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "label": "Weekend publishing plan",
+      "triggers": ["weekend", "publish", "schedule", "calendar", "ships", "what's scheduled"],
+      "toolCalls": [
+        {
+          "server": "monday",
+          "tool": "get_calendar_items",
+          "args": "board=FY26 Publishing Calendar&range=Aug 8-10",
+          "result": "42 assets · 5 platforms",
+          "ms": 490
+        },
+        {
+          "server": "gcal",
+          "tool": "list_events",
+          "args": "calendar=Brand & Creative&range=Aug 8-10",
+          "result": "3 publish windows · 1 on-call rota",
+          "ms": 350
+        }
+      ],
+      "response": "**42 assets ship across 5 platforms between tonight and Sunday.** Here's the shape of the weekend:\n\n{{chart:heatmap}}\n\n**Tonight (Fri)** — hero film premieres on mewatch at 20:00 after the 18:00 lock, with a Channel 5 simulcast promo trail.\n\n**Saturday, Aug 9 (National Day)**\n- **TikTok ×12** — countdown stings from 08:00, transition cut pinned during the parade window\n- **Instagram ×10** — carousel at 09:00, Stories through the day, Reels post-fireworks\n- **mewatch ×8** — hero film placement plus curated ND collection rail\n- **YouTube ×7** — hero film full-length at 10:00, cutdowns staggered\n- **CNA digital ×5** — picture essay and parade live-blog embeds\n\n**Sunday** — thank-you post and UGC roundup, pending Priya's curation.\n\nJason Ng holds the on-call publishing rota; escalation is you, then Marcus Lim.\n\n> Recommended: the 6 open QC items on the NDP26 board must clear by 18:00 — everything downstream is already scheduled.",
+      "actions": [
+        {
+          "label": "Send rota reminder to Jason",
+          "toast": "Reminder sent to Jason Ng in Slack"
+        },
+        {
+          "label": "Export weekend schedule",
+          "toast": "Schedule exported to Drive as NDP26_Weekend_RunOfShow.pdf"
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "label": "GenAI cost story",
+      "triggers": ["cost per asset", "genai", "savings", "velocity", "production cost", "output"],
+      "toolCalls": [
+        {
+          "server": "higgsfield",
+          "tool": "get_usage_report",
+          "args": "period=Sep FY26-Aug FY26",
+          "result": "3,840 renders · 68% of assets",
+          "ms": 610
+        },
+        {
+          "server": "adobe",
+          "tool": "get_asset_metrics",
+          "args": "library=Brand & Creative&period=FY26",
+          "result": "1,780 craft masters published",
+          "ms": 480
+        },
+        {
+          "server": "monday",
+          "tool": "get_board_summary",
+          "args": "board=FY26 Production Budget",
+          "result": "S$1.32M spent vs S$1.58M plan",
+          "ms": 430
+        }
+      ],
+      "response": "The genAI shift is the strongest efficiency story in the department. **Output is up 4x since September while total production cost fell 17%.**\n\n{{chart:trend}}\n\n| |Sep FY26|Aug FY26|\n|---|---|---|\n|Assets shipped / month|148|590|\n|Cost per asset|S$797|S$166|\n|GenAI-assisted share|9%|68%|\n|Content velocity|35 /wk|142 /wk|\n\nHow it splits:\n- **Higgsfield** now carries concepts, cutdowns and social variants — 3,840 renders FY26, most of the volume growth.\n- **Adobe CC** stays the craft layer: 1,780 hero and broadcast masters, unchanged headcount.\n- **Agency spend is reserved for hero films only** — down 31% YoY, and the Wunderfolk EPL SOW is the model: 3 hero films from them, all cutdowns in-house.\n\nProduction is tracking **S$260K under the FY26 plan** with one month left.\n\n> Recommended: this table is board-ready — drop it into Grace's August brief as the efficiency slide.",
+      "actions": [
+        {
+          "label": "Add to Grace's brief",
+          "toast": "Efficiency section added to the August brief in Drive"
+        },
+        {
+          "label": "Share in #brand-creative",
+          "toast": "Cost-per-asset story posted to #brand-creative in Slack"
+        }
+      ]
+    }
+  ],
+  "activity": [
+    "Higgsfield · Batch #1284 (24 images) completed overnight — 'ND teaser refresh v3'",
+    "Monday · Priya Nair moved 'IG carousel — Majulah Weekend' to Ready for QC",
+    "Adobe · Farah Rahman published 8 motion masters to the NDP26 library",
+    "Drive · NDP26_HeroFilm_v9_FINAL.mp4 uploaded by Jason Ng",
+    "Slack · Aravind Menon posted the EPL key art poll in #mewatch-epl",
+    "Salesforce · NDP26 campaign report refreshed — 12.4M reach, 124% of target",
+    "DocuSign · Wunderfolk SOW (S$126,500) awaiting your signature"
+  ]
+}

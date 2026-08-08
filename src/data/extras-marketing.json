@@ -1,0 +1,60 @@
+{
+  "personaId": "marketing",
+  "delegations": [
+    {
+      "id": "d1",
+      "label": "Assemble the ND teaser shot-list",
+      "detail": "Rank the 24 overnight concepts from Higgsfield batch #1284 against the NDP26 brief, queue motion passes for the top three and hand Farah the shortlist",
+      "steps": [
+        {"server": "monday", "tool": "get_board_items", "args": "board=NDP26 — Majulah Weekend&item=Teaser refresh", "result": "brief + 24 renders linked", "ms": 540},
+        {"server": "higgsfield", "tool": "generate_video_batch", "args": "refs=top 3 of batch #1284 · style=NDP26 brand kit", "result": "batch #1292 queued · 3 motion passes", "ms": 880},
+        {"server": "slack", "tool": "send_message", "args": "to=Farah Rahman", "result": "shortlist + motion links delivered", "ms": 460}
+      ],
+      "result": "Shortlist of 3 ('Dawn over the Bay' leading) with motion passes sent to Farah at 09:48 — 42 minutes ahead of the 10:30 concept review",
+      "artifact": null
+    },
+    {
+      "id": "d2",
+      "label": "Chase the Wunderfolk invoice",
+      "detail": "Run down the kickoff invoice on the S$126,500 EPL launch-films SOW, check it against the MSA rate card and file it for finance before the 14:30 war room",
+      "steps": [
+        {"server": "docusign", "tool": "get_envelope_status", "args": "envelope=Wunderfolk EPL SOW", "result": "executed · invoice 3 days overdue", "ms": 580},
+        {"server": "gmail", "tool": "send_message", "args": "to=producer@wunderfolk.studio, cc=Samantha D'Cruz", "result": "nudge sent with SOW reference", "ms": 470},
+        {"server": "gdrive", "tool": "upload_file", "args": "folder=Brand & Creative › Agency invoices", "result": "invoice verified vs MSA · filed", "ms": 390}
+      ],
+      "result": "Kickoff invoice for S$63,250 landed by 13:55, reconciled to the MSA rate card and filed 35 minutes before the EPL war room",
+      "artifact": "Wunderfolk_Invoice_50pct.pdf"
+    },
+    {
+      "id": "d3",
+      "label": "Compile the channel performance pack",
+      "detail": "Pull August reach and engagement from Salesforce, refresh the five-channel brief and stage the draft in Grace's inbox ahead of the 16:30 sign-off",
+      "steps": [
+        {"server": "salesforce", "tool": "get_campaign_report", "args": "report=channel_performance&period=Aug MTD", "result": "38.6M reach · 4.8% engagement", "ms": 680},
+        {"server": "gdrive", "tool": "update_doc", "args": "file=Aug_Channel_Performance_Brief", "result": "5-channel table + spend donut refreshed", "ms": 720},
+        {"server": "gmail", "tool": "create_draft", "args": "to=grace.yeo@mediacorp.com.sg", "result": "draft saved · 1 attachment", "ms": 540}
+      ],
+      "result": "Brief showing 38.6M reach (+15% on July) and the EPL 96% flag staged for Grace by 15:40 — read before the hero-film sign-off",
+      "artifact": "Aug_Channel_Performance_Brief.pdf"
+    }
+  ],
+  "week": {
+    "meetingHours": 14.0,
+    "focusHours": 13.0,
+    "meetingCost": "S$8,200",
+    "deepBlocks": 5,
+    "contextSwitches": 74,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [3.0, 2.5, 3.5, 2.0, 3.0],
+    "focus": [2.5, 3.0, 2.0, 3.5, 2.0],
+    "insight": "Friday stacks five National Day meetings around the 16:30 sign-off for two hours of focus — push concept reviews async into Monday during campaign weeks."
+  },
+  "files": [
+    {"name": "NDP26_HeroFilm_v9_FINAL.mp4", "source": "gdrive", "kind": "video", "modified": "Today 07:58", "by": "Jason Ng"},
+    {"name": "ND_Teaser_Batch1284_Contact_Sheet.pdf", "source": "higgsfield", "kind": "pdf", "modified": "Today 06:42", "by": "Concept Batcher"},
+    {"name": "Aug_Channel_Performance_Brief.gdoc", "source": "gdrive", "kind": "doc", "modified": "2h ago", "by": "Chloe Tan"},
+    {"name": "NDP26_Media_Plan_v4.gsheet", "source": "gdrive", "kind": "sheet", "modified": "Yesterday", "by": "Daniel Koh"},
+    {"name": "NDP26_Motion_Masters.aep", "source": "adobe", "kind": "project", "modified": "Today 06:55", "by": "Farah Rahman"},
+    {"name": "Wunderfolk_EPL_SOW.pdf", "source": "docusign", "kind": "pdf", "modified": "Aug 6", "by": "Samantha D'Cruz"}
+  ]
+}

@@ -27,7 +27,7 @@ const FOW = {
       const acts = $(".ap-acts", row); if (acts) acts.remove();
     }
     updateBadges();
-    if (celebrate) confetti();
+    if (celebrate) { confetti(); petReact("approve"); }
   },
 };
 window.FOW = FOW;
@@ -211,6 +211,7 @@ function renderCanvas() {
       $$("button", pulse).forEach(x => x.classList.remove("picked"));
       b.classList.add("picked");
       toast("Energy logged — visible only to you", "info");
+      if (mood === "running low" || mood === "flat") petReact("tired");
       agentReply({
         thinkMs: 350,
         text: mood === "running low" || mood === "flat"
@@ -431,6 +432,75 @@ function renderCanvas() {
     }));
   }
 
+  /* cross-app workflow chains */
+  if (p.chains && p.chains.length) {
+    cv.appendChild(card(6, {
+      cls: "chn-card",
+      icon: "bolt", title: "Cross-app workflows", sub: "data hops between systems via MCP — no swivel-chair",
+      body: b => {
+        p.chains.forEach(c => {
+          const it = el("div", "chn-item");
+          const top = el("div", "chn-top");
+          const bd = el("div");
+          bd.style.cssText = "flex:1;min-width:0";
+          bd.appendChild(el("div", "chn-name", c.name));
+          bd.appendChild(el("div", "chn-desc", c.desc));
+          top.appendChild(bd);
+          const run = el("button", "dg-btn", "▶ Run");
+          run.addEventListener("click", () => {
+            addUserMsg("Run cross-app workflow: " + c.name);
+            runChain(c);
+          });
+          top.appendChild(run);
+          it.appendChild(top);
+          const path = el("div", "chn-path");
+          c.steps.forEach((s, i) => {
+            if (i) path.appendChild(el("span", "hop", "➜"));
+            path.appendChild(srvGlyph(s.server, 20));
+          });
+          it.appendChild(path);
+          makeDraggable(it, { type: "chain", label: "Workflow: " + c.name, data: c });
+          b.appendChild(it);
+        });
+      },
+      foot: "each hop is a real MCP call — retrieved, transformed, filed, notified",
+    }));
+  }
+
+  /* CNA morning scan */
+  if (window.FOW_NEWS && FOW_NEWS.stories && FOW_NEWS.stories.length) {
+    const newsCard = card(6, {
+      cls: "news-card",
+      icon: "file", title: "Morning scan", sub: "from the CNA newsroom · demo headlines",
+      body: b => {
+        FOW_NEWS.stories.forEach((story, i) => {
+          const chip = { type: "news", label: story.headline, data: story };
+          let elm;
+          if (i === 0) {
+            elm = el("div", "nws-hero");
+            elm.appendChild(el("span", "cna-cat", story.cat));
+            elm.appendChild(el("div", "nws-head", story.headline));
+            elm.appendChild(el("div", "nws-sum", story.summary));
+            elm.appendChild(el("div", "nws-time", story.time + (story.hot ? " · developing" : "")));
+          } else {
+            elm = el("div", "nws-item");
+            elm.appendChild(el("span", "cna-cat", story.cat));
+            elm.appendChild(el("span", "nws-head2", story.headline));
+            elm.appendChild(el("span", "nws-time", story.time));
+          }
+          makeDraggable(elm, chip);
+          elm.addEventListener("click", () => { attachChip(chip); sendMessage("Give me the 20-second version"); });
+          b.appendChild(elm);
+        });
+      },
+      foot: "drag a story to askMElah for the 20-second version",
+    });
+    const ic = $(".ch-ico", newsCard);
+    ic.textContent = "CNA";
+    ic.classList.add("cna-ico");
+    cv.appendChild(newsCard);
+  }
+
   /* week in numbers */
   if (p.week) {
     const wk = p.week;
@@ -577,6 +647,7 @@ async function runDelegation(d, ui) {
     ui.bd.appendChild(a);
   }
   set[d.id] = "done";
+  petReact("delegate");
   toast("askMElah finished: " + d.label);
   agentReply({
     thinkMs: 250,
@@ -664,6 +735,7 @@ function applyTheme(dark) {
   t.textContent = "";
   t.appendChild(ico(dark ? "sun" : "moon"));
   rerenderCharts();
+  petReact(dark ? "sleep" : "wake");
 }
 function platformName(x) { return { teams: "Teams", zoom: "Zoom", meet: "Meet" }[x] || x; }
 function updateBadges() {
@@ -696,6 +768,7 @@ function selectPersona(id, first) {
   chatWelcome();
   $("#canvas").scrollTop = 0;
   if (!first) toast("Workspace re-shaped for " + meta.name + " — " + meta.dept, "info");
+  petWelcome(id);
 }
 
 /* ---------------- onboarding ---------------- */
@@ -800,6 +873,7 @@ function ckBuild(query) {
   const curName = state.personaId ? PERSONAS.find(x => x.id === state.personaId).name.split(" ")[0] : "this workspace";
   items.push({ sect: "Workspace", label: "Play highlights — " + curName + "'s story", icon: "▶", sub: "tour", run: () => startPresent(state.personaId) });
   items.push({ sect: "Workspace", label: "Open the MCP console", icon: "⌁", sub: "servers", run: () => mcpOpen() });
+  if (p) (p.chains || []).forEach(c => items.push({ sect: "Cross-app workflows", label: "Run: " + c.name, icon: "➜", sub: c.steps.length + " hops", run: () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); } }));
   if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askMElah", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });
   if (p) {
@@ -913,5 +987,6 @@ function init() {
   });
 
   $("#cdDrawer").hidden = true;
+  petBuild();
 }
 document.addEventListener("DOMContentLoaded", init);

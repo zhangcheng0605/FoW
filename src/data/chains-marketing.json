@@ -1,0 +1,113 @@
+{
+  "personaId": "marketing",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Ship the ND Teaser Batch",
+      "desc": "Pulls the teaser brief off the NDP26 board, renders a Higgsfield batch, files masters to Drive and Adobe, then closes the loop back on Monday and Slack",
+      "steps": [
+        {
+          "server": "monday",
+          "tool": "get_board_item",
+          "args": "board=NDP26 — Majulah Weekend&item=ND teaser refresh",
+          "result": "Item #4471 pulled · brief v3 attached, linked to BRND-418, due Aug 8",
+          "carry": "Brief v3 · item #4471",
+          "ms": 520
+        },
+        {
+          "server": "higgsfield",
+          "tool": "generate_image_batch",
+          "args": "prompts=brief v3 × 24 · style=NDP26 brand kit · ar=16:9 + 9:16",
+          "result": "Batch #1293 rendered · 24 of 24 concepts, 3 auto-flagged as shortlist candidates",
+          "carry": "Batch #1293 · 24 renders",
+          "ms": 1580
+        },
+        {
+          "server": "gdrive",
+          "tool": "upload_files",
+          "args": "folder=NDP26/Teaser_Concepts&tag=BRND-418",
+          "result": "24 masters filed as NDP26_Teaser_B1293_01-24 under the new Drive taxonomy",
+          "carry": "24 masters · B1293 filed",
+          "ms": 740
+        },
+        {
+          "server": "monday",
+          "tool": "update_item",
+          "args": "item=#4471&status=Ready for QC&assignee=Farah Rahman",
+          "result": "Item #4471 moved to Ready for QC · render links attached, BRND-418 auto-synced",
+          "carry": "#4471 · Ready for QC",
+          "ms": 460
+        },
+        {
+          "server": "slack",
+          "tool": "post_message",
+          "args": "channel=#brand-creative&mention=@farah",
+          "result": "Shortlist ping posted: 3 flagged concepts from batch #1293 queued for Farah's 10:30 review",
+          "carry": "Farah pinged · 10:30 review",
+          "ms": 410
+        }
+      ],
+      "outcome": "Batch #1293 rendered from the Monday brief, 24 masters filed to Drive under the NDP26 taxonomy, item #4471 sitting in Ready for QC, and Farah notified in #brand-creative — BRND-418 clears before the 10:30 concept review.",
+      "insight": {
+        "sources": ["monday", "higgsfield", "salesforce", "gdrive"],
+        "headline": "Higgsfield concepts hit 6.2% engagement at S$166 per asset — a fifth of the agency baseline",
+        "detail": "Joining Higgsfield batch metadata with Salesforce engagement and the Monday production budget shows genAI teaser cutdowns outperforming the 4.8% blend while costing S$166 versus the S$797 agency baseline. Higgsfield only knows render counts and Salesforce only knows performance — the cost-per-engagement story exists only in the join.",
+        "action": "Route all remaining ND cutdown briefs through the overnight batch and hold agency spend for the hero film."
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Reconcile EPL Spend vs Reach",
+      "desc": "Joins EPL launch reach from Salesforce with booked media spend in SAP and the Monday content calendar, files the reconciliation and briefs Daniel before the 12:30 pacing call",
+      "steps": [
+        {
+          "server": "salesforce",
+          "tool": "get_campaign_metrics",
+          "args": "campaign=mewatch EPL season launch&period=QTD",
+          "result": "8.6M reach vs 9.0M target (96%) · engagement 4.1%, IG and TikTok pacing softest",
+          "carry": "EPL · 8.6M vs 9.0M",
+          "ms": 640
+        },
+        {
+          "server": "sap",
+          "tool": "get_spend_actuals",
+          "args": "wbs=EPL-LAUNCH-FY26&period=Aug MTD",
+          "result": "S$412K of S$460K media budget committed · S$48K uncommitted matches Daniel's top-up ask",
+          "carry": "S$48K headroom · EPL WBS",
+          "ms": 580
+        },
+        {
+          "server": "monday",
+          "tool": "get_calendar_items",
+          "args": "board=FY26 Publishing Calendar&filter=EPL&status=late",
+          "result": "9 EPL assets slipped past plan date — Wunderfolk's 3 launch films (SOW S$126,500) land Aug 21",
+          "carry": "9 late assets · ~2.1% reach",
+          "ms": 490
+        },
+        {
+          "server": "gdrive",
+          "tool": "create_sheet",
+          "args": "folder=Brand & Creative/Pacing&name=EPL_Reach_Recon_Aug8",
+          "result": "EPL_Reach_Recon_Aug8.gsheet built · gap split: 2.1% content slippage vs 1.9% paid shortfall",
+          "carry": "Recon sheet · gap split",
+          "ms": 920
+        },
+        {
+          "server": "slack",
+          "tool": "send_message",
+          "args": "to=Daniel Koh&channel=dm",
+          "result": "Daniel briefed: recommend S$26K targeted top-up, not S$48K — recon sheet linked for the 12:30",
+          "carry": "Daniel briefed · 12:30 ready",
+          "ms": 430
+        }
+      ],
+      "outcome": "EPL reach, SAP spend and the Monday calendar reconciled into EPL_Reach_Recon_Aug8.gsheet in Drive, and Daniel Koh briefed in Slack with a right-sized S$26K recommendation ahead of the 12:30 pacing check.",
+      "insight": {
+        "sources": ["salesforce", "sap", "monday", "gdrive"],
+        "headline": "Over half the 4% EPL reach gap is late content, so S$26K — not S$48K — closes it",
+        "detail": "Overlaying the Monday calendar's 9 slipped EPL assets on Salesforce's reach curve shows 2.1 of the 4 missing points vanish when Wunderfolk's films land Aug 21, leaving only a 1.9-point paid shortfall against SAP's S$48K headroom. Salesforce sees a gap, SAP sees budget and Monday sees delays — only joining all three proves half the top-up would pay for a content problem.",
+        "action": "Approve a S$26K IG and TikTok top-up at the 12:30 and hold S$22K until the Wunderfolk films deliver."
+      }
+    }
+  ]
+}

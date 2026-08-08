@@ -1,0 +1,46 @@
+{
+  "stories": [
+    {
+      "cat": "Singapore",
+      "headline": "NDP 2026 rehearsals draw record crowds as Padang show takes shape",
+      "summary": "Organisers say Saturday's final full rehearsal features the largest drone light display staged at a National Day Parade.",
+      "time": "23m ago",
+      "hot": true
+    },
+    {
+      "cat": "Asia",
+      "headline": "Region's high-speed rail links see surge in cross-border holiday travel",
+      "summary": "Tourism boards across Southeast Asia report bumper bookings ahead of the year-end travel season.",
+      "time": "1h ago",
+      "hot": false
+    },
+    {
+      "cat": "Business",
+      "headline": "Singapore fintech firms post strong first-half results on digital payments boom",
+      "summary": "Industry watchers say regional expansion and AI-driven services are lifting earnings across the sector.",
+      "time": "2h ago",
+      "hot": false
+    },
+    {
+      "cat": "Sport",
+      "headline": "Singapore swimmers set new national relay record at Asian championships",
+      "summary": "The quartet's timing puts the team in strong contention for next year's regional games.",
+      "time": "3h ago",
+      "hot": false
+    },
+    {
+      "cat": "Entertainment",
+      "headline": "Local film festival opens with sold-out premiere of homegrown animation feature",
+      "summary": "The 10-day festival showcases more than 80 titles from Singapore and around the region.",
+      "time": "4h ago",
+      "hot": false
+    },
+    {
+      "cat": "Media",
+      "headline": "Mediacorp's mewatch hits record monthly viewership ahead of National Day weekend",
+      "summary": "The streaming platform credits its expanded local originals slate and live NDP coverage for the milestone.",
+      "time": "5h ago",
+      "hot": false
+    }
+  ]
+}

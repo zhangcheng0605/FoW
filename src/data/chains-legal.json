@@ -1,0 +1,113 @@
+{
+  "personaId": "legal",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Close the vendor DPA gap",
+      "desc": "Finds Ariba renewals missing DPAs, sends DocuSign templates, logs obligations, and notifies procurement — no swivel-chair",
+      "steps": [
+        {
+          "server": "ariba",
+          "tool": "get_renewal_vendors",
+          "args": "window=Sep, flag=missing_dpa",
+          "result": "3 vendors renewing Sep, combined $612K spend — req REQ-88214",
+          "carry": "3 vendors · $612K spend",
+          "ms": 620
+        },
+        {
+          "server": "docusign",
+          "tool": "send_envelope",
+          "args": "template=Standard DPA v3.1, recipients=3",
+          "result": "3 envelopes sent — ENV-2026-4471/72/73, 3-day auto-reminders on",
+          "carry": "ENV-2026-4471/72/73",
+          "ms": 1480
+        },
+        {
+          "server": "excel",
+          "tool": "append_rows",
+          "args": "file=Obligation register — renewal dates.xlsx",
+          "result": "3 rows added with Sep renewal + DPA status; register now 415 of 918 tagged",
+          "carry": "415/918 contracts tagged",
+          "ms": 540
+        },
+        {
+          "server": "confluence",
+          "tool": "update_page",
+          "args": "space=LEGAL, page=Obligation register",
+          "result": "Register page synced; LGL-1027 marked in-progress with envelope links",
+          "carry": "LGL-1027 · 3 DPAs out",
+          "ms": 460
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "to=Elena Vasquez, channel=Procurement Sync",
+          "result": "Status card posted — 3 DPAs out for signature, Sep 12 renewal safe",
+          "carry": "Elena notified 09:14",
+          "ms": 410
+        }
+      ],
+      "outcome": "All 3 DPA envelopes live in DocuSign, the obligation register updated in Excel and Confluence, and Elena Vasquez notified in Teams — LGL-1027 unblocked before the September renewals",
+      "insight": {
+        "sources": ["ariba", "docusign", "confluence", "excel"],
+        "headline": "3 of Ariba's 30 July renewals carried $612K of spend with no executed DPA on file",
+        "detail": "Joining Ariba's renewal calendar against DocuSign's executed-agreement archive exposed vendors renewing in September with no data-processing terms — a GDPR audit finding waiting to happen. Ariba only sees spend and dates, DocuSign only sees envelopes; neither alone can tell you a renewal is about to re-up a compliance gap.",
+        "action": "Add a DPA-on-file check to the Ariba renewal intake gate so the gap never recurs"
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Route the Orion cap exception",
+      "desc": "Diffs Orion's MSA redlines against the playbook, routes the 2x-cap exception to the GC, files the memo, and briefs Marcus before his 10:30 call",
+      "steps": [
+        {
+          "server": "docusign",
+          "tool": "get_document_versions",
+          "args": "agreement=Orion Systems MSA v4",
+          "result": "18 redlines pulled, 3 material — liability cap at 2x fees flagged",
+          "carry": "MSA v4 · 3 material edits",
+          "ms": 720
+        },
+        {
+          "server": "gdrive",
+          "tool": "fetch_doc",
+          "args": "file=Commercial playbook v3.2.pdf, section=liability",
+          "result": "Playbook position confirmed: 1x standard, 2x allowed with GC sign-off",
+          "carry": "2x OK w/ GC sign-off",
+          "ms": 350
+        },
+        {
+          "server": "docusign",
+          "tool": "create_exception_request",
+          "args": "approver=Priya Raghavan, deal=$1,240,000",
+          "result": "Exception EXC-2026-118 routed to Priya with deal context and precedent",
+          "carry": "EXC-2026-118 · $1.24M",
+          "ms": 980
+        },
+        {
+          "server": "sharepoint",
+          "tool": "save_document",
+          "args": "folder=Matters/Orion Systems",
+          "result": "Deviation memo filed against matter LGL-1041, linked to EXC-2026-118",
+          "carry": "LGL-1041 memo filed",
+          "ms": 610
+        },
+        {
+          "server": "outlook",
+          "tool": "send_mail",
+          "args": "to=Marcus Webb, subject=Orion cap — cleared to counter",
+          "result": "Brief sent 09:40: accept 2x pending EXC-2026-118, counter Net 45",
+          "carry": "Marcus briefed pre-10:30",
+          "ms": 520
+        }
+      ],
+      "outcome": "Exception EXC-2026-118 sits with Priya Raghavan in DocuSign CLM, the deviation memo is filed on LGL-1041 in SharePoint, and Marcus Webb walked into the 10:30 Zoom with the negotiating position in hand",
+      "insight": {
+        "sources": ["docusign", "gdrive", "outlook", "sharepoint"],
+        "headline": "Only 3 of Orion's 18 redlines are material, and the $1.24M blocker is a sign-off, not a fight",
+        "detail": "Overlaying DocuSign's redline diff on the GDrive playbook and Marcus's Outlook thread showed the 2x cap Orion 'won't move off' is already permitted with GC approval — turning a stalled negotiation into a routing task. The redline tool sees edits, the playbook sees policy, email sees urgency; only joined do they reveal the deal was never actually stuck.",
+        "action": "Pre-wire playbook lookups into every MSA redline pass so exceptions route the moment they appear"
+      }
+    }
+  ]
+}

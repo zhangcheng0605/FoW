@@ -1,0 +1,113 @@
+{
+  "personaId": "finance",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Ship the July Variance Bridge",
+      "desc": "Pulls July actuals, rebuilds the bridge, slots it into the QBR deck and lands it in Priya's inbox before 12:00",
+      "steps": [
+        {
+          "server": "sap",
+          "tool": "get_cost_center_actuals",
+          "args": "period=Jul FY26&cost_centers=all",
+          "result": "14 cost centers pulled · CC 4210 (Engineering) +$862K on the AWS true-up",
+          "carry": "Jul actuals · $21.34M",
+          "ms": 720
+        },
+        {
+          "server": "netsuite",
+          "tool": "run_saved_search",
+          "args": "search=budget_vs_actual&period=Jul FY26",
+          "result": "Saved search #SS-1187 returned $19.90M budget → variance +$1,440K (7.2%)",
+          "carry": "Variance · +$1,440K",
+          "ms": 480
+        },
+        {
+          "server": "excel",
+          "tool": "update_workbook",
+          "args": "file=Variance_Bridge_Jul.xlsx&sheet=Bridge",
+          "result": "Variance_Bridge_Jul.xlsx rebuilt · 7 drivers reconcile to +$1,440K, AWS $862K broken out",
+          "carry": "Bridge wbk · rec'd +$1,440K",
+          "ms": 1180
+        },
+        {
+          "server": "sharepoint",
+          "tool": "add_slide_to_deck",
+          "args": "doc=Q3_QBR_Template.pptx&after=slide 3",
+          "result": "Slide 4 'July Opex Bridge' added to Q3_QBR_Template.pptx v4 in /Finance/QBR",
+          "carry": "QBR deck v4 · slide 4",
+          "ms": 860
+        },
+        {
+          "server": "outlook",
+          "tool": "create_draft",
+          "args": "to=priya.raghavan@meridianlabs.com&cc=marcus.webb",
+          "result": "Draft 'July variance bridge — QBR pre-read' saved with Variance_Bridge_Jul.xlsx attached",
+          "carry": "Pre-read · to Priya",
+          "ms": 540
+        }
+      ],
+      "outcome": "Bridge reconciled in Excel, slide 4 live in the SharePoint QBR deck, and the pre-read staged in Outlook for Priya — all before the 10:30 AWS deep-dive.",
+      "insight": {
+        "sources": ["sap", "netsuite", "ariba", "excel"],
+        "headline": "$388K (27%) of July's $1.44M overrun is renewal timing, not overspend",
+        "detail": "Joining the SAP posting date on IT cost center 4270 with the Ariba contract calendar shows the Salesforce renewal posted in July this year versus August last year — pure timing. SAP alone shows an overrun and Ariba alone shows a renewal on schedule; only the join proves the structural miss is ~$1.05M of cloud, not $1.44M.",
+        "action": "Reclass the framing in the QBR pre-read and confirm the Q4 AWS run-rate with James Whitfield at 10:30."
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Approve and Book Deloitte PO",
+      "desc": "Checks budget and vendor history, approves PO-88214, routes the engagement letter for signature and tells Grace it's done",
+      "steps": [
+        {
+          "server": "ariba",
+          "tool": "get_po_details",
+          "args": "po=PO-88214",
+          "result": "PO-88214 · Deloitte · $42,000 · ASC 606 technical memo, requested by Grace Liu",
+          "carry": "PO-88214 · $42,000",
+          "ms": 450
+        },
+        {
+          "server": "netsuite",
+          "tool": "check_budget_line",
+          "args": "line=professional_services&period=Q3 FY26",
+          "result": "$118K remaining of the $310K Q3 envelope — PO consumes 36%, no CFO escalation needed",
+          "carry": "Budget OK · $118K headroom",
+          "ms": 390
+        },
+        {
+          "server": "ariba",
+          "tool": "approve_purchase_order",
+          "args": "po=PO-88214&approver=daniel.okafor",
+          "result": "PO-88214 approved · approval ref APR-2214 logged against the Deloitte MSA",
+          "carry": "Approved · APR-2214",
+          "ms": 620
+        },
+        {
+          "server": "docusign",
+          "tool": "send_envelope",
+          "args": "doc=Deloitte_ASC606_Engagement_Letter.pdf&signer=grace.liu",
+          "result": "Envelope ENV-30187 sent to Grace Liu and the Deloitte engagement partner",
+          "carry": "ENV-30187 · out for sign",
+          "ms": 980
+        },
+        {
+          "server": "teams",
+          "tool": "send_message",
+          "args": "to=Grace Liu&channel=dm",
+          "result": "Grace notified: PO-88214 approved, ENV-30187 awaiting her signature to lock Aug 17 fieldwork",
+          "carry": "Grace pinged · Aug 17 locked",
+          "ms": 460
+        }
+      ],
+      "outcome": "PO-88214 approved in Ariba, the engagement letter circulating as DocuSign ENV-30187, budget consumption recorded against NetSuite's Q3 professional-services line, and Grace Liu notified in Teams.",
+      "insight": {
+        "sources": ["ariba", "docusign", "netsuite", "sap"],
+        "headline": "This week's approvals commit $128,400 — 86% of Daniel's $150K delegation limit",
+        "detail": "Stacking the Ariba PO ($42,000) against the Adobe renewal sitting in DocuSign ($86,400) shows one week of approvals nearly exhausting the delegation threshold, with SAP showing Deloitte already at $186K YTD. No single queue shows the cumulative exposure — Ariba, DocuSign and SAP each see only their own slice.",
+        "action": "Sequence the Adobe renewal for Monday to reset the weekly window, and flag Deloitte's YTD run-rate to Marcus Webb."
+      }
+    }
+  ]
+}

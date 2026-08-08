@@ -1,0 +1,113 @@
+{
+  "personaId": "procurement",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Unblock the Dell invoice",
+      "desc": "Turns a blocked SAP invoice into a signed-price reconciliation, corrected-invoice request and closed task — no swivel chair",
+      "steps": [
+        {
+          "server": "sap",
+          "tool": "get_blocked_invoice",
+          "args": "invoice=5601-88274&po=PO-77812",
+          "result": "Invoice 5601-88274 · $214,380 blocked, unit price 4.1% over contract",
+          "carry": "INV 5601-88274 · $214,380",
+          "ms": 640
+        },
+        {
+          "server": "docusign",
+          "tool": "get_agreement_terms",
+          "args": "agreement=Dell MPA Amendment 3&skus=Latitude",
+          "result": "Amendment 3 (env DS-4471) · FY27 pricing on 14 Latitude SKUs extracted",
+          "carry": "Amd 3 pricing · 14 SKUs",
+          "ms": 890
+        },
+        {
+          "server": "excel",
+          "tool": "build_reconciliation",
+          "args": "file=PO-77812_Reconciliation.xlsx",
+          "result": "PO-77812_Reconciliation.xlsx built · $8,790 overcharge across 3 SKUs",
+          "carry": "$8,790 overcharge · 3 SKUs",
+          "ms": 720
+        },
+        {
+          "server": "outlook",
+          "tool": "send_email",
+          "args": "to=ap@dell.com&cc=anna.kowalski&attach=recon",
+          "result": "Corrected invoice requested — msg OUT-20818, Aug 15 deadline set",
+          "carry": "Dell fix due Aug 15",
+          "ms": 520
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "channel=#procurement-ops&link=PRC-1035",
+          "result": "PRC-1035 update posted ahead of the 14:30 Dell QBR — Diego and Anna tagged",
+          "carry": "PRC-1035 · unblocked",
+          "ms": 460
+        }
+      ],
+      "outcome": "Dell's $8,790 overcharge was proven against DocuSign Amendment 3, a corrected invoice was requested in Outlook with an Aug 15 deadline, the reconciliation lives in Excel, and PRC-1035 is updated in Teams before the QBR.",
+      "insight": {
+        "sources": ["sap", "docusign", "ariba", "excel"],
+        "headline": "3 of Dell's last 96 POs invoiced above signed pricing — $8,790 caught this quarter",
+        "detail": "Joining SAP's blocked-invoice detail with the SKU pricing signed in DocuSign Amendment 3 and the PO history in Ariba shows the mismatch is a pattern on Latitude SKUs, not a one-off keying error. SAP only sees a block, DocuSign only sees a signature, Ariba only sees a PO — no single system can compare invoiced price to contracted price.",
+        "action": "Add an auto-check that validates every Dell invoice against Amendment 3 pricing before posting"
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Ship the Adobe renewal",
+      "desc": "Takes the agreed redlines to a signed-ready envelope, a booked PO and a notified team before the Aug 31 expiry",
+      "steps": [
+        {
+          "server": "sharepoint",
+          "tool": "get_document",
+          "args": "file=Adobe_Renewal_Redlines_v4.docx",
+          "result": "v4 redlines pulled — liability cap at 12 months fees agreed per Sarah Kim",
+          "carry": "Redlines v4 · cap agreed",
+          "ms": 480
+        },
+        {
+          "server": "excel",
+          "tool": "verify_seat_count",
+          "args": "file=Renewal_Pipeline_FY26.xlsx&vendor=Adobe",
+          "result": "228 seats confirmed post-audit (12 trimmed) · $82,080 at 3% uplift",
+          "carry": "228 seats · $82,080",
+          "ms": 390
+        },
+        {
+          "server": "docusign",
+          "tool": "create_envelope",
+          "args": "template=SaaS-renewal&signers=Adobe,Katie O'Brien",
+          "result": "Envelope DS-5203 sent for signature — Katie O'Brien cc'd, expires Aug 31",
+          "carry": "DS-5203 · out for signature",
+          "ms": 1120
+        },
+        {
+          "server": "ariba",
+          "tool": "create_po",
+          "args": "vendor=Adobe&amount=82080&contract=DS-5203",
+          "result": "PO-78240 created for $82,080, linked to envelope DS-5203",
+          "carry": "PO-78240 · $82,080",
+          "ms": 840
+        },
+        {
+          "server": "slack",
+          "tool": "send_message",
+          "args": "channel=#sourcing-saas&mention=Anna Kowalski",
+          "result": "Signature status posted — PRC-1038 marked done, Anna and Katie notified",
+          "carry": "PRC-1038 · done",
+          "ms": 430
+        }
+      ],
+      "outcome": "The Adobe renewal went from redlines in SharePoint to envelope DS-5203 in DocuSign and PO-78240 in Ariba, with #sourcing-saas notified and PRC-1038 closed — 23 days before the Aug 31 expiry.",
+      "insight": {
+        "sources": ["excel", "docusign", "sap", "ariba"],
+        "headline": "The 12-seat license audit saved $4,320/yr — offsetting 105% of Adobe's 3% uplift",
+        "detail": "Only by joining Excel's post-audit seat count with DocuSign's uplift terms and SAP's FY25 invoice baseline does the net cost land flat year-over-year. DocuSign shows a 3% price increase and Excel shows fewer seats, but neither alone reveals that the trim fully cancels the uplift.",
+        "action": "Run the same license audit on Okta's 2,400 seats before Mei-Ling sends the $288K counter"
+      }
+    }
+  ]
+}

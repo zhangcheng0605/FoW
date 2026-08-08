@@ -1,0 +1,113 @@
+{
+  "personaId": "sales",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Close the Caldera booking loop",
+      "desc": "Turns the signed Caldera renewal into a booked, filed, announced win — no swivel-chair between DocuSign, Salesforce, Drive and Slack",
+      "steps": [
+        {
+          "server": "docusign",
+          "tool": "get_completed_envelope",
+          "args": "envelope=Caldera Systems renewal order form",
+          "result": "ENV-88214 fully executed 07:12 · $290,000 · signer Sofia Andersson",
+          "carry": "ENV-88214 · $290,000",
+          "ms": 620
+        },
+        {
+          "server": "salesforce",
+          "tool": "close_opportunity",
+          "args": "id=OPP-4738, stage=Closed Won, amount=$290,000",
+          "result": "OPP-4738 marked Closed Won · Q3 attainment ticks to 52.5%",
+          "carry": "OPP-4738 · Closed Won",
+          "ms": 940
+        },
+        {
+          "server": "gdrive",
+          "tool": "file_document",
+          "args": "folder=Contracts/2026, file=Caldera Systems renewal — executed.pdf",
+          "result": "Filed as DOC-CS-0290 with retention tag FY26-Q3",
+          "carry": "DOC-CS-0290 filed",
+          "ms": 480
+        },
+        {
+          "server": "gcal",
+          "tool": "create_event",
+          "args": "title=Caldera onboarding kickoff, owner=Sofia Andersson, week=Aug 11",
+          "result": "EVT-30518 booked Wed Aug 12 · CSM invited",
+          "carry": "EVT-30518 · Aug 12",
+          "ms": 410
+        },
+        {
+          "server": "slack",
+          "tool": "post_message",
+          "args": "channel=#sales-emea, template=win announcement",
+          "result": "Win posted with OPP-4738 link · Claire Beaumont and Kenji Watanabe tagged",
+          "carry": "#sales-emea notified",
+          "ms": 330
+        }
+      ],
+      "outcome": "Caldera's $290,000 renewal was booked in Salesforce as OPP-4738, the executed PDF filed in Drive as DOC-CS-0290, onboarding scheduled in Calendar, and the win announced in #sales-emea — in 47 seconds, not Monday.",
+      "insight": {
+        "sources": ["docusign", "salesforce", "gdrive", "slack"],
+        "headline": "Signed deals sit an average 2.6 days in DocuSign before Salesforce shows Closed Won",
+        "detail": "Joining DocuSign completion timestamps against Salesforce stage-change history shows 7 of the last 12 wins were booked days after signature — Caldera itself signed at 07:12 and would have waited for Monday's admin sweep. Neither system alone sees the lag: DocuSign doesn't know the opp exists, and Salesforce doesn't know the ink is dry.",
+        "action": "Auto-run this chain on every completed envelope so bookings land the hour they sign"
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Ship the slip-risk forecast pack",
+      "desc": "Scrubs all 9 August closes, builds Claire's commit-vs-best-case sheet, pins it to the 13:00 call and alerts the room",
+      "steps": [
+        {
+          "server": "salesforce",
+          "tool": "query_opportunities",
+          "args": "close=Aug 2026, status=open, team=EMEA pod",
+          "result": "9 opps · $3.4M commit · OPP-4880 and OPP-4765 stalled 10+ days",
+          "carry": "9 opps · $3.4M commit",
+          "ms": 710
+        },
+        {
+          "server": "gcal",
+          "tool": "scan_meetings",
+          "args": "accounts=Bluewater, Helios, Trellis · next 14 days",
+          "result": "No customer meetings found for Bluewater or Helios · $490K exposed",
+          "carry": "$490K no-meeting risk",
+          "ms": 360
+        },
+        {
+          "server": "gdrive",
+          "tool": "create_sheet",
+          "args": "folder=Forecast/Q3, name=Slip-risk view — Aug 8",
+          "result": "Sheet SLP-0808 built: $2.9M solid, $490K flagged, Trellis held pending discount",
+          "carry": "SLP-0808 · $2.9M solid",
+          "ms": 1180
+        },
+        {
+          "server": "gcal",
+          "tool": "attach_to_event",
+          "args": "event=Weekly forecast call 13:00, file=SLP-0808",
+          "result": "Pack attached to EVT-29764 · agenda updated with slip-risk section",
+          "carry": "EVT-29764 updated",
+          "ms": 420
+        },
+        {
+          "server": "slack",
+          "tool": "send_message",
+          "args": "to=Claire Beaumont, channel=#forecast, link=SLP-0808",
+          "result": "Claire acknowledged in #forecast · commit-vs-best-case split delivered as asked",
+          "carry": "Claire briefed",
+          "ms": 300
+        }
+      ],
+      "outcome": "The slip-risk pack SLP-0808 existed in Drive, was pinned to the 13:00 forecast call in Calendar, and Claire Beaumont was briefed in #forecast — with OPP-4880 and OPP-4765 flagged and $2.9M defended as solid commit.",
+      "insight": {
+        "sources": ["salesforce", "gcal", "slack", "gdrive"],
+        "headline": "$490K of August commit has zero customer meetings booked in the next 14 days",
+        "detail": "Cross-matching Salesforce close dates against Calendar shows Bluewater ($310K) and Helios ($180K) claim August closes with no meeting on anyone's calendar, while Slack shows procurement silent 12 days. Salesforce alone reports healthy stages — only the calendar and message layers expose that nobody is actually talking to these buyers.",
+        "action": "Re-date OPP-4880 and OPP-4765 to Sep 15 before the 13:00 call and hold commit at $2.9M"
+      }
+    }
+  ]
+}

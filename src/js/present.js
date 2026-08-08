@@ -12,6 +12,7 @@ const KICKERS = {
   intro: "FoW · guided highlights", hero: "The morning brief", kpis: "Business intelligence",
   chart: "Live charts", ask: "The signature move", answer: "Agentic answers",
   delegate: "Delegate real work", autopilot: "Trust, with a leash", mcp: "The MCP layer",
+  chains: "No more swivel-chair", insights: "What silos can't see",
   recap: "Friday, 4:55pm", outro: "FoW · Mediacorp",
 };
 const FALLBACK_BEATS = {
@@ -21,6 +22,8 @@ const FALLBACK_BEATS = {
   chart: { title: "Hover any month, flip to a table", text: "Hand-built SVG, colorblind-safe palettes, crosshair tooltips. Watch the crosshair walk the year." },
   ask: { title: "Drag anything to askMElah", text: "A KPI, an email, an approval. The copilot reads the same systems you do — and answers about that thing." },
   answer: { title: "It shows its work", text: "Real tool calls — visible and timed — then an answer with a chart in it, not a wall of text." },
+  chains: { title: "Apps, chained via MCP", text: "Watch data hop between systems by itself — retrieved from one, filed in the next, everyone notified. No copy-paste, no swivel-chair." },
+  insights: { title: "Insights no silo could produce", text: "With every system feeding one brain, askMElah joins what each tool sees alone — and finds what none of them could." },
   delegate: { title: "An agent work queue", text: "askMElah runs the steps in the background, files the artifact, and reports back in chat." },
   autopilot: { title: "Approvals on autopilot", text: "Within policy and clean history, it clears the queue itself. Anything unusual still waits for a human." },
   mcp: { title: "Every tool, one console", text: "The MCP console shows what this seat is wired into — servers, tools, and the live call log." },
@@ -274,7 +277,32 @@ function prScript() {
     await psleep(2200);
   });
 
-  /* 6 · delegation */
+  /* 6 · cross-app chain */
+  add(async () => {
+    const chnCard = $(".chn-card");
+    if (!chnCard) return;
+    await prScrollTo(chnCard);
+    prSpotlight(chnCard);
+    showBeat("chains");
+    const btn = $(".dg-btn", chnCard);
+    if (btn) {
+      await prClick(btn);
+      prCursorHide();
+      prSpotlight($("#chatdock"), 6);
+      await psleep(3500);
+      await pwaitChatIdle(16000);
+    } else await psleep(3000);
+  });
+
+  /* 7 · the cross-silo insight it just surfaced */
+  add(async () => {
+    if (!$(".insight")) return;
+    prSpotlight($("#chatdock"), 6);
+    showBeat("insights");
+    await psleep(6200);
+  });
+
+  /* 8 · delegation */
   add(async () => {
     const dgCard = $(".dg-card");
     if (!dgCard) return;

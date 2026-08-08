@@ -29,8 +29,18 @@ self-contained file (no server, no build step needed to run).
    driving: real interactions, ~2 minutes. Space pauses, speed is adjustable,
    Esc (or the exit button) hands you the wheel at any moment.
 1. **Pick a seat** — the role picker re-shapes the entire workspace: HR, Finance,
-   Procurement, IT, Legal or Sales each get their own KPIs, charts, queues,
-   skills and MCP connections (and their own accent color).
+   Procurement, IT, Legal, Sales or Creative & Marketing each get their own KPIs,
+   charts, queues, skills and MCP connections (and their own accent color). The
+   marketing seat (Chloe Tan) plans on Monday.com and generates creative on
+   Higgsfield — ask her workspace to render campaign concepts.
+1b. **Cross-app workflows** — the marquee demo. Each persona has two runnable
+   chains that hop data between systems via MCP (e.g. a blocked Dell invoice:
+   SAP → DocuSign → Excel → Outlook → Teams; a campaign brief: Monday.com →
+   Higgsfield → Adobe → Slack). A pipeline visual shows each hop live, the
+   payload passing between servers, and every chain ends with a
+   **cross-system insight** — a finding only possible because the silos are
+   joined. Ask askMElah "what insights can you see across my systems?" for
+   the standalone version.
 2. **Drag anything into the chat** — a KPI tile, a chart, a meeting, an email, an
    approval, a Jira task, even an MCP server. askMElah analyzes it in place,
    showing the (simulated) MCP tool calls it makes along the way.
@@ -55,6 +65,13 @@ self-contained file (no server, no build step needed to run).
     (the ⊞ button) and full hover tooltips.
 11. **Double-click** an inbox thread (askMElah drafts the reply) or a skill (it
     runs). Log an energy check-in in the hero. Toggle light/dark (moon icon).
+12. **Meet Emmi** — the Mediacorp logo, alive in the bottom-left corner. It
+    breathes, blinks, follows your cursor, hops when you clear approvals,
+    gets sleepy in dark mode, and greets you on sign-in with your leave
+    status pulled (simulated) from SAP — "welcome back from leave" included.
+    Click it for context-aware nudges.
+13. **Morning scan** — a CNA newsroom card (demo headlines) on every canvas;
+    drag a story to askMElah for the 20-second version.
 
 ## Project layout
 
@@ -73,6 +90,8 @@ src/
   data/extras-<role>.json   extra per-persona content (inbox, palette, chips)
   data/tour-<role>.json     per-persona tour narration (agent-authored, grounded
                             in that persona's data)
+  data/chains-<role>.json   per-persona cross-app workflow chains + the
+                            cross-system insights they surface
 ```
 
 To rebuild after editing anything under `src/`:

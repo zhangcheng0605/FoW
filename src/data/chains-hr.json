@@ -1,0 +1,113 @@
+{
+  "personaId": "hr",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Close the Staff SWE offer",
+      "desc": "Turns the $284K band-exception decision into an approved offer, filed memo and signed letter without leaving chat",
+      "steps": [
+        {
+          "server": "greenhouse",
+          "tool": "get_offer_details",
+          "args": "req=ENG-1187",
+          "result": "Offer packet pulled: $284,000 TC, req ENG-1187 open 74 days, competing offer expires Monday",
+          "carry": "ENG-1187 · $284,000 TC",
+          "ms": 620
+        },
+        {
+          "server": "workday",
+          "tool": "validate_comp_band",
+          "args": "level=L6, geo=Austin, tc=284000",
+          "result": "Within band: 6.0% above $268K mid, under $290K max — validation ref CMP-2214",
+          "carry": "CMP-2214 · under band max",
+          "ms": 540
+        },
+        {
+          "server": "sharepoint",
+          "tool": "create_document",
+          "args": "template=Band exception memo, req=ENG-1187",
+          "result": "Exception memo HR-EXC-0093 filed with CFO note and one-off precedent guard",
+          "carry": "HR-EXC-0093 · precedent guard",
+          "ms": 880
+        },
+        {
+          "server": "docusign",
+          "tool": "send_envelope",
+          "args": "template=Offer letter L6, candidate=ENG-1187",
+          "result": "Offer letter sent for signature — envelope ENV-58217, expires Monday 18:00 CT",
+          "carry": "ENV-58217 · sign by Mon",
+          "ms": 1150
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "to=Daniel Okafor, Tomas Rivera, James Whitfield",
+          "result": "Approval summary posted with memo and envelope links ahead of the 15:00 sync",
+          "carry": "3 approvers notified",
+          "ms": 430
+        }
+      ],
+      "outcome": "Offer approved in Greenhouse, band check CMP-2214 logged in Workday, memo HR-EXC-0093 filed to SharePoint, envelope ENV-58217 out via DocuSign, and all three approvers briefed in Teams before 15:00.",
+      "insight": {
+        "sources": ["greenhouse", "workday", "slack"],
+        "headline": "Req ENG-1187 sat open 74 days — nearly double the 38-day company average",
+        "detail": "Joining Greenhouse req age with Workday exit reasons shows the real cost of haggling: compensation already drives 34% of FY26 exits, so losing a closed candidate over a 6% band gap would feed the exact attrition driver the Sep 1 comp review targets. Greenhouse alone sees a slow req and Workday alone sees exit codes — only the join prices the delay.",
+        "action": "Pre-authorize band exceptions up to band max for any P1 req open past 60 days"
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Launch Sep 14 onboarding cohort",
+      "desc": "Turns 12 confirmed Greenhouse starts into provisioned hires — profiles, laptops, day-1 schedule and buddies — in one pass",
+      "steps": [
+        {
+          "server": "greenhouse",
+          "tool": "list_confirmed_starts",
+          "args": "start_date=Sep 14",
+          "result": "12 confirmed starts pulled incl. Emma Sørensen (Sr Product Designer, Stockholm)",
+          "carry": "12 starts · Sep 14",
+          "ms": 690
+        },
+        {
+          "server": "workday",
+          "tool": "create_worker_profiles",
+          "args": "cohort=Sep 14, count=12",
+          "result": "12 pre-hire records created — batch WD-PH-20260914, Stockholm relocation flags set",
+          "carry": "WD-PH-20260914 · 12 records",
+          "ms": 1240
+        },
+        {
+          "server": "servicenow",
+          "tool": "create_request",
+          "args": "catalog=New hire laptop, qty=12, need_by=Sep 11",
+          "result": "Hardware order REQ0048213 raised — beats the Aug 22 cutoff by two weeks",
+          "carry": "REQ0048213 · 12 laptops",
+          "ms": 760
+        },
+        {
+          "server": "excel",
+          "tool": "update_workbook",
+          "args": "file=Sep 14 onboarding cohort — logistics.xlsx",
+          "result": "Buddy assignments and week-1 schedule written for all 12 rows; HR-482 marked ready",
+          "carry": "HR-482 · schedule locked",
+          "ms": 980
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "channel=People Ops APAC, to=Sofia Marchetti, Wei Lin Tan",
+          "result": "Cohort pack posted: profiles, REQ0048213 tracking and buddy roster for Monday's stand-up",
+          "carry": "Cohort pack shared",
+          "ms": 410
+        }
+      ],
+      "outcome": "12 pre-hire profiles live in Workday (WD-PH-20260914), laptops on order in ServiceNow (REQ0048213), the logistics workbook and task HR-482 closed out, and Sofia Marchetti's team briefed in Teams — 14 days ahead of the Aug 22 hardware cutoff.",
+      "insight": {
+        "sources": ["greenhouse", "servicenow", "workday", "excel"],
+        "headline": "Hires whose ServiceNow kit arrived late scored 0.9 points lower on the week-1 pulse",
+        "detail": "Correlating ServiceNow hardware delivery dates with Workday week-1 pulse scores against Greenhouse start dates shows late laptops dragging first-week sentiment from 4.4 toward 3.5. ServiceNow only tracks tickets and Workday only stores scores — neither system can see that day-1 readiness, not the program content, moves the pulse.",
+        "action": "Auto-raise the laptop request the moment any Greenhouse offer flips to accepted"
+      }
+    }
+  ]
+}

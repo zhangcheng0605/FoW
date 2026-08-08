@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 
-PERSONA_ORDER = ["hr", "finance", "procurement", "it", "legal", "sales"]
+PERSONA_ORDER = ["hr", "finance", "procurement", "it", "legal", "sales", "marketing"]
 
 
 def read(p: Path) -> str:
@@ -36,6 +36,9 @@ def load_data() -> str:
                 t = json.loads(read(tour))
                 t.pop("personaId", None)
                 packs[pid]["tour"] = t
+            chains = SRC / "data" / f"chains-{pid}.json"
+            if chains.exists():
+                packs[pid]["chains"] = json.loads(read(chains)).get("chains", [])
     blob = json.dumps(packs, ensure_ascii=False, separators=(",", ":"))
     # a literal "</script>" inside JSON strings would end the inline script tag early
     blob = blob.replace("</", "<\\/")
@@ -47,9 +50,13 @@ def build() -> None:
     body = read(SRC / "body.html")
     scripts = "\n".join(
         read(SRC / "js" / name)
-        for name in ["registry.js", "charts.js", "chat.js", "app.js", "present.js"]
+        for name in ["registry.js", "charts.js", "chat.js", "app.js", "pet.js", "present.js"]
     )
     data = load_data()
+    news_file = SRC / "data" / "news.json"
+    if news_file.exists():
+        news_blob = json.dumps(json.loads(read(news_file)), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        data += f"\nwindow.FOW_NEWS = {news_blob};"
 
     inner = f"""<title>FoW — Future of Work</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">

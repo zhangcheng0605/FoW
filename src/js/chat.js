@@ -36,8 +36,11 @@ function parseBlocks(text) {
     const ln = lines[i];
     const t = ln.trim();
     if (!t) { i++; continue; }
-    const emb = t.match(/^\{\{(chart:(trend|donut|bars|heatmap)|kpis|spark:([\w-]+))\}\}$/);
-    if (emb) { blocks.push({ t: "embed", kind: emb[2] || (emb[1] === "kpis" ? "kpis" : "spark"), id: emb[3] }); i++; continue; }
+    const emb = t.match(/^\{\{(chart:(trend|donut|bars|heatmap)|kpis|spark:([\w-]+)|gen:images)\}\}$/);
+    if (emb) {
+      const kind = emb[1] === "gen:images" ? "gen" : (emb[2] || (emb[1] === "kpis" ? "kpis" : "spark"));
+      blocks.push({ t: "embed", kind, id: emb[3] }); i++; continue;
+    }
     if (t === "---") { blocks.push({ t: "hr" }); i++; continue; }
     if (t.startsWith("## ")) { blocks.push({ t: "h", s: t.slice(3) }); i++; continue; }
     if (t.startsWith("> ")) { blocks.push({ t: "co", s: t.slice(2) }); i++; continue; }
@@ -73,6 +76,19 @@ function buildEmbed(kind, id) {
       c.appendChild(el("div", "v", k.value));
       c.appendChild(el("div", "d " + (k.deltaGood ? "good" : "bad"), k.delta + " " + (k.vs || "")));
       grid.appendChild(c);
+    });
+    return grid;
+  }
+  if (kind === "gen") {
+    const grid = el("div", "gen-grid");
+    ["Concept A — bold type", "Concept B — cinematic", "Concept C — playful"].forEach((cap, i2) => {
+      const th = el("div", "gen-thumb");
+      th.appendChild(el("div", "gt-img"));
+      const c = el("div", "gt-cap");
+      c.appendChild(el("b", "", cap.split(" — ")[0]));
+      c.appendChild(el("span", "", cap.split(" — ")[1]));
+      th.appendChild(c);
+      grid.appendChild(th);
     });
     return grid;
   }
@@ -253,6 +269,86 @@ function addActions(body, actions) {
   scrollChat();
 }
 
+/* ---------------- cross-system insight block ---------------- */
+function buildInsight(ins) {
+  const box = el("div", "insight");
+  const head = el("div", "in-head");
+  head.appendChild(el("span", "", "⚡ Cross-system insight"));
+  const srcs = el("span", "in-srcs");
+  (ins.sources || []).forEach(s => srcs.appendChild(srvGlyph(s, 17)));
+  head.appendChild(srcs);
+  box.appendChild(head);
+  box.appendChild(el("div", "in-headline", ins.headline));
+  box.appendChild(el("div", "in-detail", ins.detail));
+  if (ins.action) {
+    const act = el("div", "in-act");
+    const btn = el("button", "m-act", ins.action);
+    btn.addEventListener("click", () => { btn.classList.add("done"); btn.textContent = "✓ " + ins.action; toast("Done — logged to your workspace", "ok"); });
+    act.appendChild(btn);
+    box.appendChild(act);
+  }
+  const names = (ins.sources || []).map(s => SERVERS[s] ? SERVERS[s].name : s);
+  box.appendChild(el("div", "in-note", "Joined across " + names.join(" + ") + " — invisible inside any one of them."));
+  return box;
+}
+
+/* ---------------- cross-app chain runner ---------------- */
+function runChain(chain) {
+  chat.queue = chat.queue.then(async () => {
+    chat.busy = true;
+    const body = addAgentShell();
+    const stopTyping = addTyping(body);
+    await sleep(500);
+    stopTyping();
+    const p = el("p"); p.className = "rich";
+    renderInline(p, "On it — running **" + chain.name + "** across " + new Set(chain.steps.map(s => s.server)).size + " systems:");
+    body.appendChild(p);
+
+    const flow = el("div", "chain-flow");
+    const track = el("div", "cf-track");
+    const nodes = [];
+    chain.steps.forEach((s, i) => {
+      if (i) { const ar = el("span", "cf-arrow", "➜"); track.appendChild(ar); nodes.push({ arrow: ar }); }
+      const n = el("span", "cf-node");
+      n.appendChild(srvGlyph(s.server, 32));
+      n.appendChild(el("span", "cf-tool", s.tool));
+      n.appendChild(el("span", "cf-check", ""));
+      track.appendChild(n);
+      nodes.push({ node: n, step: s });
+    });
+    flow.appendChild(track);
+    const carry = el("div", "cf-carry");
+    carry.appendChild(el("span", "lbl2", "payload"));
+    const carryVal = el("span", "", "…");
+    carry.appendChild(carryVal);
+    flow.appendChild(carry);
+    body.appendChild(flow);
+    scrollChat();
+
+    for (const item of nodes) {
+      if (item.arrow) { item.arrow.classList.add("done"); await sleep(160); continue; }
+      item.node.classList.add("act");
+      scrollChat();
+      await sleep(Math.min(item.step.ms || 800, 1500) * 0.85);
+      item.node.classList.remove("act");
+      item.node.classList.add("done");
+      $(".cf-check", item.node).textContent = "✓";
+      if (item.step.carry) carryVal.textContent = item.step.carry;
+      mcpLog(item.step.server, item.step.tool, item.step.ms);
+    }
+    await sleep(300);
+    await streamRich(body, "**Done.** " + chain.outcome);
+    if (chain.insight) { await sleep(350); body.appendChild(buildInsight(chain.insight)); scrollChat(); }
+    addActions(body, [
+      { label: "Schedule this chain weekly", toast: "Scheduled — Mondays 08:30, you'll get the digest" },
+      { label: "Undo everything", toast: "Rolled back — all " + chain.steps.length + " steps reversed" },
+    ]);
+    chat.busy = false;
+    scrollChat();
+  });
+  return chat.queue;
+}
+
 /* ---------------- reply pipeline ---------------- */
 function agentReply(spec) {
   chat.queue = chat.queue.then(async () => {
@@ -263,6 +359,7 @@ function agentReply(spec) {
     stopTyping();
     if (spec.tools) await runTools(body, spec.tools);
     if (spec.text) await streamRich(body, spec.text);
+    if (spec.insight) { body.appendChild(buildInsight(spec.insight)); scrollChat(); }
     addActions(body, spec.actions);
     chat.busy = false;
     scrollChat();
@@ -292,7 +389,7 @@ function routeMessage(text, chips) {
   const m = (text || "").toLowerCase();
 
   /* 0 — the recap button must always win */
-  if (/(end.of.week|week recap|weekly recap|eod report|end of day recap|weekly report|status report)/.test(m)) return recapFlow();
+  if (/(end.of.week|week recap|weekly recap|eod report|end of day recap|weekly report|status report)/.test(m)) { const r = recapFlow(); petReact("recap"); return r; }
 
   /* 1 — persona-authored flows */
   let best = null, bestScore = 2;
@@ -346,6 +443,15 @@ function routeMessage(text, chips) {
       thinkMs: 400,
       text: "I'm **askMElah** — Mediacorp's FoW copilot for " + p.user.dept + ". I'm wired into " + conns.join(" and ") + ", among others.\nDrag any card from your canvas into this chat and I'll show you what I can do with it.",
     };
+  }
+
+  /* 2.7 — cross-app chains & cross-silo insights */
+  if (/\b(chain|workflow|automate|hop|swivel|connect.*apps)\b/.test(m) && (p.chains || []).length && !chips.length) {
+    const c = p.chains[0];
+    return { runChain: c };
+  }
+  if (/\b(insight|silo|across (my )?(systems|apps|tools)|correlat|join.*data)\b/.test(m) && !chips.length) {
+    return insightsFlow();
   }
 
   /* 3 — chip-context responders */
@@ -510,6 +616,30 @@ function recapFlow() {
     ],
   };
 }
+function insightsFlow() {
+  const p = FOW.data();
+  const chains = p.chains || [];
+  if (!chains.length) return {
+    thinkMs: 600,
+    text: "Once your systems are connected here, I can join what they each see alone — spend against schedules, tickets against renewals. This persona's chain pack isn't loaded yet.",
+  };
+  const first = chains[0].insight, second = chains[1] && chains[1].insight;
+  const srcs = [...new Set(chains.flatMap(c => (c.insight && c.insight.sources) || []))];
+  return {
+    thinkMs: 900,
+    tools: srcs.slice(0, 4).map((s, i) => ({
+      server: s, tool: (SERVERS[s] ? SERVERS[s].tools[0] : "read"), args: "period=Q3 FY26",
+      result: i === 0 ? "baseline pulled" : "joined on shared keys", ms: 380 + i * 160,
+    })),
+    text: "This is the part silos can't do — each of these systems is blind to the others. Joined, they talk:\n" +
+      (second ? "Two things stand out this week. The first is the big one:" : "One thing stands out this week:"),
+    insight: first,
+    actions: second ? [{
+      label: "Show the second insight",
+      run: btn => { btn.classList.add("done"); btn.textContent = "✓ Shown"; agentReply({ thinkMs: 400, text: "The second one — quieter, but it compounds:", insight: second }); },
+    }] : [],
+  };
+}
 function capabilitiesFlow() {
   const p = FOW.data();
   const conns = (p.connections || []).map(c => "- **" + (SERVERS[c] ? SERVERS[c].name : c) + "** — `" + (SERVERS[c] ? SERVERS[c].tools.slice(0, 2).join("` `") : "") + "`").join("\n");
@@ -523,7 +653,7 @@ function capabilitiesFlow() {
 
 /* ---------------- chip responders ---------------- */
 function chipIcon(type) {
-  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person", week: "clockIco", file: "file" }[type] || "spark";
+  return { kpi: "chart", trend: "chart", donut: "donut", bars: "bars", heatmap: "heat", goals: "goal", meeting: "cal", mail: "mail", approval: "check", task: "task", skill: "spark", automation: "bolt", server: "plug", hero: "person", week: "clockIco", file: "file", chain: "bolt", news: "file" }[type] || "spark";
 }
 function chipFlow(chips, text) {
   const p = FOW.data();
@@ -672,6 +802,20 @@ function chipFlow(chips, text) {
         ],
       };
     }
+    case "chain":
+      return { runChain: d };
+    case "news":
+      return {
+        thinkMs: 650,
+        tools: [{ server: "cna", tool: "get_article", args: "id=" + (d.cat || "story"), result: "full article + context", ms: 420 }],
+        text: "**" + d.headline + "**\n" + d.summary + "\n" +
+          "For your world: worth a scan — stories like this tend to surface in stakeholder conversations before the day is out.\n" +
+          "> Want it in tomorrow's morning brief? I can add it so you're never caught cold.",
+        actions: [
+          { label: "Add to my morning brief", toast: "Added — it'll appear in tomorrow's brief" },
+          { label: "Follow this story", toast: "Following — you'll get major updates only" },
+        ],
+      };
     case "server": {
       const s = SERVERS[d.id] || {};
       return {
@@ -718,7 +862,8 @@ function sendMessage(raw) {
   renderChips();
   addUserMsg(text, chips);
   const spec = routeMessage(text, chips);
-  agentReply(spec);
+  if (spec.runChain) runChain(spec.runChain);
+  else agentReply(spec);
   refreshSuggestions();
 }
 

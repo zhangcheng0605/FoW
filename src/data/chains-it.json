@@ -1,0 +1,113 @@
+{
+  "personaId": "it",
+  "chains": [
+    {
+      "id": "c1",
+      "name": "Clear CVE exposure by deadline",
+      "desc": "Sweeps the fleet for CVE-2026-31842, queues the patch pipeline, syncs the ticket and tells the team — no spreadsheet shuffling",
+      "steps": [
+        {
+          "server": "servicenow",
+          "tool": "query_cmdb",
+          "args": "vuln=CVE-2026-31842 · group by site",
+          "result": "214 of 3,120 endpoints exposed — Austin 92, London 54; export CMDB-EXP-0808",
+          "carry": "214 endpoints · 5 sites",
+          "ms": 760
+        },
+        {
+          "server": "github",
+          "tool": "trigger_workflow",
+          "args": "patch-pipeline · targets=178 online",
+          "result": "Run #413 queued green behind run #412; 178 endpoints scheduled for 22:00 SGT",
+          "carry": "run #413 · 178 queued",
+          "ms": 540
+        },
+        {
+          "server": "jira",
+          "tool": "update_issue",
+          "args": "key=ITOPS-2853 · attach sweep + flag ring-4 clash",
+          "result": "ITOPS-2853 updated; sub-task ITOPS-2861 opened for 43 Austin devices held by ITOPS-2860",
+          "carry": "ITOPS-2861 · 43 devices",
+          "ms": 470
+        },
+        {
+          "server": "confluence",
+          "tool": "update_page",
+          "args": "space=ITOPS · CVE-2026-31842 tracker",
+          "result": "Tracker published as v12 with site table and Aug 12 countdown",
+          "carry": "tracker v12 link",
+          "ms": 620
+        },
+        {
+          "server": "slack",
+          "tool": "post_message",
+          "args": "channel=#it-ops · tag Rahul Menon + Hannah Cho",
+          "result": "Status posted with tracker link — 6 acks in 10 min, Rahul owns the ring-4 exception",
+          "carry": "posted · 6 acks",
+          "ms": 380
+        }
+      ],
+      "outcome": "Patch run #413 queued in GitHub, ITOPS-2853/2861 synced in Jira, tracker v12 live in Confluence, and #it-ops briefed — from one CMDB sweep.",
+      "insight": {
+        "sources": ["servicenow", "jira", "github", "slack"],
+        "headline": "43 exposed endpoints sit in a Win11 hold that ends 3 days after the Aug 12 deadline",
+        "detail": "Joining the ServiceNow CMDB export against Jira showed the 43 Austin devices in ITOPS-2860's ring-4 hold (staging Aug 15) can never make ITOPS-2853's Aug 12 patch deadline, and the GitHub pipeline silently skips them. Each tool looks healthy on its own — only the cross-join exposes the guaranteed miss.",
+        "action": "Approve a ring-4 exception so the 43 Austin devices patch in tonight's #413 window"
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Release Dell refresh PO",
+      "desc": "Turns Hannah Cho's Dell quote into an approved PO with staged asset records and a confirmed ship plan before the quote expires",
+      "steps": [
+        {
+          "server": "sharepoint",
+          "tool": "get_file",
+          "args": "Dell Latitude 7460 quote — wave 3.pdf",
+          "result": "Quote QTE-88471 verified: 120 units · $142,800 · valid to Aug 15",
+          "carry": "$142,800 · exp Aug 15",
+          "ms": 610
+        },
+        {
+          "server": "ariba",
+          "tool": "submit_purchase_order",
+          "args": "vendor=Dell · 120x Latitude 7460 · Q3 capex",
+          "result": "PO-58217 created and routed to the 2-step approval chain",
+          "carry": "PO-58217 · $142,800",
+          "ms": 890
+        },
+        {
+          "server": "servicenow",
+          "tool": "create_asset_records",
+          "args": "stage 120 CIs · map to wave-3 replacement list",
+          "result": "120 CIs staged under change CHG-4471, linked to retiring devices",
+          "carry": "120 CIs · CHG-4471",
+          "ms": 720
+        },
+        {
+          "server": "outlook",
+          "tool": "send_reminder",
+          "args": "to=PO-58217 approval chain · quote expiry Aug 15",
+          "result": "Both approvers nudged with quote-expiry flag; first approval landed in 20 min",
+          "carry": "1 of 2 approvals in",
+          "ms": 430
+        },
+        {
+          "server": "teams",
+          "tool": "post_message",
+          "args": "Hannah Cho · Dell wave-3 logistics thread",
+          "result": "Ship-split confirmed: 72 units to Austin, 48 to New York, ETA Aug 22",
+          "carry": "72 ATX / 48 NYC · Aug 22",
+          "ms": 390
+        }
+      ],
+      "outcome": "PO-58217 ($142,800) moving through Ariba, 120 asset CIs staged in ServiceNow under CHG-4471, approvers nudged via Outlook, and Hannah Cho's ship-split locked in Teams.",
+      "insight": {
+        "sources": ["ariba", "servicenow", "jira", "sharepoint"],
+        "headline": "57 of the 120 refresh laptops replace devices still exposed to CVE-2026-31842",
+        "detail": "Mapping the Ariba order lines to ServiceNow's wave-3 retirement list and the CVE exposure export revealed 57 incoming Latitudes replace machines the team is also spending patch effort on under ITOPS-2853. Procurement sees a PO, the CMDB sees vulnerabilities, Jira sees a patch ticket — only the join shows the double work.",
+        "action": "Front-load the 72-unit Austin shipment and drop those 57 devices from the manual patch chase"
+      }
+    }
+  ]
+}
