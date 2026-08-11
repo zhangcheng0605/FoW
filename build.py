@@ -62,6 +62,7 @@ def build() -> None:
     script_names = [
         "logos.js", "logos-custom.js", "avatars.js",  # brand marks + avatars load first
         "registry.js", "charts.js", "chat.js", "app.js", "pet.js", "present.js", "fx.js",
+        "crew-svgs.js", "crew-data.js", "crew.js",
     ]
     scripts = "\n".join(
         read(SRC / "js" / name)

@@ -304,6 +304,7 @@ function runChain(chain) {
     const p = el("p"); p.className = "rich";
     renderInline(p, "On it — running **" + chain.name + "** across " + new Set(chain.steps.map(s => s.server)).size + " systems:");
     body.appendChild(p);
+    if (typeof crewMission === "function") crewMission({ owner: state.personaId, steps: chain.steps, result: chain.outcome, label: chain.name });
 
     const flow = el("div", "chain-flow");
     const track = el("div", "cf-track");

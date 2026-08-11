@@ -359,6 +359,14 @@ function renderStudio(p, cv) {
     bd.appendChild(el("div", "dg-label", d.label));
     const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
     bd.appendChild(sub);
+    if (typeof crewCollab === "function") {
+      const cc = crewCollab(d.steps);
+      if (cc) {
+        const cd = el("div", "dg-crew", "runs with " + cc);
+        cd.style.cssText = "font-size:10px;color:var(--acc-ink);margin-top:2px;font-weight:640";
+        bd.appendChild(cd);
+      }
+    }
     const prog = el("div", "dg-prog"); prog.hidden = true;
     const fill = el("i"); prog.appendChild(fill);
     bd.appendChild(prog);
@@ -1060,6 +1068,7 @@ function srvFor(p, wanted) { return (p.connections || []).find(c => wanted.inclu
 /* ---------------- delegation runner ---------------- */
 const wait = ms => new Promise(r => setTimeout(r, ms));
 async function runDelegation(d, ui) {
+  if (typeof crewMission === "function") crewMission({ owner: state.personaId, steps: d.steps, result: d.result, label: d.label });
   const set = state.delegated[state.personaId] || (state.delegated[state.personaId] = {});
   ui.btn.remove();
   const pill = el("span", "dg-pill queued", "queued");
@@ -1398,6 +1407,7 @@ function ckBuild(query) {
   const curName = state.personaId ? PERSONAS.find(x => x.id === state.personaId).name.split(" ")[0] : "this workspace";
   items.push({ sect: "Workspace", label: "Play highlights — " + curName + "'s story", icon: "▶", sub: "tour", run: () => startPresent(state.personaId) });
   items.push({ sect: "Workspace", label: "Open the MCP console", icon: "⌁", sub: "servers", run: () => mcpOpen() });
+  items.push({ sect: "Workspace", label: "Meet the Crew — your agents at work", icon: "☻", sub: "agents", run: () => { if (typeof crewOpen === "function") crewOpen(); } });
   if (p) (p.chains || []).forEach(c => items.push({ sect: "Cross-app workflows", label: "Run: " + c.name, icon: "➜", sub: c.steps.length + " hops", run: () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); } }));
   if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askMElah", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });
@@ -1470,6 +1480,7 @@ function init() {
   const fabAv = $("#fabAv"); if (fabAv) fabAv.innerHTML = LOGO_ASKME;
   $("#presentBtn").addEventListener("click", () => { if (PRESENT.on) prStop(); else startPresent(state.personaId); });
   $("#mcpBtn").addEventListener("click", mcpOpen);
+  $("#crewBtn").addEventListener("click", () => { if (typeof crewOpen === "function") crewOpen(); });
   $("#mcpClose").addEventListener("click", mcpClose);
   $("#mcpBack").addEventListener("click", mcpClose);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#mcp").hidden) mcpClose(); });
