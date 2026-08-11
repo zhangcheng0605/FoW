@@ -11,7 +11,8 @@ const PRESENT = { on: false, abort: false, paused: false, speed: 1, step: 0, ste
 const KICKERS = {
   intro: "FoW · guided highlights", hero: "The morning brief", kpis: "Business intelligence",
   chart: "Live charts", ask: "The signature move", answer: "Agentic answers",
-  delegate: "Delegate real work", autopilot: "Trust, with a leash", mcp: "The MCP layer",
+  delegate: "Delegate real work", crew: "The Crew · agents with faces",
+  autopilot: "Trust, with a leash", mcp: "The MCP layer",
   chains: "No more swivel-chair", insights: "What silos can't see",
   recap: "Friday, 4:55pm", outro: "FoW · Mediacorp",
 };
@@ -25,6 +26,7 @@ const FALLBACK_BEATS = {
   chains: { title: "Apps, chained via MCP", text: "Watch data hop between systems by itself — retrieved from one, filed in the next, everyone notified. No copy-paste, no swivel-chair." },
   insights: { title: "Insights no silo could produce", text: "With every system feeding one brain, askMElah joins what each tool sees alone — and finds what none of them could." },
   delegate: { title: "An agent work queue", text: "askMElah runs the steps in the background, files the artifact, and reports back in chat." },
+  crew: { title: "Your agent takes it from here", text: "Every person has a personal agent with a face. Watch it brief askMElah, huddle with the other teams' agents, pass real data hand to hand — then walk back and report to its human." },
   autopilot: { title: "Approvals on autopilot", text: "Within policy and clean history, it clears the queue itself. Anything unusual still waits for a human." },
   mcp: { title: "Every tool, one console", text: "The MCP console shows what this seat is wired into — servers, tools, and the live call log." },
   recap: { title: "One click writes the status report", text: "Wins, watch-outs, next week — compiled from everything on this canvas, including this session." },
@@ -305,16 +307,51 @@ function prScript() {
     await psleep(6200);
   });
 
-  /* 8 · delegation */
+  /* 8 · delegation → the Crew takes it, on camera */
   add(async () => {
-    const dgCard = $(".dg-card");
+    /* prefer a delegation whose steps pull in other teams' agents — the huddle is the show */
+    const p = FOW.data();
+    const dgs = (p && p.delegations) || [];
+    let idx = 0;
+    try {
+      idx = dgs.findIndex(d => (d.steps || []).some(s => {
+        const dm = typeof cwDomainOf === "function" ? cwDomainOf(s.server) : null;
+        return dm && dm !== state.personaId;
+      }));
+    } catch (_) { idx = 0; }
+    if (idx < 0) idx = 0;
+    const cards = $$(".dg-card");
+    const dgCard = cards[idx] || cards[0];
     if (!dgCard) return;
     const btn = $(".dg-btn", dgCard);
     await prScrollTo(dgCard);
     prSpotlight(dgCard);
     showBeat("delegate");
-    if (btn) { await prClick(btn); prCursorHide(); await psleep(6300); await pwaitChatIdle(8000); }
-    else await psleep(3000);
+    if (!btn) { await psleep(3000); return; }
+    await psleep(2600);
+    PRESENT.allowCrew = true;
+    await prClick(btn);
+    prCursorHide();
+    await psleep(1500);
+    if (typeof CW !== "undefined" && CW.open) {
+      prSpotlight($("#crew .cw-panel"), 6);
+      showBeat("crew");
+      /* let the whole mission play: walk, huddle, hand-offs, the report at the desk */
+      let warm = 3000;
+      while (warm > 0 && !CW.busy) { await new Promise(r => setTimeout(r, 150)); warm -= 150; }
+      let left = 30000;
+      while (left > 0 && CW.busy) {
+        if (PRESENT.abort) throw { aborted: true };
+        if (PRESENT.skip) break;
+        await new Promise(r => setTimeout(r, 200));
+        left -= 200;
+      }
+      await psleep(1600);
+      crewClose();
+      prSpotlight(null);
+    } else await psleep(5000);
+    PRESENT.allowCrew = false;
+    await pwaitChatIdle(6000);
   });
 
   /* 7 · approvals autopilot */
@@ -372,6 +409,7 @@ function prScript() {
 async function startPresent(personaId) {
   if (PRESENT.on) return;
   PRESENT.on = true; PRESENT.abort = false; PRESENT.paused = false; PRESENT.step = 0; PRESENT.skip = false;
+  PRESENT.allowCrew = false;
   PRESENT.pid = personaId || state.personaId || "finance";
   prBuild();
   PRESENT.steps = prScript();
@@ -394,6 +432,8 @@ async function startPresent(personaId) {
 function prStop() {
   if (!PRESENT.on) return;
   PRESENT.on = false; PRESENT.abort = true;
+  PRESENT.allowCrew = false;
+  try { if (typeof crewClose === "function") crewClose(); } catch (_) { }
   const root = prEl();
   if (root) { root.classList.add("out"); setTimeout(() => root.remove(), 350); }
   document.body.classList.remove("presenting");

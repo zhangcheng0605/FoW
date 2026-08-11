@@ -268,6 +268,8 @@ async function cwAmbient() {
 
 /* ---------------- missions: delegations & chains ---------------- */
 function crewMission(m) {
+  /* guided tours stage their own crew moment — ignore stray auto-opens mid-tour */
+  try { if (typeof PRESENT !== "undefined" && PRESENT.on && !PRESENT.allowCrew) return Promise.resolve(); } catch (_) { }
   crewBuild();
   if (!CW.open) crewOpen();
   CW.queue = CW.queue.then(() => cwRunMission(m)).catch(() => { });
