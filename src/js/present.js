@@ -212,18 +212,21 @@ function prScript() {
     await psleep(5800);
   });
 
-  /* 2 · KPI row */
+  /* 2 · KPI row — union the stat cards near the first one (studios may scatter them) */
   add(async () => {
     const kpis = $$(".card.kpi");
     if (kpis.length) {
-      const first = kpis[0].getBoundingClientRect();
-      const last = kpis[kpis.length - 1].getBoundingClientRect();
+      await prScrollTo(kpis[0]);
+      const all = kpis.map(k => k.getBoundingClientRect());
+      const rs = all.filter(r => r.top < all[0].top + 320);
+      const L = Math.min(...rs.map(r => r.left)), T = Math.min(...rs.map(r => r.top));
+      const R = Math.max(...rs.map(r => r.right)), B = Math.max(...rs.map(r => r.bottom));
       const spot = $("#prSpot");
       spot.classList.remove("off");
-      spot.style.left = (first.left - 10) + "px";
-      spot.style.top = (Math.min(first.top, last.top) - 10) + "px";
-      spot.style.width = (last.right - first.left + 20) + "px";
-      spot.style.height = (Math.max(first.height, last.height) + 20) + "px";
+      spot.style.left = (L - 10) + "px";
+      spot.style.top = (T - 10) + "px";
+      spot.style.width = (R - L + 20) + "px";
+      spot.style.height = (B - T + 20) + "px";
     }
     showBeat("kpis");
     await psleep(5800);
@@ -383,7 +386,7 @@ function prScript() {
   add(async () => {
     const btn = $(".hstat.primary");
     if (!btn) return;
-    await prScrollTo($(".hero"));
+    await prScrollTo($(".hero") || btn);
     prSpotlight(null);
     showBeat("recap");
     await prClick(btn);
