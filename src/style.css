@@ -1237,6 +1237,7 @@ body[data-theme="dark"] { --pr-dim: rgba(0, 0, 0, 0.66); }
   border-top: 3px solid var(--acc);
 }
 .pr-caption.pop { animation: prCapIn 450ms cubic-bezier(.2,.9,.3,1.2) both; }
+.pr-caption.up { bottom: auto; top: 76px; }
 .pr-caption.paused { outline: 2px dashed var(--acc-line); outline-offset: 3px; }
 @keyframes prCapIn { from { opacity: 0; transform: translateX(-50%) translateY(14px); } to { opacity: 1; transform: translateX(-50%); } }
 .pr-kicker { font-size: 10px; font-weight: 770; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc-ink); }
