@@ -1,0 +1,237 @@
+{
+  "personaId": "wireframe",
+  "user": { "name": "Alex Lim", "role": "Operations Lead", "dept": "Operations", "location": "Singapore", "initials": "AL" },
+  "focus": {
+    "headline": "Q3 review at 15:00 — operating cost is running 6% over plan.",
+    "sub": "Two approvals hold up the cloud renewal; the cost story needs to be ready by 14:00."
+  },
+  "connections": ["outlook", "teams", "excel", "sap", "jira", "workday"],
+  "kpis": [
+    { "id": "k1", "label": "Revenue (QTD)", "value": "$48.2M", "delta": "+3.1%", "deltaDir": "up", "deltaGood": true, "vs": "vs plan", "spark": [14.1, 14.4, 14.9, 15.2, 14.8, 15.3, 15.6, 15.9, 16.0, 16.2, 16.4, 16.1], "note": "Ad sales carried the quarter; digital subscriptions flat", "source": "sap" },
+    { "id": "k2", "label": "Operating cost (QTD)", "value": "$31.6M", "delta": "+6.0%", "deltaDir": "up", "deltaGood": false, "vs": "vs plan", "spark": [9.6, 9.7, 9.8, 9.9, 9.8, 10.0, 10.1, 10.2, 10.3, 10.4, 11.1, 10.9], "note": "July cloud true-up and a one-off production vendor invoice", "source": "sap" },
+    { "id": "k3", "label": "Open tickets", "value": "142", "delta": "−12%", "deltaDir": "down", "deltaGood": true, "vs": "vs last week", "spark": [188, 181, 176, 170, 172, 165, 160, 158, 155, 161, 150, 142], "note": "Backlog down for the fourth week running", "source": "jira" },
+    { "id": "k4", "label": "Team utilisation", "value": "78%", "delta": "+4 pts", "deltaDir": "up", "deltaGood": true, "vs": "vs Q2", "spark": [70, 71, 72, 72, 73, 74, 74, 75, 76, 76, 77, 78], "note": "Healthy band is 75–85%; two people above 95%", "source": "workday" }
+  ],
+  "trend": {
+    "title": "Revenue vs operating cost",
+    "subtitle": "Monthly, Sep → Aug",
+    "unit": "$K",
+    "series": [
+      { "name": "Revenue", "points": [14100, 14400, 14900, 15200, 14800, 15300, 15600, 15900, 16000, 16200, 16400, 16100] },
+      { "name": "Operating cost", "points": [9600, 9700, 9800, 9900, 9800, 10000, 10100, 10200, 10300, 10400, 11100, 10900] }
+    ],
+    "insight": "Margin held until July, when cost jumped $700K in one month on the cloud true-up.",
+    "source": "sap"
+  },
+  "donut": {
+    "title": "Cost by category (Jul)",
+    "unit": "%",
+    "segments": [
+      { "label": "People", "value": 52 },
+      { "label": "Cloud & software", "value": 21 },
+      { "label": "Production vendors", "value": 17 },
+      { "label": "Facilities & other", "value": 10 }
+    ],
+    "insight": "Cloud & software rose from 16% to 21% of cost after the July true-up.",
+    "source": "sap"
+  },
+  "bars": {
+    "title": "July cost variance by team",
+    "unit": "$K",
+    "categories": ["Platform", "Production", "Digital", "Sales", "Support", "G&A"],
+    "series": [{ "name": "Actual vs plan", "values": [420, 260, 90, 40, -60, -110] }],
+    "insight": "Platform (+$420K, cloud true-up) and Production (+$260K, vendor invoice) explain nearly all of July's overrun.",
+    "source": "sap"
+  },
+  "heatmap": {
+    "title": "Tickets opened by team",
+    "unit": "tickets",
+    "rows": ["Platform", "Production", "Digital", "Support"],
+    "cols": ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    "values": [[42, 40, 38, 30, 35, 37, 36, 34, 33, 35, 31, 28], [18, 20, 22, 15, 17, 19, 18, 17, 16, 18, 17, 15], [25, 24, 23, 19, 22, 21, 20, 19, 18, 20, 19, 17], [60, 58, 55, 44, 52, 50, 49, 47, 45, 48, 44, 40]],
+    "insight": "Support volume is falling steadily; Platform tickets are down a third since September.",
+    "source": "jira"
+  },
+  "goals": [
+    { "label": "Hold cost within 3% of plan", "pct": 45, "detail": "Running +6.0% QTD after the July true-up" },
+    { "label": "Backlog under 120 tickets", "pct": 70, "detail": "142 open, down from 188 in September" },
+    { "label": "Ship the vendor consolidation", "pct": 60, "detail": "3 of 5 vendors migrated" }
+  ],
+  "meetings": [
+    { "time": "09:30", "dur": "15m", "title": "Team stand-up", "platform": "teams", "attendees": ["Nadia Rahman", "Ben Koh", "Wei Ling Tan"], "agenda": "Blockers, ticket backlog, renewal status" },
+    { "time": "11:00", "dur": "45m", "title": "Cloud cost review", "platform": "teams", "attendees": ["Ben Koh", "Hannah Goh"], "agenda": "July true-up, Q4 run-rate, reserved capacity options" },
+    { "time": "15:00", "dur": "60m", "title": "Q3 operations review", "platform": "teams", "attendees": ["Grace Yeo", "Nadia Rahman", "Ben Koh", "Hannah Goh"], "agenda": "Revenue, cost variance, backlog, Q4 priorities" },
+    { "time": "16:30", "dur": "30m", "title": "1:1 with Nadia", "platform": "teams", "attendees": ["Nadia Rahman"], "agenda": "Workload, Q4 goals" }
+  ],
+  "inbox": [
+    { "id": "m1", "from": "Grace Yeo", "source": "outlook", "subject": "Cost story for the 15:00 review", "preview": "Alex — can you send the one-pager on July cost before 14:00? Keep it to the drivers...", "time": "8:05 AM", "urgent": true, "unread": true },
+    { "id": "m2", "from": "Ben Koh", "source": "teams", "subject": "Cloud renewal needs your sign-off", "preview": "Vendor holds the discounted rate until Monday. PO is in your queue...", "time": "8:40 AM", "urgent": false, "unread": true },
+    { "id": "m3", "from": "Jira", "source": "jira", "subject": "OPS-311 blocked: vendor access", "preview": "Waiting on credentials from the production vendor since Tuesday...", "time": "9:12 AM", "urgent": false, "unread": true },
+    { "id": "m4", "from": "Hannah Goh", "source": "outlook", "subject": "Q4 run-rate numbers attached", "preview": "Here is the reserved-capacity model — three scenarios, all in the workbook...", "time": "Yesterday", "urgent": false, "unread": false }
+  ],
+  "approvals": [
+    { "id": "a1", "type": "PO", "title": "Cloud platform renewal — 12 months", "requester": "Ben Koh", "amount": "$186,000", "meta": "Budgeted · discounted rate expires Monday", "source": "sap", "urgency": "high" },
+    { "id": "a2", "type": "Expense", "title": "Team offsite catering", "requester": "Nadia Rahman", "amount": "$1,240", "meta": "Within policy · team budget", "source": "workday", "urgency": "low" },
+    { "id": "a3", "type": "Access", "title": "Admin access for production vendor", "requester": "Wei Ling Tan", "amount": "", "meta": "Unblocks OPS-311 · 30-day expiry", "source": "jira", "urgency": "medium" },
+    { "id": "a4", "type": "PTO", "title": "2 days leave, Aug 21–22", "requester": "Ben Koh", "amount": "", "meta": "Coverage confirmed", "source": "workday", "urgency": "low" }
+  ],
+  "tasks": [
+    { "id": "OPS-318", "title": "Write the July cost one-pager", "due": "Aug 8", "status": "inprogress", "priority": "P1", "source": "jira" },
+    { "id": "OPS-311", "title": "Vendor access for production migration", "due": "Aug 8", "status": "blocked", "priority": "P1", "source": "jira" },
+    { "id": "OPS-305", "title": "Q4 headcount plan draft", "due": "Aug 12", "status": "todo", "priority": "P2", "source": "jira" },
+    { "id": "OPS-299", "title": "Close out vendor consolidation phase 2", "due": "Aug 15", "status": "review", "priority": "P2", "source": "jira" }
+  ],
+  "suggestions": [
+    "Why is operating cost over plan?",
+    "Should I approve the cloud renewal?",
+    "Prep me for the Q3 review",
+    "How is the ticket backlog trending?",
+    "Who on my team is overloaded?"
+  ],
+  "chatFlows": [
+    {
+      "id": "f1", "label": "cost over plan",
+      "triggers": ["cost", "over plan", "overrun", "over budget", "variance", "july"],
+      "toolCalls": [
+        { "server": "sap", "tool": "run_variance_report", "args": "period=Jul", "result": "6 teams · 2 over plan", "ms": 620 },
+        { "server": "excel", "tool": "read_workbook", "args": "file=Q4_Run_Rate.xlsx", "result": "3 run-rate scenarios", "ms": 420 }
+      ],
+      "response": "Operating cost is **$31.6M QTD — 6.0% over plan**, and almost all of it landed in July.\n{{chart:bars}}\n- **Platform +$420K** — the annual cloud true-up posted in one month.\n- **Production +$260K** — a one-off vendor invoice for the migration.\n- Support and G&A came in **$170K under**.\n> Net of the one-offs, the run-rate is only **+1.8%** over plan. Lead with that at 15:00.",
+      "actions": [
+        { "label": "Draft the one-pager for Grace", "toast": "One-pager drafted — waiting in Outlook" },
+        { "label": "Add chart to the review deck", "toast": "Slide added to 'Q3 ops review.pptx'" }
+      ]
+    },
+    {
+      "id": "f2", "label": "cloud renewal",
+      "triggers": ["renewal", "cloud renewal", "approve the cloud", "$186"],
+      "toolCalls": [
+        { "server": "sap", "tool": "get_cost_centers", "args": "cc=platform", "result": "budget line has $210K headroom", "ms": 480 },
+        { "server": "excel", "tool": "run_query", "args": "file=Q4_Run_Rate.xlsx&scenario=reserved", "result": "saves $41K vs on-demand", "ms": 520 }
+      ],
+      "response": "**Approve it.** The $186K renewal is inside the Platform budget line ($210K headroom), and the discounted rate saves **$41K** against on-demand pricing.\n> The rate expires Monday. After that it reprices at list.",
+      "actions": [
+        { "label": "Approve the renewal", "toast": "PO approved — Ben notified" },
+        { "label": "Ask Ben for the contract terms", "toast": "Question sent to Ben Koh" }
+      ]
+    },
+    {
+      "id": "f3", "label": "backlog",
+      "triggers": ["backlog", "tickets", "ticket trend"],
+      "toolCalls": [{ "server": "jira", "tool": "search_issues", "args": "project=OPS&status=open", "result": "142 open · 1 blocked P1", "ms": 460 }],
+      "response": "Backlog is **142 tickets, down 12% week on week** and down for four straight weeks.\n{{chart:heatmap}}\nSupport is doing most of the lifting. The one risk is **OPS-311**: it's blocked on vendor access, and that request is in your approvals.",
+      "actions": [{ "label": "Approve the vendor access", "toast": "Access granted for 30 days — OPS-311 unblocked" }]
+    },
+    {
+      "id": "f4", "label": "overloaded",
+      "triggers": ["overloaded", "utilisation", "utilization", "workload", "burnout", "team load"],
+      "toolCalls": [{ "server": "workday", "tool": "run_report", "args": "report=utilisation&team=ops", "result": "8 people · 2 above 95%", "ms": 540 }],
+      "response": "Team utilisation is **78%**, inside the healthy 75–85% band. Two people are above it:\n|Person|Utilisation|Why|\n|Ben Koh|97%|Cloud renewal + cost review|\n|Wei Ling Tan|96%|Vendor migration|\n> Move OPS-305 (Q4 headcount draft) off Ben's plate for this week.",
+      "actions": [{ "label": "Reassign OPS-305", "toast": "OPS-305 moved to Nadia Rahman" }]
+    },
+    {
+      "id": "f5", "label": "Q3 review",
+      "triggers": ["q3 review", "prep me for the q3", "15:00", "ops review"],
+      "toolCalls": [
+        { "server": "outlook", "tool": "get_calendar", "args": "event=15:00", "result": "4 attendees", "ms": 380 },
+        { "server": "sap", "tool": "run_variance_report", "args": "period=Q3", "result": "QTD figures refreshed", "ms": 560 }
+      ],
+      "response": "## Q3 review · 15:00\n{{kpis}}\n1. **Revenue** is up 3.1% on plan — open with it.\n2. **Cost** is 6% over plan, but only +1.8% once you strip out the one-offs.\n3. **Backlog** is down 12% and should be under 120 by September.\n> Grace will ask about the cloud renewal. Approve it before 15:00 so the answer is \"done\".",
+      "actions": [{ "label": "Send pre-read to attendees", "toast": "Pre-read sent to 4 attendees" }]
+    }
+  ],
+  "skills": [
+    { "id": "variance", "name": "Variance Explainer", "desc": "Breaks cost gaps down by team and driver", "icon": "▦", "lastRun": "Today 07:30", "runs": 88 },
+    { "id": "brief", "name": "Meeting Prep", "desc": "Builds a one-page brief from calendar, mail and data", "icon": "▤", "lastRun": "Yesterday", "runs": 142 }
+  ],
+  "automations": [
+    { "name": "Weekly cost digest", "schedule": "Mon 08:30", "desc": "Variance by team, emailed to team leads", "lastResult": "Sent to 6 people · Mon 08:30" }
+  ],
+  "activity": [
+    "SAP · July variance report refreshed",
+    "Jira · OPS-311 marked blocked by Wei Ling Tan",
+    "Outlook · Grace Yeo sent 'Cost story for the 15:00 review'",
+    "Workday · Utilisation report updated"
+  ],
+  "files": [
+    { "name": "Q4_Run_Rate.xlsx", "source": "excel", "kind": "sheet", "modified": "Yesterday", "by": "Hannah Goh" },
+    { "name": "Q3_Ops_Review.pptx", "source": "teams", "kind": "deck", "modified": "2h ago", "by": "Alex Lim" }
+  ],
+  "week": {
+    "meetingHours": 14.0, "focusHours": 13.5, "meetingCost": "$7,800", "deepBlocks": 5, "contextSwitches": 48,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "meetings": [2.5, 3.5, 2.0, 3.0, 3.0],
+    "focus": [3.0, 2.0, 3.5, 2.5, 2.5],
+    "insight": "Tuesday carried 3.5 hours of meetings. Move the cost review async and you get a deep-work block back."
+  },
+  "delegations": [
+    {
+      "id": "d1", "label": "Write the July cost one-pager",
+      "detail": "Pull variance by team, explain the two one-offs, send the draft to Grace before 14:00",
+      "steps": [
+        { "server": "sap", "tool": "run_variance_report", "args": "period=Jul", "result": "6 teams · 2 drivers found", "ms": 700 },
+        { "server": "excel", "tool": "read_workbook", "args": "file=Q4_Run_Rate.xlsx", "result": "run-rate +1.8% excl. one-offs", "ms": 600 },
+        { "server": "outlook", "tool": "send_message", "args": "to=Grace Yeo&draft=true", "result": "draft staged for review", "ms": 500 }
+      ],
+      "result": "One-pager drafted: +6.0% headline, +1.8% run-rate. Staged in Outlook for Grace.",
+      "artifact": "July_Cost_OnePager.docx"
+    },
+    {
+      "id": "d2", "label": "Unblock OPS-311",
+      "detail": "Chase the vendor for credentials, grant scoped access, move the ticket forward",
+      "steps": [
+        { "server": "jira", "tool": "search_issues", "args": "key=OPS-311", "result": "blocked 3 days · vendor access", "ms": 480 },
+        { "server": "teams", "tool": "post_message", "args": "to=vendor-channel", "result": "vendor replied with contact", "ms": 900 },
+        { "server": "jira", "tool": "transition_issue", "args": "key=OPS-311&to=In Progress", "result": "ticket moved to In Progress", "ms": 420 }
+      ],
+      "result": "Vendor contact confirmed and OPS-311 is back in progress. Access still waits on your approval.",
+      "artifact": null
+    },
+    {
+      "id": "d3", "label": "Rebalance Ben's week",
+      "detail": "Find work to move off anyone above 95% utilisation and propose owners",
+      "steps": [
+        { "server": "workday", "tool": "run_report", "args": "report=utilisation", "result": "2 people above 95%", "ms": 560 },
+        { "server": "jira", "tool": "search_issues", "args": "assignee=Ben Koh", "result": "5 open items", "ms": 440 },
+        { "server": "teams", "tool": "post_message", "args": "to=Nadia Rahman", "result": "Nadia accepted OPS-305", "ms": 700 }
+      ],
+      "result": "Moved OPS-305 to Nadia. Ben drops to about 88% this week.",
+      "artifact": null
+    }
+  ],
+  "chains": [
+    {
+      "id": "c1", "name": "Ship the Q3 review pack",
+      "desc": "Pull the numbers, build the chart, drop it in the deck, send the pre-read",
+      "steps": [
+        { "server": "sap", "tool": "run_variance_report", "args": "period=Q3", "result": "QTD revenue and cost pulled", "carry": "Q3 actuals", "ms": 700 },
+        { "server": "excel", "tool": "refresh_model", "args": "file=Q3_Model.xlsx", "result": "charts rebuilt", "carry": "Charts · 3", "ms": 800 },
+        { "server": "teams", "tool": "post_message", "args": "file=Q3_Ops_Review.pptx", "result": "deck updated in the team files", "carry": "Deck v3", "ms": 600 },
+        { "server": "outlook", "tool": "send_message", "args": "to=review attendees", "result": "pre-read sent to 4 people", "carry": "Pre-read", "ms": 500 }
+      ],
+      "outcome": "Numbers refreshed, deck updated and the pre-read sent to all four attendees.",
+      "insight": {
+        "sources": ["sap", "jira"],
+        "headline": "Cost is up where tickets went down",
+        "detail": "Platform spent $420K over plan in July, and its ticket volume fell 33% over the same period. The spend bought stability. That's the story for the review, rather than an overrun.",
+        "action": "Add this framing to the review deck"
+      }
+    },
+    {
+      "id": "c2", "name": "Approve and file the cloud renewal",
+      "desc": "Check budget, approve the PO, file the contract, tell the team",
+      "steps": [
+        { "server": "sap", "tool": "get_cost_centers", "args": "cc=platform", "result": "$210K headroom", "carry": "Budget OK", "ms": 500 },
+        { "server": "sap", "tool": "post_journal", "args": "po=renewal&amount=186000", "result": "PO approved", "carry": "PO · $186K", "ms": 600 },
+        { "server": "teams", "tool": "post_message", "args": "channel=ops", "result": "team notified", "carry": "Notice", "ms": 400 }
+      ],
+      "outcome": "Renewal approved inside budget and the team notified. The discounted rate is locked.",
+      "insight": {
+        "sources": ["sap", "excel"],
+        "headline": "Reserved pricing saves $41K a year",
+        "detail": "Comparing the SAP PO with the run-rate model shows the renewal is cheaper than on-demand at current usage.",
+        "action": "Log the saving in the Q3 review"
+      }
+    }
+  ]
+}

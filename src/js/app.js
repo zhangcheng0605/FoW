@@ -46,7 +46,7 @@ function confetti() {
   const cv = $("#fx"), ctx = cv.getContext("2d");
   cv.width = innerWidth; cv.height = innerHeight;
   const acc = getComputedStyle(document.body).getPropertyValue("--acc").trim() || "#38bdf8";
-  const cols = [acc, "#3987e5", "#199e70", "#c98500", "#d55181", "#ffffff"];
+  const cols = wfOn() ? ["#111111", "#555555", "#a3a3a3", "#111111"] : [acc, "#3987e5", "#199e70", "#c98500", "#d55181", "#ffffff"];
   const parts = [];
   for (let i = 0; i < 90; i++) {
     parts.push({
@@ -1198,6 +1198,8 @@ function updateBadges() {
   badge.textContent = n;
   const apCard = $$(".card").find(c => { const t = $(".ch-title .t", c); return t && t.textContent === "Approvals"; });
   if (apCard) $(".ch-title .s", apCard).textContent = FOW.pendingApprovals().length + " pending";
+  const wfAp = $(".wf-ap-stat b");
+  if (wfAp) wfAp.textContent = FOW.pendingApprovals().length;
 }
 
 /* ---------------- persona switching ---------------- */
@@ -1205,6 +1207,7 @@ function selectPersona(id, first) {
   state.personaId = id;
   const meta = PERSONAS.find(x => x.id === id);
   document.body.dataset.persona = id;
+  if (id === "wireframe" && THEME.dark) applyTheme(false); /* the wireframe is paper: always light */
   /* persona avatars in the topbar */
   const pill = $("#ppAvatar"), tbav = $("#tbAvatar");
   let hasAv = false;
@@ -1405,9 +1408,9 @@ function ckBuild(query) {
   const p = FOW.data();
   const items = [];
   const curName = state.personaId ? PERSONAS.find(x => x.id === state.personaId).name.split(" ")[0] : "this workspace";
-  items.push({ sect: "Workspace", label: "Play highlights — " + curName + "'s story", icon: "▶", sub: "tour", run: () => startPresent(state.personaId) });
+  if (state.personaId !== "wireframe") items.push({ sect: "Workspace", label: "Play highlights — " + curName + "'s story", icon: "▶", sub: "tour", run: () => startPresent(state.personaId) });
   items.push({ sect: "Workspace", label: "Open the MCP console", icon: "⌁", sub: "servers", run: () => mcpOpen() });
-  items.push({ sect: "Workspace", label: "Meet the Crew — your agents at work", icon: "☻", sub: "agents", run: () => { if (typeof crewOpen === "function") crewOpen(); } });
+  if (state.personaId !== "wireframe") items.push({ sect: "Workspace", label: "Meet the Crew — your agents at work", icon: "☻", sub: "agents", run: () => { if (typeof crewOpen === "function") crewOpen(); } });
   if (p) (p.chains || []).forEach(c => items.push({ sect: "Cross-app workflows", label: "Run: " + c.name, icon: "➜", sub: c.steps.length + " hops", run: () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); } }));
   if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askMElah", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });

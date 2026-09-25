@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 
-PERSONA_ORDER = ["hr", "finance", "procurement", "it", "legal", "sales", "marketing"]
+PERSONA_ORDER = ["hr", "finance", "procurement", "it", "legal", "sales", "marketing", "wireframe"]
 
 
 def read(p: Path) -> str:

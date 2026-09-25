@@ -27,7 +27,7 @@ function sparkleAt(x, y, opts) {
   const n = o.n || 5;
   const layer = fxLayer();
   const acc = getComputedStyle(document.body).getPropertyValue("--acc").trim() || "#2563eb";
-  const palette = o.colors || [acc, "#8b5cf6", "#f59e0b", "#10b981"];
+  const palette = o.colors || (wfOn() ? ["#111111", "#777777", "#111111", "#b0b0b0"] : [acc, "#8b5cf6", "#f59e0b", "#10b981"]);
   for (let i = 0; i < n; i++) {
     const star = i % 2 === 0;
     const s = el("span", "fx-p", star ? "✦" : "");

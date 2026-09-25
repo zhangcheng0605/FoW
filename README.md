@@ -70,7 +70,12 @@ self-contained file (no server, no build step needed to run).
     gets sleepy in dark mode, and greets you on sign-in with your leave
     status pulled (simulated) from SAP — "welcome back from leave" included.
     Click it for context-aware nudges.
-13. **Morning scan** — a CNA newsroom card (demo headlines) on every canvas;
+13. **Wireframe seat** — the last face in the Lobby. Same engine, none of the
+   chrome: black lines on white, greyscale charts, no mascots, ticker or
+   brand colour. Charts, drag-to-ask, delegation, approvals + autopilot and
+   cross-app workflows all work as in the full build; click sparkles stay
+   (in ink). Use it when the visuals would distract from the idea.
+14. **Morning scan** — a CNA newsroom card (demo headlines) on every canvas;
     drag a story to askMElah for the 20-second version.
 
 ## Project layout
@@ -86,7 +91,9 @@ src/
   js/chat.js          askMElah: intent router, chip responders, streamed answers
   js/app.js           canvas renderer, drag-and-drop, ⌘K palette, MCP console, fx
   js/present.js       present mode: per-persona spotlight tours + player bar
-  data/<role>.json    per-persona demo data packs (6 roles)
+  js/studio-wireframe.js  the Wireframe seat's low-fi canvas
+  css/studio-wireframe.css  black-on-white skin, scoped to that seat
+  data/<role>.json    per-persona demo data packs (wireframe.json is self-contained)
   data/extras-<role>.json   extra per-persona content (inbox, palette, chips)
   data/tour-<role>.json     per-persona tour narration (agent-authored, grounded
                             in that persona's data)

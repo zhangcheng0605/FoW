@@ -152,7 +152,7 @@ function renderTrend(container, trend, opts) {
     const d = s.points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
     if (si === 0) {
       const base = Y(Math.max(min, 0));
-      const area = svgNode("path", { d: d + ` L${X(n - 1).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`, fill: col, opacity: 0.1 });
+      const area = svgNode("path", { d: d + ` L${X(n - 1).toFixed(1)} ${base} L${X(0).toFixed(1)} ${base} Z`, fill: col, "fill-opacity": 0.1 });
       svg.appendChild(area);
       if (anim) fadeIn(area, 350);
     }

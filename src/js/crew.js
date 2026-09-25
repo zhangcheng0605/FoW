@@ -270,6 +270,8 @@ async function cwAmbient() {
 function crewMission(m) {
   /* guided tours stage their own crew moment — ignore stray auto-opens mid-tour */
   try { if (typeof PRESENT !== "undefined" && PRESENT.on && !PRESENT.allowCrew) return Promise.resolve(); } catch (_) { }
+  /* the wireframe keeps delegation in the work queue — no mascot theatre */
+  if (typeof wfOn === "function" && wfOn()) return Promise.resolve();
   crewBuild();
   if (!CW.open) crewOpen();
   CW.queue = CW.queue.then(() => cwRunMission(m)).catch(() => { });

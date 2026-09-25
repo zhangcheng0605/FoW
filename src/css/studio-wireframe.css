@@ -1,0 +1,234 @@
+/* ============================================================
+   FoW · studio-wireframe — THE WIREFRAME
+   Black lines on white paper. One weight of line, one ink,
+   greys only for secondary text and chart series. No shadows,
+   gradients, glows, brand colour or ambient motion. Click
+   sparkles, drag-and-snap and streaming stay: they're feedback.
+   ============================================================ */
+
+body[data-persona="wireframe"] {
+  --ground: #ffffff;
+  --panel: #ffffff;
+  --card: #ffffff;
+  --card-grad-a: #ffffff;
+  --card-grad-b: #ffffff;
+  --hairline: #111111;
+  --hairline-soft: #e6e6e6;
+  --hov: #f5f5f5;
+  --soft: #ffffff;
+  --ink: #111111;
+  --ink-2: #444444;
+  --ink-3: #8c8c8c;
+  --ink-mono: #111111;
+  --grid-line: #ededed;
+  --axis-line: #111111;
+  --good: #111111; --warn: #8c8c8c; --serious: #555555; --crit: #111111;
+  --good-ink: #111111; --good-bg: transparent;
+  --bad-ink: #111111; --bad-bg: transparent;
+  --acc: #111111;
+  --acc-ink: #111111;
+  --acc-soft: rgba(0, 0, 0, 0.045);
+  --acc-line: #111111;
+  --send-ink: #ffffff;
+  --status-inprog-ink: #111111; --status-inprog-bg: transparent;
+  --status-review-ink: #111111; --status-review-bg: transparent;
+  --kbd-bg: #ffffff;
+  --shadow-card: none;
+  --shadow-pop: none;
+  --backdrop: rgba(255, 255, 255, 0.82);
+  --r: 4px;
+  --r-sm: 3px;
+  background: #ffffff;
+}
+
+/* ---------- strip the chrome everywhere ---------- */
+body[data-persona="wireframe"] *,
+body[data-persona="wireframe"] *::before,
+body[data-persona="wireframe"] *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+}
+body[data-persona="wireframe"] #aurora,
+body[data-persona="wireframe"] #pet,
+body[data-persona="wireframe"] #crew,
+body[data-persona="wireframe"] #ticker,
+body[data-persona="wireframe"] #crewBtn,
+body[data-persona="wireframe"] #presentBtn,
+body[data-persona="wireframe"] #themeBtn,
+body[data-persona="wireframe"] #lbPlay,
+body[data-persona="wireframe"] .brand-logo,
+body[data-persona="wireframe"] .brand-co { display: none !important; }
+body[data-persona="wireframe"] #frame { padding-bottom: 0; }
+body[data-persona="wireframe"] #toasts { bottom: 16px; }
+
+/* ---------- the lobby, in pencil ---------- */
+body[data-persona="wireframe"] #onboard { background: #ffffff; }
+body[data-persona="wireframe"] .ob-logo { filter: grayscale(1) contrast(1.4); }
+body[data-persona="wireframe"] .ob-word { color: #111; }
+body[data-persona="wireframe"] .lb-kicker { color: #111; }
+body[data-persona="wireframe"] .lb-stat { border-color: #111; border-radius: 4px; }
+body[data-persona="wireframe"] .lb-arrow { border-color: #111; color: #111; }
+body[data-persona="wireframe"] .lb-face { filter: grayscale(1); }
+body[data-persona="wireframe"] .lb-face.cur { filter: none; }
+
+/* ---------- buttons: outline by default, solid for the one primary ---------- */
+body[data-persona="wireframe"] .lb-enter,
+body[data-persona="wireframe"] .wf-btn.solid {
+  background: #111; color: #fff; border: 1.5px solid #111; border-radius: 4px;
+}
+body[data-persona="wireframe"] .lb-enter:hover,
+body[data-persona="wireframe"] .wf-btn.solid:hover { background: #fff; color: #111; transform: none; }
+body[data-persona="wireframe"] .dg-btn,
+body[data-persona="wireframe"] .m-act,
+body[data-persona="wireframe"] .sg,
+body[data-persona="wireframe"] .ag-join,
+body[data-persona="wireframe"] .tb-btn,
+body[data-persona="wireframe"] .persona-pill {
+  border: 1px solid #111; border-radius: 4px; color: #111; background: #fff;
+}
+body[data-persona="wireframe"] .dg-btn:hover,
+body[data-persona="wireframe"] .m-act:hover,
+body[data-persona="wireframe"] .sg:hover,
+body[data-persona="wireframe"] .ag-join:hover { background: #111; color: #fff; transform: none; }
+body[data-persona="wireframe"] .m-act.done { color: #8c8c8c; border-color: #cfcfcf; background: #fff; }
+body[data-persona="wireframe"] .sg::before { content: ""; }
+
+/* ---------- top bar ---------- */
+body[data-persona="wireframe"] #topbar { border-bottom: 1px solid #111; }
+body[data-persona="wireframe"] .brand-name { font-weight: 700; }
+body[data-persona="wireframe"] .pp-avatar,
+body[data-persona="wireframe"] .tb-avatar { background: #fff; border: 1px solid #111; color: #111; border-radius: 50%; overflow: hidden; }
+body[data-persona="wireframe"] .tb-ico .badge { background: #111; border-color: #fff; }
+
+/* ---------- canvas: plain 12-col grid ---------- */
+body[data-persona="wireframe"] #canvas.wf-grid { padding: 24px 24px 48px; gap: 16px; }
+body[data-persona="wireframe"] .card {
+  border: 1px solid #111; border-radius: 4px; background: #fff;
+  animation: none; transition: none;
+}
+body[data-persona="wireframe"] .card:hover,
+body[data-persona="wireframe"] .card.draggy:hover { transform: none; border-color: #111; outline: 1px solid #111; }
+body[data-persona="wireframe"] .card.dragging { opacity: 0.4; transform: none; }
+body[data-persona="wireframe"] .card-h { padding: 12px 14px 0; }
+body[data-persona="wireframe"] .ch-ico { background: none; color: #111; width: 18px; height: 18px; }
+body[data-persona="wireframe"] .ch-title .t { font-weight: 650; }
+body[data-persona="wireframe"] .ch-act { color: #8c8c8c; }
+body[data-persona="wireframe"] .ch-act:hover { color: #111; background: none; }
+body[data-persona="wireframe"] .card-f { color: #666; border-top: 1px solid #e6e6e6; }
+
+body[data-persona="wireframe"] .wf-sect {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #111; border-bottom: 1px solid #111; padding: 10px 0 6px; margin-top: 6px;
+}
+
+/* header: text on paper, no box */
+body[data-persona="wireframe"] .wf-head { padding: 4px 2px 10px; border-bottom: 1px solid #111; cursor: grab; }
+.wf-hi { font-size: 11.5px; color: #8c8c8c; letter-spacing: 0.02em; }
+.wf-title { margin: 8px 0 4px; font-size: 24px; line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; color: #111; max-width: 900px; }
+.wf-sub { font-size: 13px; color: #444; }
+.wf-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.wf-stat {
+  display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px;
+  border: 1px solid #111; border-radius: 4px; background: #fff; font-size: 12px; color: #444;
+}
+.wf-stat b { font-size: 14px; color: #111; }
+.wf-stat:hover { background: #111; color: #fff; }
+.wf-stat:hover b { color: #fff; }
+.wf-btn { padding: 8px 14px; font-size: 12px; font-weight: 650; margin-left: auto; }
+
+/* KPIs: number first, then a hairline trend */
+body[data-persona="wireframe"] .kpi-label { color: #444; }
+body[data-persona="wireframe"] .kpi-value { font-weight: 700; }
+body[data-persona="wireframe"] .kpi-delta { padding: 0; background: none; color: #111; font-weight: 600; }
+
+/* lists */
+body[data-persona="wireframe"] .ap-urg { width: 6px; height: 6px; border-radius: 50%; align-self: center; border: 1px solid #111; background: #fff; opacity: 1; }
+body[data-persona="wireframe"] .ap-urg.high { background: #111; }
+body[data-persona="wireframe"] .ap-urg.low { border-color: #bdbdbd; }
+body[data-persona="wireframe"] .ap-ok,
+body[data-persona="wireframe"] .ap-no { border: 1px solid #111; border-radius: 4px; color: #111; }
+body[data-persona="wireframe"] .ap-ok:hover,
+body[data-persona="wireframe"] .ap-no:hover { background: #111; color: #fff; border-color: #111; }
+body[data-persona="wireframe"] .ap-item:hover,
+body[data-persona="wireframe"] .inb-item:hover,
+body[data-persona="wireframe"] .ag-item:hover,
+body[data-persona="wireframe"] .dg-item:hover,
+body[data-persona="wireframe"] .chn-item:hover { background: #f5f5f5; border-color: transparent; }
+body[data-persona="wireframe"] .inb-urgent { background: none; color: #111; border: 1px solid #111; border-radius: 3px; }
+body[data-persona="wireframe"] .inb-item.unread .inb-subj { font-weight: 650; }
+body[data-persona="wireframe"] .inb-item.unread::before { background: #111; }
+body[data-persona="wireframe"] .ag-line { background: #111; }
+body[data-persona="wireframe"] .ag-item.now .ag-time { color: #111; font-weight: 700; }
+
+/* autopilot: an outline switch */
+body[data-persona="wireframe"] .autopilot .sw { background: #fff; border: 1px solid #111; }
+body[data-persona="wireframe"] .autopilot .sw::after { top: 1px; left: 1px; background: #111; }
+body[data-persona="wireframe"] .autopilot.on .sw { background: #111; }
+body[data-persona="wireframe"] .autopilot.on .sw::after { background: #fff; }
+
+/* delegation queue */
+body[data-persona="wireframe"] .dg-pill { border: 1px solid #111; background: #fff; color: #111; border-radius: 3px; }
+body[data-persona="wireframe"] .dg-pill.queued { border-color: #bdbdbd; color: #8c8c8c; }
+body[data-persona="wireframe"] .dg-pill.done { background: #111; color: #fff; }
+body[data-persona="wireframe"] .dg-prog { background: #e6e6e6; height: 2px; }
+body[data-persona="wireframe"] .dg-prog i { background: #111; }
+body[data-persona="wireframe"] .dg-artifact { background: none; border: 1px dashed #111; border-radius: 3px; color: #111; }
+
+/* workflows */
+.wf-chain { display: flex; align-items: center; gap: 14px; }
+.wf-chain-bd { flex: 1; min-width: 0; }
+body[data-persona="wireframe"] .chn-path { flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.wf-hop { font-size: 10.5px; color: #444; border: 1px solid #cfcfcf; border-radius: 3px; padding: 1px 6px; white-space: nowrap; }
+body[data-persona="wireframe"] .hop { color: #8c8c8c; }
+
+/* server marks → lettered outline boxes */
+body[data-persona="wireframe"] .srv-glyph { background: #fff !important; color: #111 !important; border: 1px solid #111; border-radius: 3px; }
+
+/* askMElah mark → an outlined "ME" tile */
+body[data-persona="wireframe"] .askme-av svg { display: none; }
+body[data-persona="wireframe"] .askme-av::before {
+  content: "ME"; display: grid; place-items: center; width: 100%; height: 100%;
+  border: 1.5px solid #111; border-radius: 4px; background: #fff; color: #111;
+  font-size: 10px; font-weight: 800; letter-spacing: -0.02em; box-sizing: border-box;
+}
+body[data-persona="wireframe"] .askme-av.think::before { background: #111; color: #fff; }
+
+/* ---------- chat dock ---------- */
+body[data-persona="wireframe"] #chatdock { border: 1px solid #111; border-radius: 4px; margin: 12px 12px 12px 0; }
+body[data-persona="wireframe"] #chatdock.droptarget,
+body[data-persona="wireframe"].dragging-chip #chatdock { border: 2px solid #111; animation: none; }
+body[data-persona="wireframe"] .cd-head,
+body[data-persona="wireframe"] .cd-foot { border-color: #111; }
+body[data-persona="wireframe"] .cd-drop { border: 1.5px dashed #111; border-radius: 4px; background: rgba(255, 255, 255, 0.94); color: #111; }
+body[data-persona="wireframe"] .bubble { background: #fff; border: 1px solid #111; border-radius: 4px; }
+body[data-persona="wireframe"] .msg.user .bubble { background: #111; color: #fff; }
+body[data-persona="wireframe"] .msg.user .chip { background: #fff; color: #111; }
+body[data-persona="wireframe"] .chip { background: #fff; border: 1px solid #111; border-radius: 3px; }
+body[data-persona="wireframe"] .toolblock { border: 1px solid #cfcfcf; border-radius: 4px; }
+body[data-persona="wireframe"] .tb-steps,
+body[data-persona="wireframe"] .tb-step { border-color: #e6e6e6; }
+body[data-persona="wireframe"] .rich .co { background: none; border-left: 2px solid #111; border-radius: 0; }
+body[data-persona="wireframe"] .rich code { border-color: #cfcfcf; border-radius: 3px; }
+body[data-persona="wireframe"] .m-embed,
+body[data-persona="wireframe"] .mk { border: 1px solid #cfcfcf; border-radius: 4px; background: #fff; }
+body[data-persona="wireframe"] .insight { border: 1px solid #111; border-radius: 4px; background: #fff; }
+body[data-persona="wireframe"] .insight::before { display: none; }
+body[data-persona="wireframe"] .cd-composer { border: 1px solid #111; border-radius: 4px; }
+body[data-persona="wireframe"] .cd-composer:focus-within,
+body[data-persona="wireframe"] .cd-composer.flash { outline: 1px solid #111; }
+body[data-persona="wireframe"] .cd-send { background: #111; border-radius: 4px; }
+body[data-persona="wireframe"] .cd-send:hover { transform: none; }
+body[data-persona="wireframe"] .cd-drawer { background: #fff; border-color: #111; }
+body[data-persona="wireframe"] #chatFab { background: #fff; border: 1px solid #111; }
+body[data-persona="wireframe"] .cf-node .srv-glyph { border-radius: 3px; }
+
+/* ---------- overlays ---------- */
+body[data-persona="wireframe"] .drag-ghost { border: 1.5px solid #111; border-radius: 4px; background: #fff; }
+body[data-persona="wireframe"] .toast { border: 1px solid #111; border-left-width: 3px; border-radius: 4px; }
+body[data-persona="wireframe"] .ck-panel,
+body[data-persona="wireframe"] .mcp-panel,
+body[data-persona="wireframe"] .persona-menu,
+body[data-persona="wireframe"] #viztip { border: 1px solid #111; border-radius: 4px; background: #fff; }
+body[data-persona="wireframe"] .fx-ring { border-color: #111; }

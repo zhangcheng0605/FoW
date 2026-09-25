@@ -38,7 +38,10 @@ const PERSONAS = [
   { id: "legal",       name: "Sofia Reyes",     role: "Senior Legal Counsel",  dept: "Legal",            tag: "Contracts, matters & risk",      accent: "#7c3aed", initials: "SR", loc: "New York" },
   { id: "sales",       name: "Jonas Lindqvist", role: "Enterprise Sales Mgr",  dept: "Sales",            tag: "Pipeline, quota & accounts",     accent: "#2563eb", initials: "JL", loc: "Stockholm" },
   { id: "marketing",   name: "Chloe Tan",       role: "Creative & Mktg Lead",  dept: "Brand & Creative", tag: "Campaigns, content & creative",  accent: "#c026d3", initials: "CT", loc: "Singapore" },
+  { id: "wireframe",   name: "Wireframe",       role: "Core UX, low-fi",       dept: "Wireframe",        tag: "Charts, chat, drag-to-ask & agents", accent: "#111111", initials: "WF", loc: "Black & white" },
 ];
+/* the Wireframe seat strips the chrome: black lines on white, same behaviour */
+function wfOn() { return document.body && document.body.dataset.persona === "wireframe"; }
 
 /* Mediacorp mark — folded-ribbon M, approximated inline (POC) */
 const LOGO_M =
@@ -101,7 +104,16 @@ const VIZ_DARK = {
   /* on a dark surface the ramp inverts: low -> high = dim -> bright */
   heat: [[16, 27, 48], [16, 60, 112], [28, 92, 171], [57, 135, 229], [134, 182, 239], [205, 226, 251]],
 };
-function VIZ() { return THEME.dark ? VIZ_DARK : VIZ_LIGHT; }
+/* wireframe: ink on paper — greys ordered so neighbours always contrast */
+const VIZ_WIRE = {
+  surface: "#ffffff",
+  series: ["#111111", "#a3a3a3", "#555555", "#d4d4d4", "#7a7a7a"],
+  neg: "#a3a3a3",
+  grid: "#ededed", zero: "#111111", cross: "rgba(0,0,0,0.35)",
+  sparkDim: "#b5b5b5", sparkEnd: "#111111", ink: "#111111",
+  heat: [[250, 250, 250], [224, 224, 224], [189, 189, 189], [140, 140, 140], [90, 90, 90], [40, 40, 40]],
+};
+function VIZ() { return wfOn() ? VIZ_WIRE : THEME.dark ? VIZ_DARK : VIZ_LIGHT; }
 const MONTHS = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
 
 /* tiny inline icon set (stroke = currentColor) */
@@ -156,14 +168,17 @@ function srvGlyph(id, sz) {
   let logo = null;
   try { logo = typeof BRAND_LOGOS !== "undefined" && BRAND_LOGOS[id]; } catch (_) { }
   let g;
+  if (logo && wfOn()) logo = null; /* wireframe: plain lettered boxes, no brand colour */
   if (logo) {
     /* real brand mark on an app-icon style white tile */
     g = el("span", "srv-glyph logo");
     g.innerHTML = logo;
   } else {
     g = el("span", "srv-glyph", s.glyph);
-    g.style.background = s.color;
-    if (s.color === "#ffc820" || s.color === "#f29111") g.style.color = "#1a1408";
+    if (!wfOn()) {
+      g.style.background = s.color;
+      if (s.color === "#ffc820" || s.color === "#f29111") g.style.color = "#1a1408";
+    }
   }
   g.title = s.name;
   if (sz) { g.style.width = sz + "px"; g.style.height = sz + "px"; g.style.fontSize = Math.round(sz * 0.38) + "px"; }
