@@ -78,7 +78,7 @@ def build() -> None:
         news_blob = json.dumps(json.loads(read(news_file)), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
         data += f"\nwindow.FOW_NEWS = {news_blob};"
 
-    inner = f"""<title>FoW — Future of Work</title>
+    inner = f"""<title>FoW Workspace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 {style}
