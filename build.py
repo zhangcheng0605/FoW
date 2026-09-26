@@ -105,6 +105,12 @@ def build() -> None:
     (ROOT / "index.html").write_text(index, encoding="utf-8")
     (ROOT / "dist").mkdir(exist_ok=True)
     (ROOT / "dist" / "artifact.html").write_text(inner, encoding="utf-8")
+    # drop-in copy for a website's /fow/ folder: opens straight into the Wireframe seat
+    for out in (ROOT / "dist" / "fow", ROOT / "site" / "fow"):
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "index.html").write_text(
+            index.replace("<script>\nwindow.FOW_DATA", "<script>\nwindow.FOW_START = \"wireframe\";\nwindow.FOW_DATA", 1),
+        encoding="utf-8")
 
     n = len(re.findall(r'"personaId"', data))
     print(f"built index.html ({len(index)//1024} KB) with {n} persona packs")

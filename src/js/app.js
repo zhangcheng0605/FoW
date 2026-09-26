@@ -1536,5 +1536,12 @@ function init() {
 
   $("#cdDrawer").hidden = true;
   petBuild();
+  /* deep link: #wireframe (or a build started with FOW_START) skips the lobby */
+  const start = (location.hash || "").replace("#", "") || window.FOW_START;
+  if (start && PERSONAS.some(x => x.id === start)) {
+    LOBBY.touched = true;
+    const ob = $("#onboard"); ob.classList.add("gone"); ob.style.display = "none";
+    selectPersona(start, true);
+  }
 }
 document.addEventListener("DOMContentLoaded", init);
