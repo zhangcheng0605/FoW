@@ -259,7 +259,7 @@ function renderStudio_finance(p, cv) {
   });
   grid2.appendChild(chnCol);
   const dgCol = el("div", "dg-card ldg-col");
-  dgCol.appendChild(el("div", "ldg-colhead", "Delegated to askMElah"));
+  dgCol.appendChild(el("div", "ldg-colhead", "Delegated to askZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item ldg-entry");
@@ -288,9 +288,9 @@ function renderStudio_finance(p, cv) {
 
   /* =============== 03 · Sign — approvals as ledger lines =============== */
   const s3 = sect("ap-card ldg-sign");
-  const h3 = stHead(s3, "03", "Sign", "each line pre-read by askMElah — stamp it, or send it back with questions");
+  const h3 = stHead(s3, "03", "Sign", "each line pre-read by askZAC — stamp it, or send it back with questions");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   h3.appendChild(auto);
 
@@ -342,7 +342,7 @@ function renderStudio_finance(p, cv) {
         refreshTotal();
       });
       const ask = el("button", "ldg-ask", "?");
-      ask.title = "Ask askMElah first";
+      ask.title = "Ask askZAC first";
       ask.addEventListener("click", e => {
         e.stopPropagation();
         attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });

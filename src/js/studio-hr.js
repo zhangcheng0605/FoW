@@ -86,10 +86,10 @@ function renderStudio_hr(p, cv) {
   const srcRow = el("div", "hr-prot-src");
   srcRow.appendChild(srvGlyph(prot.source, 15));
   srcRow.appendChild(srvGlyph("workday", 15));
-  srcRow.appendChild(el("span", "", "pre-read by askMElah — recommendation ready"));
+  srcRow.appendChild(el("span", "", "pre-read by askZAC — recommendation ready"));
   pcB.appendChild(srcRow);
   const pcActs = el("div", "hr-prot-acts");
-  const askBtn = el("button", "lb-enter", "✦ Ask askMElah");
+  const askBtn = el("button", "lb-enter", "✦ Ask askZAC");
   askBtn.addEventListener("click", () => {
     attachChip({ type: "approval", label: prot.type + ": " + prot.title, data: prot });
     sendMessage("Should I approve the $284K Staff SWE band exception?");
@@ -233,7 +233,7 @@ function renderStudio_hr(p, cv) {
 
   /* =============== 02 · In motion =============== */
   const s2 = sect("hr-motion");
-  stHead(s2, "02", "In motion", "askMElah working on people's behalf — cross-app workflows and background delegations");
+  stHead(s2, "02", "In motion", "askZAC working on people's behalf — cross-app workflows and background delegations");
   const grid2 = el("div", "st-2col");
   const CHAIN_FOR = { c1: "Tomas Rivera", c2: "Sofia Marchetti" };
   const DG_FOR = { d1: "Priya Nair · James Whitfield", d2: "Lucia Fernandez", d3: "Priya Nair" };
@@ -266,7 +266,7 @@ function renderStudio_hr(p, cv) {
   grid2.appendChild(chnCol);
 
   const dgCol = el("div", "dg-card hr-col");
-  dgCol.appendChild(el("div", "hr-colhead", "Delegated to askMElah"));
+  dgCol.appendChild(el("div", "hr-colhead", "Delegated to askZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item hr-dg");
@@ -301,9 +301,9 @@ function renderStudio_hr(p, cv) {
 
   /* =============== 03 · People waiting =============== */
   const s3 = sect("ap-card hr-wait");
-  const h3 = stHead(s3, "03", "People waiting", "person first, paperwork second — askMElah pre-read every ask");
+  const h3 = stHead(s3, "03", "People waiting", "person first, paperwork second — askZAC pre-read every ask");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   auto.addEventListener("click", () => {
     const on = !state.autopilot[state.personaId];
@@ -351,7 +351,7 @@ function renderStudio_hr(p, cv) {
         if (a.id === prot.id) syncProt();
       });
       const ask = el("button", "hr-askb", "ask first");
-      ask.title = "Ask askMElah before deciding";
+      ask.title = "Ask askZAC before deciding";
       ask.addEventListener("click", e => {
         e.stopPropagation();
         attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });

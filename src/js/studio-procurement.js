@@ -209,7 +209,7 @@ function renderStudio_procurement(p, cv) {
 
   /* =============== 02 · The chase =============== */
   const s2 = sect("twr-chase");
-  stHead(s2, "02", "The chase", "cross-app pursuits — fly them yourself, or hand them to askMElah");
+  stHead(s2, "02", "The chase", "cross-app pursuits — fly them yourself, or hand them to askZAC");
   const grid2 = el("div", "twr-2col");
   const chnCol = el("div", "chn-card twr-col");
   chnCol.appendChild(el("div", "twr-colhead", "Cross-app runs"));
@@ -232,7 +232,7 @@ function renderStudio_procurement(p, cv) {
   });
   grid2.appendChild(chnCol);
   const dgCol = el("div", "dg-card twr-col");
-  dgCol.appendChild(el("div", "twr-colhead", "Delegated to askMElah"));
+  dgCol.appendChild(el("div", "twr-colhead", "Delegated to askZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item twr-run");
@@ -261,9 +261,9 @@ function renderStudio_procurement(p, cv) {
 
   /* =============== 03 · Clear the queue =============== */
   const s3 = sect("ap-card twr-queue");
-  const h3 = stHead(s3, "03", "Clear the queue", "18 POs sit in Ariba worth $486,300 — these need you, each pre-read by askMElah");
+  const h3 = stHead(s3, "03", "Clear the queue", "18 POs sit in Ariba worth $486,300 — these need you, each pre-read by askZAC");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   h3.appendChild(auto);
 
@@ -307,7 +307,7 @@ function renderStudio_procurement(p, cv) {
         refreshTotal();
       });
       const ask = el("button", "twr-ask", "?");
-      ask.title = "Ask askMElah first";
+      ask.title = "Ask askZAC first";
       ask.addEventListener("click", e => {
         e.stopPropagation();
         attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });

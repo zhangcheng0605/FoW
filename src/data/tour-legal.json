@@ -4,7 +4,7 @@
   "beats": {
     "intro": {
       "title": "The docket opens",
-      "text": "Mediacorp Legal, Friday August 8. Sofia Reyes's day arrives as a court docket — pleading caption, rubber stamps, numbered entries. One matter headlines: Orion Systems."
+      "text": "ZAC Studios Legal, Friday August 8. Sofia Reyes's day arrives as a court docket — pleading caption, rubber stamps, numbered entries. One matter headlines: Orion Systems."
     },
     "hero": {
       "title": "In re: Orion Systems",
@@ -20,15 +20,15 @@
     },
     "ask": {
       "title": "Interrogate the docket",
-      "text": "Sofia drags the Orion caption itself into chat and asks askMElah to summarize the MSA redlines — 18 edits, only 3 material."
+      "text": "Sofia drags the Orion caption itself into chat and asks askZAC to summarize the MSA redlines — 18 edits, only 3 material."
     },
     "delegate": {
       "title": "No. 02 — Filings",
-      "text": "Cross-app filings run numbered workflows end to end; the clerk's office hands routine matters to askMElah, who reports back done — no chasing, no tabs."
+      "text": "Cross-app filings run numbered workflows end to end; the clerk's office hands routine matters to askZAC, who reports back done — no chasing, no tabs."
     },
     "crew": {
       "title": "No. 03 — The Crew convenes",
-      "text": "Delegating the vendor DPA chase opens The Crew: Sofia's agent Clause carries the matter to the askMElah hub, hands the payload to Hawk in Procurement, and returns to her desk with the result."
+      "text": "Delegating the vendor DPA chase opens The Crew: Sofia's agent Clause carries the matter to the askZAC hub, hands the payload to Hawk in Procurement, and returns to her desk with the result."
     },
     "autopilot": {
       "title": "Ink without the wait",
@@ -36,7 +36,7 @@
     },
     "mcp": {
       "title": "Of record, wired in",
-      "text": "The footer lists counsel of record: DocuSign, SharePoint, Confluence, Outlook, Teams, Slack, Drive — seven live MCP connections, certified by askMElah, clerk of record."
+      "text": "The footer lists counsel of record: DocuSign, SharePoint, Confluence, Outlook, Teams, Slack, Drive — seven live MCP connections, certified by askZAC, clerk of record."
     },
     "recap": {
       "title": "Draft my end-of-week recap",
@@ -44,7 +44,7 @@
     },
     "outro": {
       "title": "Counsel, amplified",
-      "text": "Same Sofia, same judgment — the docket just keeps itself. Mediacorp's legal team scales on askMElah's clerking, not on headcount."
+      "text": "Same Sofia, same judgment — the docket just keeps itself. ZAC Studios' legal team scales on askZAC's clerking, not on headcount."
     }
   }
 }

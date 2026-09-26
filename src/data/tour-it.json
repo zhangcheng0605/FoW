@@ -4,7 +4,7 @@
   "beats": {
     "intro": {
       "title": "Marcus steps onto the Bridge",
-      "text": "IT Operations, Singapore. 3,120 endpoints, five sites — and a network-operations console at Mediacorp that reads like a live status board, not a dashboard."
+      "text": "IT Operations, Singapore. 3,120 endpoints, five sites — and a network-operations console at ZAC Studios that reads like a live status board, not a dashboard."
     },
     "hero": {
       "title": "Dial, countdown, lamps",
@@ -24,7 +24,7 @@
     },
     "delegate": {
       "title": "Runbooks and dispatch",
-      "text": "Chapter 02: cross-app runbooks on the left, a dispatch column on the right — askMElah executes end to end, every hop logged across the stack."
+      "text": "Chapter 02: cross-app runbooks on the left, a dispatch column on the right — askZAC executes end to end, every hop logged across the stack."
     },
     "autopilot": {
       "title": "Triage queue, autopilot on",
@@ -36,11 +36,11 @@
     },
     "recap": {
       "title": "Recap on demand",
-      "text": "One button on the board — draft my end-of-week recap — and askMElah compiles the burn-down, patched stragglers and Austin access packs for Priya."
+      "text": "One button on the board — draft my end-of-week recap — and askZAC compiles the burn-down, patched stragglers and Austin access packs for Priya."
     },
     "crew": {
       "title": "The Crew: Patch takes the PO",
-      "text": "Delegate the Dell PO chase and The Crew opens — Patch, Marcus's agent, carries it to the askMElah hub, hands the payload to Hawk in Procurement, and walks the answer back to his desk."
+      "text": "Delegate the Dell PO chase and The Crew opens — Patch, Marcus's agent, carries it to the askZAC hub, hands the payload to Hawk in Procurement, and walks the answer back to his desk."
     },
     "outro": {
       "title": "The Bridge holds",

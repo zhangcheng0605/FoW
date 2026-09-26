@@ -4,7 +4,7 @@
   "beats": {
     "intro": {
       "title": "Priya's control tower",
-      "text": "Priya Nair runs Mediacorp procurement — $92.2M of managed spend. This morning her workspace opens as a control tower, and askMElah is already on shift."
+      "text": "Priya Nair runs ZAC Studios procurement — $92.2M of managed spend. This morning her workspace opens as a control tower, and askZAC is already on shift."
     },
     "hero": {
       "title": "Blips on the renewal radar",
@@ -20,15 +20,15 @@
     },
     "ask": {
       "title": "Drag a blip, ask away",
-      "text": "Priya drags the AWS blip straight off the radar into chat and asks askMElah for the counter-proposal brief — Marcus Webb's number, due Monday."
+      "text": "Priya drags the AWS blip straight off the radar into chat and asks askZAC for the counter-proposal brief — Marcus Webb's number, due Monday."
     },
     "delegate": {
-      "title": "Hand askMElah the chase",
-      "text": "In The Chase, one Delegate click sends askMElah after the Dell block: $8,790 overcharge proven against Amendment 3, corrected invoice committed by August 15."
+      "title": "Hand askZAC the chase",
+      "text": "In The Chase, one Delegate click sends askZAC after the Dell block: $8,790 overcharge proven against Amendment 3, corrected invoice committed by August 15."
     },
     "crew": {
       "title": "Hawk works the room",
-      "text": "The Crew opens on a tiny office: Priya's agent Hawk carries the Dell chase to the askMElah hub, Tally checks the math, Clause reads Amendment 3, and Hawk walks the answer back to her desk."
+      "text": "The Crew opens on a tiny office: Priya's agent Hawk carries the Dell chase to the askZAC hub, Tally checks the math, Clause reads Amendment 3, and Hawk walks the answer back to her desk."
     },
     "autopilot": {
       "title": "Strips clear themselves",
@@ -43,7 +43,7 @@
       "text": "The Week chapter tallies tower hours — 16.5 in meetings, 11 in focus — beside five open work orders. One button drafts the end-of-week recap."
     },
     "outro": {
-      "title": "Priya flies. askMElah sweeps.",
+      "title": "Priya flies. askZAC sweeps.",
       "text": "The radar keeps sweeping and the strips keep clearing. Priya's hours went to the $12.0M AWS deal — the tower handled everything else."
     }
   }

@@ -4,7 +4,7 @@
   "beats": {
     "intro": {
       "title": "Welcome to The Floor",
-      "text": "Jonas Lindqvist runs Mediacorp's EMEA desk like a trading floor. Nine deals, $3.4M, one signature — the whole quarter on a single scoreboard."
+      "text": "Jonas Lindqvist runs ZAC Studios' EMEA desk like a trading floor. Nine deals, $3.4M, one signature — the whole quarter on a single scoreboard."
     },
     "hero": {
       "title": "Countdown, thermometer, river",
@@ -20,15 +20,15 @@
     },
     "ask": {
       "title": "Drag the deal, ask",
-      "text": "Drag the spotlight board into chat — askMElah pulls Salesforce, Gmail, and Drive, then briefs the 10:00 Nordvik redline call in seconds."
+      "text": "Drag the spotlight board into chat — askZAC pulls Salesforce, Gmail, and Drive, then briefs the 10:00 Nordvik redline call in seconds."
     },
     "delegate": {
       "title": "Runners on the floor",
-      "text": "In Momentum, runners work the phones: hand askMElah the Aventra security-questionnaire chase and watch it keep the $840K September signature alive."
+      "text": "In Momentum, runners work the phones: hand askZAC the Aventra security-questionnaire chase and watch it keep the $840K September signature alive."
     },
     "crew": {
       "title": "Bolt takes the handoff",
-      "text": "Delegate the Aventra chase and The Crew opens: Jonas's agent Bolt walks the task to the askMElah hub solo, tool calls riding up and results hopping back, then delivers the answer straight to his desk."
+      "text": "Delegate the Aventra chase and The Crew opens: Jonas's agent Bolt walks the task to the askZAC hub solo, tool calls riding up and results hopping back, then delivers the answer straight to his desk."
     },
     "autopilot": {
       "title": "Autopilot stamps the desk",
@@ -44,7 +44,7 @@
     },
     "outro": {
       "title": "The floor closes green",
-      "text": "The Floor keeps the quarter honest; Jonas keeps selling. A $1.2M signature is thirteen days out — and this is one desk at Mediacorp."
+      "text": "The Floor keeps the quarter honest; Jonas keeps selling. A $1.2M signature is thirteen days out — and this is one desk at ZAC Studios."
     }
   }
 }

@@ -235,7 +235,7 @@ function renderStudio_sales(p, cv) {
   });
   grid2.appendChild(chnCol);
   const dgCol = el("div", "dg-card flr-col");
-  dgCol.appendChild(el("div", "flr-colhead", "Runners — delegated to askMElah"));
+  dgCol.appendChild(el("div", "flr-colhead", "Runners — delegated to askZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item flr-run");
@@ -264,9 +264,9 @@ function renderStudio_sales(p, cv) {
 
   /* =============== 03 · Commit — the deal desk =============== */
   const s3 = sect("ap-card flr-commit");
-  const h3 = stHead(s3, "03", "Commit", "the deal desk — askMElah pre-reads every line; clear it, or send it back with questions");
+  const h3 = stHead(s3, "03", "Commit", "the deal desk — askZAC pre-reads every line; clear it, or send it back with questions");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   h3.appendChild(auto);
 
@@ -318,7 +318,7 @@ function renderStudio_sales(p, cv) {
         refreshDesk();
       });
       const ask = el("button", "flr-askb", "?");
-      ask.title = "Ask askMElah first";
+      ask.title = "Ask askZAC first";
       ask.addEventListener("click", e => {
         e.stopPropagation();
         attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });

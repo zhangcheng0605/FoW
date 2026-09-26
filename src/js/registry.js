@@ -27,7 +27,7 @@ const SERVERS = {
   monday:     { name: "Monday.com",      color: "#ff3d57", glyph: "M",  tools: ["get_boards", "get_items", "update_item", "create_item"] },
   higgsfield: { name: "Higgsfield",      color: "#8b5cf6", glyph: "HF", tools: ["generate_image_batch", "generate_video_batch", "jobs_wait", "show_generations"] },
   adobe:      { name: "Adobe CC",        color: "#fa0f00", glyph: "Cc", tools: ["search_assets", "export_render", "sync_library"] },
-  cna:        { name: "CNA Newsroom",    color: "#c0161d", glyph: "CNA", tools: ["top_stories", "search_articles", "get_article"] },
+  cna:        { name: "ZAC Newsroom",    color: "#c0161d", glyph: "ZN", tools: ["top_stories", "search_articles", "get_article"] },
 };
 
 const PERSONAS = [
@@ -43,24 +43,21 @@ const PERSONAS = [
 /* the Wireframe seat strips the chrome: black lines on white, same behaviour */
 function wfOn() { return document.body && document.body.dataset.persona === "wireframe"; }
 
-/* Mediacorp mark — folded-ribbon M, approximated inline (POC) */
+/* ZAC Studios mark — ribbon Z */
 const LOGO_M =
-  '<svg viewBox="0 0 100 64" aria-label="Mediacorp">' +
+  '<svg viewBox="0 0 100 64" aria-label="ZAC Studios">' +
   '<defs>' +
   '<linearGradient id="mcg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ec008c"/><stop offset="1" stop-color="#5f2d91"/></linearGradient>' +
-  '<linearGradient id="mcg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a11b"/><stop offset="1" stop-color="#e63b23"/></linearGradient>' +
-  '<linearGradient id="mcg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8dc63f"/><stop offset="1" stop-color="#00854a"/></linearGradient>' +
-  '<linearGradient id="mcg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fc0c4"/><stop offset="1" stop-color="#1b75bc"/></linearGradient>' +
+  '<linearGradient id="mcg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#4338ca"/></linearGradient>' +
+  '<linearGradient id="mcg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#7e22ce"/></linearGradient>' +
+  '<linearGradient id="mcg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient>' +
   '</defs>' +
-  '<polygon points="10,58 24,10 36,10 22,58" fill="url(#mcg1)"/>' +
-  '<polygon points="24,10 36,10 56,42 44,42" fill="url(#mcg2)"/>' +
-  '<polygon points="44,42 64,10 76,10 56,42" fill="url(#mcg3)"/>' +
-  '<polygon points="64,10 76,10 90,58 78,58" fill="url(#mcg4)"/>' +
+  '<polygon points="14,8 86,8 86,19 14,19" fill="#5b5bd6"/><polygon points="70,19 86,19 30,45 14,45" fill="#9333ea"/><polygon points="14,45 86,45 86,56 14,56" fill="#0e9bb5"/>' +
   '</svg>';
 
-/* askMElah mark — gradient ME chat tile, enhanced from the supplied logo */
+/* askZAC mark — gradient ME chat tile, enhanced from the supplied logo */
 const LOGO_ASKME =
-  '<svg viewBox="0 0 48 48" aria-label="askMElah">' +
+  '<svg viewBox="0 0 48 48" aria-label="askZAC">' +
   '<defs>' +
   '<linearGradient id="amg" x1="0.15" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#8b30c9"/><stop offset="0.55" stop-color="#c9247f"/><stop offset="1" stop-color="#ee2278"/></linearGradient>' +
   '<linearGradient id="amh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/></linearGradient>' +
@@ -68,7 +65,7 @@ const LOGO_ASKME =
   '<path d="M9 42.5 5.2 47l10-2.6Z" fill="#ee2278"/>' +
   '<rect x="3.5" y="3.5" width="41" height="41" rx="12.5" fill="url(#amg)"/>' +
   '<rect x="3.5" y="3.5" width="41" height="20.5" rx="12.5" fill="url(#amh)"/>' +
-  '<text x="24" y="31" text-anchor="middle" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-weight="800" font-size="17.5" fill="#ffffff" letter-spacing="-0.5">ME</text>' +
+  '<text x="24" y="31" text-anchor="middle" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-weight="800" font-size="22" fill="#ffffff">Z</text>' +
   '</svg>';
 function askmeAv(sz) {
   const s = el("span", "askme-av");

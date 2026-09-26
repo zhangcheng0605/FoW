@@ -98,7 +98,7 @@ function renderStudio_wireframe(p, cv) {
   /* ---- delegate to agents ---- */
   cv.appendChild(card(6, {
     cls: "dg-card",
-    icon: "robot", title: "Delegate to askMElah", sub: "the agent runs it in the background and reports back",
+    icon: "robot", title: "Delegate to askZAC", sub: "the agent runs it in the background and reports back",
     body: b => {
       (p.delegations || []).forEach(d => {
         const doneAlready = (state.delegated[state.personaId] || {})[d.id];
@@ -152,7 +152,7 @@ function renderStudio_wireframe(p, cv) {
           const act = el("span", "ap-acts");
           const ok = el("button", "ap-ok"); ok.title = "Approve"; ok.appendChild(ico("check"));
           ok.addEventListener("click", e => { e.stopPropagation(); FOW.approve(a.id, true); toast("Approved — " + a.requester + " notified"); });
-          const no = el("button", "ap-no"); no.title = "Ask askMElah first"; no.appendChild(ico("ask"));
+          const no = el("button", "ap-no"); no.title = "Ask askZAC first"; no.appendChild(ico("ask"));
           no.addEventListener("click", e => { e.stopPropagation(); attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
           act.append(ok, no);
           it.appendChild(act);
@@ -163,7 +163,7 @@ function renderStudio_wireframe(p, cv) {
     },
   });
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah clears low-risk approvals within policy";
+  auto.title = "When on, askZAC clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   auto.addEventListener("click", () => {
     const on = !state.autopilot[state.personaId];

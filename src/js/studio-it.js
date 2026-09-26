@@ -174,7 +174,7 @@ function renderStudio_it(p, cv) {
 
   /* ================= 02 · AUTOMATE ================= */
   const s2 = sect("it-make");
-  stHead(s2, "02", "Automate", "runbooks and dispatches — askMElah executes end to end, every hop logged");
+  stHead(s2, "02", "Automate", "runbooks and dispatches — askZAC executes end to end, every hop logged");
   const makeGrid = el("div", "it-cols even");
   const chainsCol = el("div", "chn-card it-col");
   chainsCol.appendChild(el("div", "it-colcap", "RUNBOOKS // CROSS-APP CHAINS"));
@@ -199,7 +199,7 @@ function renderStudio_it(p, cv) {
   });
   makeGrid.appendChild(chainsCol);
   const dgCol = el("div", "dg-card it-col");
-  dgCol.appendChild(el("div", "it-colcap", "DISPATCH // DELEGATED TO ASKMELAH"));
+  dgCol.appendChild(el("div", "it-colcap", "DISPATCH // DELEGATED TO ASKZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item");
@@ -231,9 +231,9 @@ function renderStudio_it(p, cv) {
 
   /* ================= 03 · TRIAGE ================= */
   const s3 = sect("ap-card it-triage");
-  const h3 = stHead(s3, "03", "Triage", "approvals routed like incidents — pre-read by askMElah, cleared by you");
+  const h3 = stHead(s3, "03", "Triage", "approvals routed like incidents — pre-read by askZAC, cleared by you");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   auto.addEventListener("click", () => {
     const on = !state.autopilot[state.personaId];

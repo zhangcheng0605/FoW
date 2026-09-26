@@ -3,7 +3,7 @@
    Sofia Reyes, Senior Legal Counsel · the workspace as a case
    docket: pleading caption, rubber stamps, numbered entries.
    Chapters: 01 Exhibits · 02 Filings · 03 For signature ·
-   04 Calendar call — certified by askMElah, clerk.
+   04 Calendar call — certified by askZAC, clerk.
    ============================================================ */
 
 function renderStudio_legal(p, cv) {
@@ -28,7 +28,7 @@ function renderStudio_legal(p, cv) {
 
   /* topline: court-style running head */
   const top = el("div", "dk-topline");
-  top.appendChild(el("span", "dk-top-l", "LEGAL DEPARTMENT DOCKET · MEDIACORP"));
+  top.appendChild(el("span", "dk-top-l", "LEGAL DEPARTMENT DOCKET · ZAC STUDIOS"));
   const topR = el("span", "dk-top-r");
   topR.appendChild(el("span", "", "FRI AUG 8 2026 · " + p.user.location.toUpperCase()));
   const clockEl = el("span", "dk-clock", "--:--:--");
@@ -189,7 +189,7 @@ function renderStudio_legal(p, cv) {
   });
   grid2.appendChild(chnCol);
   const dgCol = el("div", "dg-card dk-col");
-  dgCol.appendChild(el("div", "dk-colhead", "Clerk's office — delegated to askMElah"));
+  dgCol.appendChild(el("div", "dk-colhead", "Clerk's office — delegated to askZAC"));
   (p.delegations || []).forEach(d => {
     const doneAlready = (state.delegated[state.personaId] || {})[d.id];
     const it = el("div", "dg-item dk-entry");
@@ -218,9 +218,9 @@ function renderStudio_legal(p, cv) {
 
   /* ================= No. 03 · FOR SIGNATURE ================= */
   const s3 = sect("ap-card dk-sign");
-  const h3 = stHead(s3, "No. 03", "For signature", "askMElah pre-reads each instrument — ink it, or send it back with questions");
+  const h3 = stHead(s3, "No. 03", "For signature", "askZAC pre-reads each instrument — ink it, or send it back with questions");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   h3.appendChild(auto);
 
@@ -277,7 +277,7 @@ function renderStudio_legal(p, cv) {
         if (a.id === orion.id) heroStamp(true);
       });
       const ask = el("button", "dk-ask", "?");
-      ask.title = "Ask askMElah first";
+      ask.title = "Ask askZAC first";
       ask.addEventListener("click", e => {
         e.stopPropagation();
         attachChip({ type: "approval", label: a.type + ": " + a.title, data: a });
@@ -393,7 +393,7 @@ function renderStudio_legal(p, cv) {
   more.addEventListener("click", () => mcpOpen());
   fr.appendChild(more);
   foot.appendChild(fr);
-  foot.appendChild(el("div", "dk-cert", "— Certified a true and complete copy of the docket · askMElah, clerk of record · E&OE —"));
+  foot.appendChild(el("div", "dk-cert", "— Certified a true and complete copy of the docket · askZAC, clerk of record · E&OE —"));
 
   /* ================= the live clock ================= */
   const tick = () => {

@@ -186,10 +186,10 @@ body[data-persona="wireframe"] .hop { color: #8c8c8c; }
 /* server marks → lettered outline boxes */
 body[data-persona="wireframe"] .srv-glyph { background: #fff !important; color: #111 !important; border: 1px solid #111; border-radius: 3px; }
 
-/* askMElah mark → an outlined "ME" tile */
+/* askZAC mark → an outlined "ME" tile */
 body[data-persona="wireframe"] .askme-av svg { display: none; }
 body[data-persona="wireframe"] .askme-av::before {
-  content: "ME"; display: grid; place-items: center; width: 100%; height: 100%;
+  content: "Z"; display: grid; place-items: center; width: 100%; height: 100%;
   border: 1.5px solid #111; border-radius: 4px; background: #fff; color: #111;
   font-size: 10px; font-weight: 800; letter-spacing: -0.02em; box-sizing: border-box;
 }

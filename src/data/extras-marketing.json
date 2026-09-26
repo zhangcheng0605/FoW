@@ -32,7 +32,7 @@
       "steps": [
         {"server": "salesforce", "tool": "get_campaign_report", "args": "report=channel_performance&period=Aug MTD", "result": "38.6M reach · 4.8% engagement", "ms": 680},
         {"server": "gdrive", "tool": "update_doc", "args": "file=Aug_Channel_Performance_Brief", "result": "5-channel table + spend donut refreshed", "ms": 720},
-        {"server": "gmail", "tool": "create_draft", "args": "to=grace.yeo@mediacorp.com.sg", "result": "draft saved · 1 attachment", "ms": 540}
+        {"server": "gmail", "tool": "create_draft", "args": "to=grace.yeo@zacstudios.example", "result": "draft saved · 1 attachment", "ms": 540}
       ],
       "result": "Brief showing 38.6M reach (+15% on July) and the EPL 96% flag staged for Grace by 15:40 — read before the hero-film sign-off",
       "artifact": "Aug_Channel_Performance_Brief.pdf"

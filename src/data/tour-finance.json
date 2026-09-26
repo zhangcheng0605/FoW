@@ -4,7 +4,7 @@
   "beats": {
     "intro": {
       "title": "Meet Daniel Okafor",
-      "text": "Mediacorp's FP&A Manager in London, mid close-week. His workspace is a ledger — July framed as one reconciliation, from budget line to hard-close."
+      "text": "ZAC Studios' FP&A Manager in London, mid close-week. His workspace is a ledger — July framed as one reconciliation, from budget line to hard-close."
     },
     "hero": {
       "title": "The ledger opens",
@@ -20,19 +20,19 @@
     },
     "ask": {
       "title": "Drag the waterfall, ask why",
-      "text": "Daniel drags the waterfall into chat and asks Priya's question. askMElah interrogates SAP, NetSuite and Excel live — the $862K AWS true-up surfaces in seconds."
+      "text": "Daniel drags the waterfall into chat and asks Priya's question. askZAC interrogates SAP, NetSuite and Excel live — the $862K AWS true-up surfaces in seconds."
     },
     "delegate": {
       "title": "Chapter 02: Move money",
-      "text": "Cross-app workflows on the left, delegations on the right. One click hands askMElah the accrual chase — two of three post within 90 minutes, $228K cleared."
+      "text": "Cross-app workflows on the left, delegations on the right. One click hands askZAC the accrual chase — two of three post within 90 minutes, $228K cleared."
     },
     "autopilot": {
       "title": "Chapter 03: Sign the lines",
-      "text": "Approvals sit as ledger lines under a running total. Flip Autopilot: askMElah stamps low-risk items APPROVED — Aisha's $3,214 flights clear; the $86,400 Adobe renewal waits."
+      "text": "Approvals sit as ledger lines under a running total. Flip Autopilot: askZAC stamps low-risk items APPROVED — Aisha's $3,214 flights clear; the $86,400 Adobe renewal waits."
     },
     "crew": {
       "title": "The Crew: watch the handoff",
-      "text": "Delegating the aged-approvals sweep opens The Crew — Daniel's agent Tally carries the task to the askMElah hub, passes the payload to Mei's HR agent, then walks the result back to his desk."
+      "text": "Delegating the aged-approvals sweep opens The Crew — Daniel's agent Tally carries the task to the askZAC hub, passes the payload to Mei's HR agent, then walks the result back to his desk."
     },
     "mcp": {
       "title": "Wired into everything",
@@ -44,7 +44,7 @@
     },
     "outro": {
       "title": "Books balanced, day back",
-      "text": "The bridge reconciles to +$1,440K, E&OE. Daniel walks into the 14:00 with answers, not spreadsheets — askMElah kept Mediacorp's ledger moving."
+      "text": "The bridge reconciles to +$1,440K, E&OE. Daniel walks into the 14:00 with answers, not spreadsheets — askZAC kept ZAC Studios' ledger moving."
     }
   }
 }

@@ -55,7 +55,7 @@ var CREW_META = {
       idle: "spin",
       hello: "Ooh fun one — gimme a sec, inspiration loading!",
       done: "Ta-da, fresh off the canvas:",
-      motto: "Make it pop, make it land, make it Mediacorp."
+      motto: "Make it pop, make it land, make it ZAC Studios."
     }
   },
   domain: {

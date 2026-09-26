@@ -142,7 +142,7 @@ function card(span, o) {
       acts.appendChild(tbtn);
     }
     if (o.chip) {
-      const ask = el("button", "ch-act"); ask.title = "Ask askMElah about this"; ask.appendChild(ico("ask"));
+      const ask = el("button", "ch-act"); ask.title = "Ask askZAC about this"; ask.appendChild(ico("ask"));
       ask.addEventListener("click", () => { attachChip(o.chip); toast("Added to chat — ask away", "info"); });
       acts.appendChild(ask);
       const grip = el("span", "ch-act"); grip.style.cursor = "grab"; grip.title = "Drag into chat"; grip.appendChild(ico("grip"));
@@ -283,7 +283,7 @@ function renderStudio(p, cv) {
     makeDraggable(node, { type: "meeting", label: mt.time + " · " + mt.title, data: mt });
     track.appendChild(node);
   });
-  [["16:30", "FILM LOCK", true], ["18:00", "mewatch premiere", false]].forEach(([t, label, big]) => {
+  [["16:30", "FILM LOCK", true], ["18:00", "ZAC+ premiere", false]].forEach(([t, label, big]) => {
     const [hh, mm] = t.split(":").map(Number);
     const ms = el("span", "st-milestone" + (big ? " big" : ""));
     ms.style.left = pct(hh * 60 + mm) + "%";
@@ -386,9 +386,9 @@ function renderStudio(p, cv) {
 
   /* ---- 03 · decide: the approval deck ---- */
   const s3 = sect("ap-card st-decide");
-  const h3 = stHead(s3, "03", "Decide", "flick through what needs you — askMElah pre-reads each one");
+  const h3 = stHead(s3, "03", "Decide", "flick through what needs you — askZAC pre-reads each one");
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askMElah auto-clears low-risk approvals within policy";
+  auto.title = "When on, askZAC auto-clears low-risk approvals within policy";
   auto.append(el("span", "", "Autopilot"), el("span", "sw"));
   auto.addEventListener("click", () => {
     const on = !state.autopilot[state.personaId];
@@ -430,7 +430,7 @@ function renderStudio(p, cv) {
           sparkleAt(e.clientX, e.clientY, { n: 8, d: 30 });
           setTimeout(() => { FOW.approve(a.id, true); toast("Approved — " + a.requester + " notified"); buildDeck(); }, 380);
         });
-        const ask = el("button", "lb-play", "Ask askMElah");
+        const ask = el("button", "lb-play", "Ask askZAC");
         ask.addEventListener("click", () => { attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
         btns.append(ok, ask);
         c.appendChild(btns);
@@ -691,7 +691,7 @@ function renderCanvas() {
     cv.appendChild(card(12, {
       cls: "ins-card",
       icon: "bolt", title: "What your systems only see together",
-      sub: "live joins across your MCP servers — askMElah reads them side by side; no single tool could",
+      sub: "live joins across your MCP servers — askZAC reads them side by side; no single tool could",
       body: b => {
         const grid = el("div", "ins-grid");
         p.chains.filter(c => c.insight).forEach(c => {
@@ -785,7 +785,7 @@ function renderCanvas() {
         b.appendChild(it);
       });
     },
-    foot: "double-click a thread to have askMElah draft the reply",
+    foot: "double-click a thread to have askZAC draft the reply",
   }));
 
   /* approvals */
@@ -807,7 +807,7 @@ function renderCanvas() {
           const acts = el("span", "ap-acts");
           const ok = el("button", "ap-ok"); ok.title = "Approve"; ok.appendChild(ico("check"));
           ok.addEventListener("click", e => { e.stopPropagation(); FOW.approve(a.id, true); toast("Approved — " + a.requester + " notified", "ok"); });
-          const no = el("button", "ap-no"); no.title = "Ask askMElah first"; no.appendChild(ico("x"));
+          const no = el("button", "ap-no"); no.title = "Ask askZAC first"; no.appendChild(ico("x"));
           no.addEventListener("click", e => { e.stopPropagation(); attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
           acts.append(ok, no);
           it.appendChild(acts);
@@ -816,7 +816,7 @@ function renderCanvas() {
         b.appendChild(it);
       });
     },
-    foot: "✕ sends it to askMElah for a recommendation first",
+    foot: "✕ sends it to askZAC for a recommendation first",
   });
   /* autopilot: Flow clears low-risk approvals on its own */
   const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
@@ -842,11 +842,11 @@ function renderCanvas() {
   apHead.insertBefore(auto, $(".ch-acts", apHead));
   cv.appendChild(apCard);
 
-  /* delegations — hand work to askMElah, watch it run */
+  /* delegations — hand work to askZAC, watch it run */
   if (p.delegations && p.delegations.length) {
     cv.appendChild(card(6, {
       cls: "dg-card",
-      icon: "robot", title: "Delegated to askMElah", sub: "agent work queue · runs in the background",
+      icon: "robot", title: "Delegated to askZAC", sub: "agent work queue · runs in the background",
       body: b => {
         p.delegations.forEach(d => {
           const doneAlready = (state.delegated[state.personaId] || {})[d.id];
@@ -877,7 +877,7 @@ function renderCanvas() {
           b.appendChild(it);
         });
       },
-      foot: "askMElah works these while you do something better with your time",
+      foot: "askZAC works these while you do something better with your time",
     }));
   }
 
@@ -916,11 +916,11 @@ function renderCanvas() {
     }));
   }
 
-  /* CNA morning scan */
+  /* ZAC News morning scan */
   if (window.FOW_NEWS && FOW_NEWS.stories && FOW_NEWS.stories.length) {
     const newsCard = card(6, {
       cls: "news-card",
-      icon: "file", title: "Morning scan", sub: "from the CNA newsroom · demo headlines",
+      icon: "file", title: "Morning scan", sub: "from the ZAC newsroom · demo headlines",
       body: b => {
         FOW_NEWS.stories.forEach((story, i) => {
           const chip = { type: "news", label: story.headline, data: story };
@@ -942,10 +942,10 @@ function renderCanvas() {
           b.appendChild(elm);
         });
       },
-      foot: "drag a story to askMElah for the 20-second version",
+      foot: "drag a story to askZAC for the 20-second version",
     });
     const ic = $(".ch-ico", newsCard);
-    ic.textContent = "CNA";
+    ic.textContent = "ZN";
     ic.classList.add("cna-ico");
     cv.appendChild(newsCard);
   }
@@ -997,7 +997,7 @@ function renderCanvas() {
 
   /* skills + automations + connections */
   cv.appendChild(card(6, {
-    icon: "spark", title: "Agent skills", sub: "what askMElah can run for you",
+    icon: "spark", title: "Agent skills", sub: "what askZAC can run for you",
     body: b => {
       p.skills.forEach(s => {
         const it = el("div", "rail-item");
@@ -1100,7 +1100,7 @@ async function runDelegation(d, ui) {
   }
   set[d.id] = "done";
   petReact("delegate");
-  toast("askMElah finished: " + d.label);
+  toast("askZAC finished: " + d.label);
   agentReply({
     thinkMs: 250,
     text: "**" + d.label + "** — done. " + d.result + (d.artifact ? "\n> Saved as **" + d.artifact + "**" : ""),
@@ -1156,7 +1156,7 @@ function renderMcp() {
       meta.appendChild(el("span", "", "not linked for this role"));
     }
     cardEl.appendChild(meta);
-    cardEl.title = on ? "Click to ask askMElah about this server" : s.name + " — available in the org catalog";
+    cardEl.title = on ? "Click to ask askZAC about this server" : s.name + " — available in the org catalog";
     cardEl.addEventListener("click", () => {
       mcpClose();
       attachChip({ type: "server", label: s.name + " (MCP)", data: { id: cid } });
@@ -1176,7 +1176,7 @@ function renderMcp() {
     it.appendChild(el("span", "mf-ok", "✓"));
     feed.appendChild(it);
   });
-  if (!MCPLOG.length) feed.appendChild(el("div", "mf-item", "No calls yet this session — ask askMElah something."));
+  if (!MCPLOG.length) feed.appendChild(el("div", "mf-item", "No calls yet this session — ask askZAC something."));
 }
 
 /* ---------------- theme ---------------- */
@@ -1412,7 +1412,7 @@ function ckBuild(query) {
   items.push({ sect: "Workspace", label: "Open the MCP console", icon: "⌁", sub: "servers", run: () => mcpOpen() });
   if (state.personaId !== "wireframe") items.push({ sect: "Workspace", label: "Meet the Crew — your agents at work", icon: "☻", sub: "agents", run: () => { if (typeof crewOpen === "function") crewOpen(); } });
   if (p) (p.chains || []).forEach(c => items.push({ sect: "Cross-app workflows", label: "Run: " + c.name, icon: "➜", sub: c.steps.length + " hops", run: () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); } }));
-  if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askMElah", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
+  if (p) (p.suggestions || []).forEach(s => items.push({ sect: "Ask askZAC", label: s, icon: "✦", sub: "chat", run: () => sendMessage(s) }));
   PERSONAS.forEach(pp => { if (pp.id !== state.personaId) items.push({ sect: "Switch persona", label: pp.name + " — " + pp.role, icon: pp.initials, sub: pp.dept, run: () => selectPersona(pp.id) }); });
   if (p) {
     [["trend", p.trend.title], ["donut", p.donut.title], ["bars", p.bars.title], ["heatmap", p.heatmap.title]].forEach(([k, t]) =>
@@ -1433,7 +1433,7 @@ function ckBuild(query) {
       hits.push({ sect: "Files", label: f.name, icon: "▤", sub: f.by + " · " + f.modified, run: () => { attachChip({ type: "file", label: f.name, data: f }); sendMessage("Summarize this document for me"); } }));
     filtered = filtered.concat(hits);
   }
-  if (q && !filtered.some(i => i.sect === "Ask askMElah")) filtered.unshift({ sect: "Ask askMElah", label: "Ask: “" + query + "”", icon: "✦", sub: "send to chat", run: () => sendMessage(query) });
+  if (q && !filtered.some(i => i.sect === "Ask askZAC")) filtered.unshift({ sect: "Ask askZAC", label: "Ask: “" + query + "”", icon: "✦", sub: "send to chat", run: () => sendMessage(query) });
   return filtered.slice(0, 16);
 }
 function ckRender() {

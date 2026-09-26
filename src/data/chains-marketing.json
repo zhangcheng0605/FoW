@@ -63,7 +63,7 @@
         {
           "server": "salesforce",
           "tool": "get_campaign_metrics",
-          "args": "campaign=mewatch EPL season launch&period=QTD",
+          "args": "campaign=ZAC+ EPL season launch&period=QTD",
           "result": "8.6M reach vs 9.0M target (96%) · engagement 4.1%, IG and TikTok pacing softest",
           "carry": "EPL · 8.6M vs 9.0M",
           "ms": 640

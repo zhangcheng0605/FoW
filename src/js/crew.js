@@ -1,6 +1,6 @@
 /* ============================================================
    FoW · the Crew — choreography engine
-   Seven agent mascots (askMElah's children) in a shared office:
+   Seven agent mascots (askZAC's children) in a shared office:
    they idle in character, walk to each other, huddle at the hub,
    pass real payloads hand to hand, and report back to their
    human at the desk. Delegations and chains dispatch missions
@@ -27,7 +27,7 @@ function cwMeta(id) {
   const fallbackNames = { hr: "Mei", finance: "Tally", procurement: "Hawk", it: "Patch", legal: "Clause", sales: "Bolt", marketing: "Neon" };
   let m = null;
   try { m = CREW_META.agents[id]; } catch (_) { }
-  return m || { name: fallbackNames[id] || "Agent", idle: "bob", hello: "On it!", done: "Done —", motto: "askMElah crew" };
+  return m || { name: fallbackNames[id] || "Agent", idle: "bob", hello: "On it!", done: "Done —", motto: "askZAC crew" };
 }
 function cwDomainOf(server) {
   try { return CREW_META.domain[server] || null; } catch (_) { return null; }
@@ -79,7 +79,7 @@ function crewBuild() {
 
   const hub = el("div", "cw-hub");
   hub.innerHTML = LOGO_ASKME;
-  hub.title = "askMElah — the mother agent";
+  hub.title = "askZAC — the mother agent";
   stage.appendChild(hub);
   CW.hub = hub;
 
@@ -320,11 +320,11 @@ async function cwRunMission(m) {
     await cwWait(420);
     cwWork(at, false);
     if (target === at) {
-      /* own-domain step: the tool call rides up to askMElah, the result comes back */
+      /* own-domain step: the tool call rides up to askZAC, the result comes back */
       await cwChipTo(hx, hy + 8, s.server + " · " + s.tool, 650);
       await cwWait(220);
       await cwChipTo(tl, tt, s.carry || s.result || s.tool, 650);
-      cwLog(at, target, cwMeta(at).name + " ⇄ askMElah: " + (s.result || s.tool));
+      cwLog(at, target, cwMeta(at).name + " ⇄ askZAC: " + (s.result || s.tool));
     } else {
       await cwChipTo(tl, tt, s.carry || s.result || s.tool, 750);
       cwLog(at, target, cwMeta(at).name + " → " + cwMeta(target).name + ": " + (s.result || s.tool));

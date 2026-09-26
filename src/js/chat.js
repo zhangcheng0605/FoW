@@ -443,7 +443,7 @@ function routeMessage(text, chips) {
     const conns = (p.connections || []).slice(0, 2).map(c => "**" + (SERVERS[c] ? SERVERS[c].name : c) + "**");
     return {
       thinkMs: 400,
-      text: "I'm **askMElah** — Mediacorp's FoW copilot for " + p.user.dept + ". I'm wired into " + conns.join(" and ") + ", among others.\nDrag any card from your canvas into this chat and I'll show you what I can do with it.",
+      text: "I'm **askZAC** — ZAC Studios' FoW copilot for " + p.user.dept + ". I'm wired into " + conns.join(" and ") + ", among others.\nDrag any card from your canvas into this chat and I'll show you what I can do with it.",
     };
   }
 
@@ -589,7 +589,7 @@ function recapFlow() {
     "## Week recap — w/e Friday, Aug 8\n" +
     p.focus.headline + "\n" +
     "## Wins\n" + (wins.join("\n") || "- Steady week — no fires") + "\n" +
-    (delDone || cleared ? "- Cleared **" + cleared + " approval" + (cleared === 1 ? "" : "s") + "**" + (delDone ? " and delegated **" + delDone + " task" + (delDone > 1 ? "s" : "") + "** to askMElah" : "") + "\n" : "") +
+    (delDone || cleared ? "- Cleared **" + cleared + " approval" + (cleared === 1 ? "" : "s") + "**" + (delDone ? " and delegated **" + delDone + " task" + (delDone > 1 ? "s" : "") + "** to askZAC" : "") + "\n" : "") +
     "## Watch-outs\n" + (risks.join("\n") || "- Nothing red this week") + "\n" +
     (blocked.length ? "- **" + blocked[0].id + "** still blocked — escalation is out\n" : "") +
     "## Next week\n" +

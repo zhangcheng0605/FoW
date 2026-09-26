@@ -14,19 +14,19 @@ const KICKERS = {
   delegate: "Delegate real work", crew: "The Crew · agents with faces",
   autopilot: "Trust, with a leash", mcp: "The MCP layer",
   chains: "No more swivel-chair", insights: "What silos can't see",
-  recap: "Friday, 4:55pm", outro: "FoW · Mediacorp",
+  recap: "Friday, 4:55pm", outro: "FoW · ZAC Studios",
 };
 const FALLBACK_BEATS = {
   intro: { title: "One workspace per person", text: "The canvas shapes itself around this role — KPIs, queues, charts and tools all follow the job." },
   hero: { title: "The day opens with what matters", text: "No dashboard archaeology — the headline is written from live data, not a template." },
   kpis: { title: "KPIs straight from the source systems", text: "Each metric carries 12 months of history, its delta, and the reason behind the move." },
   chart: { title: "Hover any month, flip to a table", text: "Hand-built SVG, colorblind-safe palettes, crosshair tooltips. Watch the crosshair walk the year." },
-  ask: { title: "Drag anything to askMElah", text: "A KPI, an email, an approval. The copilot reads the same systems you do — and answers about that thing." },
+  ask: { title: "Drag anything to askZAC", text: "A KPI, an email, an approval. The copilot reads the same systems you do — and answers about that thing." },
   answer: { title: "It shows its work", text: "Real tool calls — visible and timed — then an answer with a chart in it, not a wall of text." },
   chains: { title: "Apps, chained via MCP", text: "Watch data hop between systems by itself — retrieved from one, filed in the next, everyone notified. No copy-paste, no swivel-chair." },
-  insights: { title: "Insights no silo could produce", text: "With every system feeding one brain, askMElah joins what each tool sees alone — and finds what none of them could." },
-  delegate: { title: "An agent work queue", text: "askMElah runs the steps in the background, files the artifact, and reports back in chat." },
-  crew: { title: "Your agent takes it from here", text: "Every person has a personal agent with a face. Watch it brief askMElah, huddle with the other teams' agents, pass real data hand to hand — then walk back and report to its human." },
+  insights: { title: "Insights no silo could produce", text: "With every system feeding one brain, askZAC joins what each tool sees alone — and finds what none of them could." },
+  delegate: { title: "An agent work queue", text: "askZAC runs the steps in the background, files the artifact, and reports back in chat." },
+  crew: { title: "Your agent takes it from here", text: "Every person has a personal agent with a face. Watch it brief askZAC, huddle with the other teams' agents, pass real data hand to hand — then walk back and report to its human." },
   autopilot: { title: "Approvals on autopilot", text: "Within policy and clean history, it clears the queue itself. Anything unusual still waits for a human." },
   mcp: { title: "Every tool, one console", text: "The MCP console shows what this seat is wired into — servers, tools, and the live call log." },
   recap: { title: "One click writes the status report", text: "Wins, watch-outs, next week — compiled from everything on this canvas, including this session." },
@@ -287,7 +287,7 @@ function prScript() {
     await psleep(2000);
   });
 
-  /* 4 · drag a KPI to askMElah + ask the signature question */
+  /* 4 · drag a KPI to askZAC + ask the signature question */
   add(async () => {
     const kpi = $(".card.kpi");
     if (!kpi) return;
