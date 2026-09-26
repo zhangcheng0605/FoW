@@ -906,6 +906,14 @@ function chatWelcome() {
   chat.chips = []; renderChips();
   suggPool = ((p.chains || []).length ? ["What insights can you see across my systems?"] : []).concat((p.suggestions || []));
   refreshSuggestions();
+  if (typeof wfOn === "function" && wfOn()) {
+    /* the wireframe opens on the gesture itself: an empty place to drop things */
+    const zone = el("div", "wfk-drop");
+    zone.appendChild(el("b", "", "Drop anything here"));
+    zone.appendChild(el("span", "", "a chart, a meeting, a message — then ask"));
+    msgsEl().appendChild(zone);
+    return;
+  }
   const pending = FOW.pendingApprovals().length;
   const urgent = p.inbox.filter(i => i.unread).length;
   agentReply({

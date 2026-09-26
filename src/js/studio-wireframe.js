@@ -1,8 +1,9 @@
 /* ============================================================
    FoW · studio-wireframe — THE WIREFRAME
-   Same engine, none of the chrome: black lines on white.
-   Charts, drag-to-ask, delegation, approvals, workflows —
-   every interaction of the full build, in low-fi.
+   The whole idea on one screen, keynote-simple:
+   See (three charts) · Act (three things that need you) ·
+   Hand off (three jobs for the agent) · Ask (the chat).
+   Anything can be dragged into the chat.
    ============================================================ */
 "use strict";
 
@@ -16,244 +17,205 @@ if (typeof AVATARS !== "undefined") {
     '</svg>';
 }
 
-function wfSection(cv, label) {
-  const h = el("div", "wf-sect", label);
-  h.dataset.span = "12";
-  cv.appendChild(h);
+const WFK = { demoed: false };
+
+/* ---------- three charts, drawn as plainly as a chart can be ---------- */
+function wfkLine(points) {
+  const w = 200, h = 64, pad = 5;
+  const lo = Math.min(...points), hi = Math.max(...points), span = hi - lo || 1;
+  const X = i => pad + (i / (points.length - 1)) * (w - pad * 2);
+  const Y = v => h - pad - ((v - lo) / span) * (h - pad * 2);
+  const d = points.map((v, i) => (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1)).join(" ");
+  const n = points.length - 1;
+  return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true">' +
+    '<path d="' + d + '" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>' +
+    '</svg><i class="wfk-dot" style="left:' + (X(n) / w * 100) + '%;top:' + (Y(points[n]) / h * 100) + '%"></i>';
+}
+function wfkBars(values) {
+  const w = 200, h = 64, gap = 10;
+  const hi = Math.max(0, ...values), lo = Math.min(0, ...values), span = hi - lo || 1;
+  const bw = (w - gap * (values.length - 1)) / values.length;
+  const zero = (hi / span) * h;
+  let out = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true">';
+  values.forEach((v, i) => {
+    const bh = Math.abs(v) / span * h;
+    out += '<rect x="' + (i * (bw + gap)).toFixed(1) + '" y="' + (v >= 0 ? zero - bh : zero).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(1, bh).toFixed(1) + '" fill="' + (v >= 0 ? "#111" : "#c4c4c4") + '"/>';
+  });
+  return out + '<line x1="0" x2="' + w + '" y1="' + zero.toFixed(1) + '" y2="' + zero.toFixed(1) + '" stroke="#111" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>';
+}
+function wfkDonut(segments) {
+  const r = 26, C = 2 * Math.PI * r, tones = ["#111", "#8c8c8c", "#c4c4c4", "#e6e6e6"];
+  const total = segments.reduce((a, s) => a + s.value, 0) || 1;
+  let off = 0, out = '<svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-90 32 32)">';
+  segments.forEach((s, i) => {
+    const len = s.value / total * C;
+    out += '<circle cx="32" cy="32" r="' + r + '" fill="none" stroke="' + tones[i % tones.length] + '" stroke-width="10" stroke-dasharray="' + len.toFixed(2) + ' ' + (C - len).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '"/>';
+    off += len;
+  });
+  return out + '</g></svg>';
+}
+
+/* ---------- one tile: a word, a number, a picture ---------- */
+function wfkTile(o) {
+  const t = el("article", "wfk-tile" + (o.cls ? " " + o.cls : ""));
+  t.tabIndex = 0;
+  t.appendChild(el("div", "wfk-label", o.label));
+  if (o.big) t.appendChild(el("div", "wfk-big", o.big));
+  if (o.line) t.appendChild(el("div", "wfk-line", o.line));
+  if (o.pic) { const pic = el("div", "wfk-pic" + (o.picCls ? " " + o.picCls : "")); pic.innerHTML = o.pic; t.appendChild(pic); }
+  const ask = () => { attachChip(o.chip); sendMessage(o.ask); };
+  t.addEventListener("click", e => { if (!e.target.closest("button")) ask(); });
+  t.addEventListener("keydown", e => { if (e.key === "Enter") ask(); });
+  t.title = "Click to ask, or drag into the chat";
+  makeDraggable(t, o.chip);
+  return t;
+}
+function wfkRow(cv, verb, hint) {
+  const sec = el("section", "wfk-row");
+  const h = el("div", "wfk-verb");
+  h.appendChild(el("b", "", verb));
+  if (hint) h.appendChild(el("span", "", hint));
+  sec.appendChild(h);
+  const grid = el("div", "wfk-grid");
+  sec.appendChild(grid);
+  cv.appendChild(sec);
+  return grid;
 }
 
 function renderStudio_wireframe(p, cv) {
   clearCharts();
   state.cardIndex = 0;
   cv.textContent = "";
-  cv.className = "wf-grid"; /* plain 12-column grid, not the studio flow */
+  cv.className = "wfk";
 
-  /* ---- header: who, what matters, jump-offs ---- */
-  const head = el("section", "wf-head");
-  head.dataset.span = "12";
-  head.appendChild(el("div", "wf-hi", greeting() + ", " + p.user.name.split(" ")[0] + " · Friday, August 8 · " + p.user.location));
-  head.appendChild(el("h1", "wf-title", p.focus.headline));
-  head.appendChild(el("div", "wf-sub", p.focus.sub));
-  const acts = el("div", "wf-acts");
-  const stat = (n, label, ask) => {
-    const b = el("button", "wf-stat");
-    b.appendChild(el("b", "", String(n)));
-    b.appendChild(el("span", "", label));
-    b.addEventListener("click", () => sendMessage(ask));
-    acts.appendChild(b);
-    return b;
-  };
-  stat(p.meetings.length, "meetings", "What's on my calendar today?");
-  const apStat = stat(FOW.pendingApprovals().length, "approvals", "What's pending my approval?");
-  apStat.classList.add("wf-ap-stat");
-  stat(p.inbox.filter(i => i.unread).length, "unread", "Triage my inbox");
-  stat(p.tasks.length, "tasks", "Show my open tasks");
-  const recap = el("button", "wf-btn solid", "Draft my week recap");
-  recap.addEventListener("click", () => sendMessage("Draft my end-of-week recap"));
-  acts.appendChild(recap);
-  head.appendChild(acts);
-  makeDraggable(head, { type: "hero", label: p.focus.headline, data: {} });
-  cv.appendChild(head);
+  /* ---- the one sentence ---- */
+  const pending = FOW.pendingApprovals();
+  const hero = el("header", "wfk-hero");
+  hero.appendChild(el("h1", "", greeting() + ", " + p.user.name.split(" ")[0] + "."));
+  hero.appendChild(el("p", "", "Three things need you. For everything else, just ask."));
+  const hint = el("div", "wfk-hint");
+  hint.appendChild(el("span", "wfk-hint-box"));
+  hint.appendChild(el("span", "", "Drag anything into the chat to ask about it"));
+  hint.appendChild(el("span", "wfk-hint-arrow", "→"));
+  hero.appendChild(hint);
+  cv.appendChild(hero);
 
-  /* ---- numbers ---- */
-  p.kpis.forEach(k => {
-    cv.appendChild(card(3, {
-      cls: "kpi",
-      chip: { type: "kpi", label: k.label + " · " + k.value, data: k },
-      body: b => {
-        b.appendChild(el("div", "kpi-label", k.label));
-        const row = el("div", "kpi-row");
-        const val = el("span", "kpi-value");
-        countUp(val, k.value);
-        row.appendChild(val);
-        row.appendChild(el("span", "kpi-delta", (k.deltaDir === "up" ? "▲ " : "▼ ") + k.delta));
-        b.appendChild(row);
-        const sp = el("div", "kpi-spark");
-        b.appendChild(sp);
-        registerChart(sp, () => renderSpark(sp, k.spark));
-      },
-    }));
-  });
-
-  /* ---- charts ---- */
-  const chartCard = (span, kind, icon, sub) => {
-    const d = p[kind];
-    cv.appendChild(card(span, {
-      icon, title: d.title, sub,
-      chip: { type: kind, label: d.title, data: { title: d.title } },
-      table: { kind, data: d },
-      body: b => registerChart(b, () => {
-        if (b.dataset.mode === "table") return;
-        if (kind === "trend") renderTrend(b, d);
-        else if (kind === "donut") renderDonut(b, d);
-        else renderBars(b, d);
-      }),
-      foot: d.insight,
-    }));
-  };
-  chartCard(8, "trend", "chart", p.trend.subtitle);
-  chartCard(4, "donut", "donut", "share of total");
-  chartCard(6, "bars", "bars", p.bars.unit);
-
-  /* ---- delegate to agents ---- */
-  cv.appendChild(card(6, {
-    cls: "dg-card",
-    icon: "robot", title: "Delegate to askZAC", sub: "the agent runs it in the background and reports back",
-    body: b => {
-      (p.delegations || []).forEach(d => {
-        const doneAlready = (state.delegated[state.personaId] || {})[d.id];
-        const it = el("div", "dg-item");
-        const orb = askmeAv(26); orb.classList.add("dg-orb");
-        it.appendChild(orb);
-        const bd = el("div", "dg-body");
-        bd.appendChild(el("div", "dg-label", d.label));
-        const sub = el("div", "dg-sub", doneAlready ? d.result : d.detail);
-        bd.appendChild(sub);
-        const prog = el("div", "dg-prog"); prog.hidden = true;
-        const fill = el("i"); prog.appendChild(fill);
-        bd.appendChild(prog);
-        if (doneAlready && d.artifact) {
-          const a = el("span", "dg-artifact");
-          a.appendChild(ico("file")); a.appendChild(el("span", "", d.artifact));
-          bd.appendChild(a);
-        }
-        it.appendChild(bd);
-        const stateBox = el("span", "dg-state");
-        if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
-        else {
-          const btn = el("button", "dg-btn", "Delegate");
-          btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill, stateBox, btn, bd }));
-          stateBox.appendChild(btn);
-        }
-        it.appendChild(stateBox);
-        makeDraggable(it, { type: "task", label: d.label, data: { id: d.id, title: d.label, due: "today", status: doneAlready ? "done" : "todo", priority: "P1", source: (d.steps[0] || {}).server } });
-        b.appendChild(it);
-      });
-    },
+  /* ---- See ---- */
+  const see = wfkRow(cv, "See", "your numbers, at a glance");
+  const rev = p.kpis[0], cost = p.kpis[1];
+  see.appendChild(wfkTile({
+    label: rev.label, big: rev.value, line: rev.delta + " " + (rev.vs || ""),
+    pic: wfkLine(p.trend.series[0].points), picCls: "is-line",
+    chip: { type: "trend", label: p.trend.title, data: { title: p.trend.title } },
+    ask: "What's driving this?",
+  }));
+  see.appendChild(wfkTile({
+    label: "Cost vs plan", big: cost.delta, line: "by team, July",
+    pic: wfkBars(p.bars.series[0].values),
+    chip: { type: "bars", label: p.bars.title, data: { title: p.bars.title } },
+    ask: "Why is operating cost over plan?",
+  }));
+  const top = p.donut.segments[0];
+  see.appendChild(wfkTile({
+    label: "Where it goes", big: top.value + "%", line: top.label.toLowerCase(),
+    pic: wfkDonut(p.donut.segments), picCls: "is-donut",
+    chip: { type: "donut", label: p.donut.title, data: { title: p.donut.title } },
+    ask: "Break this down for me",
   }));
 
-  wfSection(cv, "Today");
-
-  /* ---- approvals + autopilot ---- */
-  const apCard = card(4, {
-    cls: "ap-card",
-    icon: "check", title: "Approvals", sub: FOW.pendingApprovals().length + " pending",
-    body: b => {
-      p.approvals.forEach(a => {
-        const done = (state.approved[state.personaId] || new Set()).has(a.id);
-        const it = el("div", "ap-item" + (done ? " done" : ""));
-        it.dataset.approval = a.id;
-        it.appendChild(el("span", "ap-urg " + a.urgency));
-        const bd = el("div", "ap-body");
-        bd.appendChild(el("div", "ap-title", a.type + " — " + a.title));
-        bd.appendChild(el("div", "ap-meta", a.requester + (a.amount ? " · " + a.amount : "")));
-        it.appendChild(bd);
-        if (!done) {
-          const act = el("span", "ap-acts");
-          const ok = el("button", "ap-ok"); ok.title = "Approve"; ok.appendChild(ico("check"));
-          ok.addEventListener("click", e => { e.stopPropagation(); FOW.approve(a.id, true); toast("Approved — " + a.requester + " notified"); });
-          const no = el("button", "ap-no"); no.title = "Ask askZAC first"; no.appendChild(ico("ask"));
-          no.addEventListener("click", e => { e.stopPropagation(); attachChip({ type: "approval", label: a.type + ": " + a.title, data: a }); sendMessage("Should I approve this?"); });
-          act.append(ok, no);
-          it.appendChild(act);
-        }
-        makeDraggable(it, { type: "approval", label: a.type + ": " + a.title, data: a });
-        b.appendChild(it);
-      });
-    },
-  });
-  const auto = el("button", "autopilot" + (state.autopilot[state.personaId] ? " on" : ""));
-  auto.title = "When on, askZAC clears low-risk approvals within policy";
-  auto.append(el("span", "", "Autopilot"), el("span", "sw"));
-  auto.addEventListener("click", () => {
-    const on = !state.autopilot[state.personaId];
-    state.autopilot[state.personaId] = on;
-    auto.classList.toggle("on", on);
-    if (!on) { toast("Autopilot off — everything waits for you again", "info"); return; }
-    const low = FOW.pendingApprovals().filter(a => a.urgency === "low");
-    if (!low.length) { toast("Autopilot on — nothing low-risk in the queue", "info"); return; }
-    low.forEach((a, i) => setTimeout(() => {
-      FOW.approve(a.id, i === low.length - 1);
-      if (i === low.length - 1) toast("Autopilot cleared " + low.length + " low-risk approval" + (low.length > 1 ? "s" : ""));
-    }, 700 + i * 450));
-    agentReply({ thinkMs: 400, text: "**Autopilot is on.** I'll clear approvals that are within policy and under your limit, and leave anything unusual for you. Clearing **" + low.length + " low-risk item" + (low.length > 1 ? "s" : "") + "** now." });
-  });
-  const apHead = $(".card-h", apCard);
-  apHead.insertBefore(auto, $(".ch-acts", apHead));
-  cv.appendChild(apCard);
-
-  /* ---- inbox ---- */
-  cv.appendChild(card(4, {
-    icon: "mail", title: "Needs your attention", sub: "double-click to draft a reply",
-    body: b => {
-      p.inbox.forEach(msg => {
-        const it = el("div", "inb-item" + (msg.unread ? " unread" : ""));
-        const bd = el("div", "inb-body");
-        const top = el("div", "inb-top");
-        top.appendChild(el("span", "inb-from", msg.from));
-        top.appendChild(el("span", "inb-time", msg.time));
-        bd.appendChild(top);
-        const subj = el("div", "inb-subj", msg.subject);
-        if (msg.urgent) subj.appendChild(el("span", "inb-urgent", "URGENT"));
-        bd.appendChild(subj);
-        it.appendChild(bd);
-        it.addEventListener("dblclick", () => { attachChip({ type: "mail", label: msg.from + ": " + msg.subject, data: msg }); sendMessage("Summarize this and draft a reply"); });
-        makeDraggable(it, { type: "mail", label: msg.from + ": " + msg.subject, data: msg });
-        b.appendChild(it);
-      });
-    },
+  /* ---- Act ---- */
+  const act = wfkRow(cv, "Act", "only what needs you today");
+  const mt = p.meetings.slice().sort((a, b) => b.attendees.length - a.attendees.length)[0];
+  act.appendChild(wfkTile({
+    cls: "is-thing", label: "Meeting", big: mt.time, line: mt.title,
+    chip: { type: "meeting", label: mt.time + " · " + mt.title, data: mt },
+    ask: "Prep me for this meeting",
   }));
-
-  /* ---- schedule ---- */
-  cv.appendChild(card(4, {
-    icon: "cal", title: "Schedule", sub: "Friday, August 8",
-    body: b => {
-      const ag = el("div", "agenda");
-      p.meetings.forEach(mt => {
-        const it = el("div", "ag-item");
-        it.appendChild(el("span", "ag-time", mt.time));
-        it.appendChild(el("span", "ag-line"));
-        const bd = el("div", "ag-body");
-        bd.appendChild(el("div", "ag-title", mt.title));
-        bd.appendChild(el("div", "ag-meta", mt.dur + " · " + mt.attendees.length + " people"));
-        it.appendChild(bd);
-        const prep = el("button", "ag-join", "prep");
-        prep.addEventListener("click", e => { e.stopPropagation(); attachChip({ type: "meeting", label: mt.time + " · " + mt.title, data: mt }); sendMessage("Prep me for this meeting"); });
-        it.appendChild(prep);
-        makeDraggable(it, { type: "meeting", label: mt.time + " · " + mt.title, data: mt });
-        ag.appendChild(it);
-      });
-      b.appendChild(ag);
-    },
+  const msg = p.inbox.find(i => i.urgent) || p.inbox[0];
+  act.appendChild(wfkTile({
+    cls: "is-thing", label: "Message", big: msg.from.split(" ")[0], line: msg.subject,
+    chip: { type: "mail", label: msg.from + ": " + msg.subject, data: msg },
+    ask: "Summarize this and draft a reply",
   }));
+  const ap = pending.find(a => a.urgency === "high") || pending[0] || p.approvals[0];
+  const apTile = wfkTile({
+    cls: "is-thing", label: "Approval", big: ap.amount ? ap.amount.replace(/,000$/, "K") : ap.type, line: ap.title,
+    chip: { type: "approval", label: ap.type + ": " + ap.title, data: ap },
+    ask: "Should I approve this?",
+  });
+  apTile.dataset.approval = ap.id;
+  const done = (state.approved[state.personaId] || new Set()).has(ap.id);
+  const ok = el("button", "wfk-btn", done ? "Approved ✓" : "Approve");
+  ok.disabled = done;
+  ok.addEventListener("click", () => {
+    FOW.approve(ap.id, true);
+    ok.textContent = "Approved ✓"; ok.disabled = true;
+    toast("Approved — " + ap.requester + " notified");
+  });
+  apTile.appendChild(ok);
+  act.appendChild(apTile);
 
-  /* ---- cross-app workflows ---- */
-  if (p.chains && p.chains.length) {
-    cv.appendChild(card(12, {
-      cls: "chn-card",
-      icon: "bolt", title: "Workflows", sub: "one click, several systems — each step is an MCP call",
-      body: b => {
-        p.chains.forEach(c => {
-          const it = el("div", "chn-item wf-chain");
-          const bd = el("div", "wf-chain-bd");
-          bd.appendChild(el("div", "chn-name", c.name));
-          const path = el("div", "chn-path");
-          c.steps.forEach((s, i) => {
-            if (i) path.appendChild(el("span", "hop", "→"));
-            path.appendChild(el("span", "wf-hop", SERVERS[s.server] ? SERVERS[s.server].name : s.server));
-          });
-          bd.appendChild(path);
-          it.appendChild(bd);
-          const run = el("button", "dg-btn", "Run");
-          run.addEventListener("click", () => { addUserMsg("Run cross-app workflow: " + c.name); runChain(c); });
-          it.appendChild(run);
-          makeDraggable(it, { type: "chain", label: "Workflow: " + c.name, data: c });
-          b.appendChild(it);
-        });
-      },
-    }));
-  }
+  /* ---- Hand off ---- */
+  const off = wfkRow(cv, "Hand off", "the agent does it, then reports back");
+  off.classList.add("wfk-list");
+  (p.delegations || []).forEach(d => {
+    const doneAlready = (state.delegated[state.personaId] || {})[d.id];
+    const it = el("div", "dg-item wfk-job");
+    const orb = askmeAv(26); orb.classList.add("dg-orb");
+    it.appendChild(orb);
+    const bd = el("div", "dg-body");
+    bd.appendChild(el("div", "dg-label", d.label));
+    const sub = el("div", "dg-sub", doneAlready ? d.result : "");
+    bd.appendChild(sub);
+    const prog = el("div", "dg-prog"); prog.hidden = true;
+    const fill = el("i"); prog.appendChild(fill);
+    bd.appendChild(prog);
+    it.appendChild(bd);
+    const stateBox = el("span", "dg-state");
+    if (doneAlready) stateBox.appendChild(el("span", "dg-pill done", "done"));
+    else {
+      const btn = el("button", "wfk-btn", "Hand off");
+      btn.addEventListener("click", () => runDelegation(d, { orb, sub, prog, fill, stateBox, btn, bd }));
+      stateBox.appendChild(btn);
+    }
+    it.appendChild(stateBox);
+    off.appendChild(it);
+  });
 
   updateBadges();
+  wfkDemo();
+}
+
+/* ---------- show, don't tell: one tile glides into the chat, once ---------- */
+function wfkDemo() {
+  if (WFK.demoed) return;
+  WFK.demoed = true;
+  if (FX.reduced || (typeof PRESENT !== "undefined" && PRESENT.on)) return;
+  setTimeout(() => {
+    const tile = $(".wfk-tile"), target = $(".cd-composer");
+    if (!tile || !target || !wfOn() || $("#frame").classList.contains("chat-hidden")) return;
+    const a = tile.getBoundingClientRect(), b = target.getBoundingClientRect();
+    const g = el("div", "drag-ghost fly");
+    const icon = ico("chart"); icon.className = "ck-ico";
+    g.appendChild(icon);
+    g.appendChild(el("span", "", "Revenue — what's driving this?"));
+    g.style.left = (a.left + a.width / 2) + "px"; g.style.top = (a.top + a.height / 2) + "px";
+    fxLayer().appendChild(g);
+    tile.classList.add("wfk-lift");
+    const dx = b.left + 120 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    g.animate([
+      { transform: "translate(-50%,-50%) scale(0.9)", opacity: 0 },
+      { transform: "translate(-50%,-50%) scale(1)", opacity: 1, offset: 0.15 },
+      { transform: `translate(calc(-50% + ${dx * 0.5}px), calc(-50% + ${dy * 0.5 - 50}px))`, opacity: 1, offset: 0.55 },
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.85)`, opacity: 0 },
+    ], { duration: 1900, easing: "cubic-bezier(.4,.1,.3,1)" }).onfinish = () => {
+      g.remove();
+      tile.classList.remove("wfk-lift");
+      const dock = $("#chatdock");
+      dock.classList.add("wfk-invite");
+      sparkleAt(b.left + 120, b.top + b.height / 2, { n: 6, d: 22 });
+      setTimeout(() => dock.classList.remove("wfk-invite"), 900);
+    };
+  }, 1400);
 }
 window.renderStudio_wireframe = renderStudio_wireframe;
